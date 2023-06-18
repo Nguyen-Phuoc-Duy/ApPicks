@@ -1,4 +1,3 @@
-import React from "react";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import Icon from "@expo/vector-icons/Ionicons";
 import Menu from "../screens/menu";
@@ -10,8 +9,11 @@ import AddMenu from "../screens/addMenu";
 import EditMenu from "../screens/editMenu";
 import DeleteMenu from "../screens/deleteMenu";
 import Revenue from "../screens/revenue";
+import React, { useState } from "react";
+import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
 function Layout() {
   const Tab = createBottomTabNavigator();
+  const [modalVisible, setModalVisible] = useState(false);
   return (
     <>
       {/* <Tab.Navigator
@@ -37,7 +39,6 @@ function Layout() {
             tabBarLabel: "",
             headerShown: true,
             tabBarIcon: ({ color, size }) => (
-              // <Icon name="menu" size={size} color={color} />
               <AntDesign name="profile" size={size} color={color} />
             ),
           }}
@@ -65,6 +66,7 @@ function Layout() {
           }}
         />
       </Tab.Navigator> */}
+      {/* ///// */}
       <Tab.Navigator
         screenOptions={{
           tabBarHideOnKeyboard: true,
@@ -88,11 +90,39 @@ function Layout() {
             tabBarLabel: "",
             headerShown: true,
             tabBarIcon: ({ color, size }) => (
-              <Ionicons
-                name="ios-add-circle-outline"
-                size={size}
-                color={color}
-              />
+              <View>
+                <Modal
+                  animationType="slide"
+                  transparent={true}
+                  visible={modalVisible}
+                  onRequestClose={() => {
+                    Alert.alert("Modal has been closed.");
+                    setModalVisible(!modalVisible);
+                  }}
+                >
+                  <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
+                      <Text style={styles.modalText}>Hello World!</Text>
+                      <Pressable
+                        style={[styles.button, styles.buttonClose]}
+                        onPress={() => setModalVisible(!modalVisible)}
+                      >
+                        <Text style={styles.textStyle}>Hide Modal</Text>
+                      </Pressable>
+                    </View>
+                  </View>
+                </Modal>
+                <Pressable
+                  // style={[styles.button, styles.buttonClose]}
+                  onPress={() => setModalVisible(!modalVisible)}
+                >
+                  <Ionicons
+                    name="ios-add-circle-outline"
+                    size={size}
+                    color={color}
+                  />
+                </Pressable>
+              </View>
             ),
           }}
         />
@@ -135,3 +165,46 @@ function Layout() {
 }
 
 export default Layout;
+const styles = StyleSheet.create({
+  centeredView: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+    marginTop: 22,
+  },
+  modalView: {
+    margin: 20,
+    backgroundColor: "white",
+    borderRadius: 20,
+    padding: 35,
+    alignItems: "center",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 4,
+    elevation: 5,
+  },
+  button: {
+    borderRadius: 20,
+    padding: 10,
+    elevation: 2,
+  },
+  buttonOpen: {
+    backgroundColor: "#F194FF",
+  },
+  buttonClose: {
+    backgroundColor: "#2196F3",
+  },
+  textStyle: {
+    color: "white",
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  modalText: {
+    marginBottom: 15,
+    textAlign: "center",
+  },
+});
