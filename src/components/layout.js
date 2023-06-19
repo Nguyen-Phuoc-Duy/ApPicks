@@ -5,9 +5,7 @@ import DetailTable from "../screens/detailTable";
 import Tables from "../screens/table";
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
-import AddMenu from "../screens/addMenu";
-import EditMenu from "../screens/editMenu";
-import DeleteMenu from "../screens/deleteMenu";
+import MenuAdmin from "../screens/menuAdmin";
 import Revenue from "../screens/revenue";
 import React, { useState } from "react";
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
@@ -84,67 +82,15 @@ function Layout() {
         }}
       >
         <Tab.Screen
-          name="Add Menu"
-          component={AddMenu}
+          name="Menu(Admin)"
+          component={MenuAdmin}
           options={{
             tabBarLabel: "",
             headerShown: true,
             tabBarIcon: ({ color, size }) => (
               <View>
-                <Modal
-                  animationType="slide"
-                  transparent={true}
-                  visible={modalVisible}
-                  onRequestClose={() => {
-                    Alert.alert("Modal has been closed.");
-                    setModalVisible(!modalVisible);
-                  }}
-                >
-                  <View style={styles.centeredView}>
-                    <View style={styles.modalView}>
-                      <Text style={styles.modalText}>Hello World!</Text>
-                      <Pressable
-                        style={[styles.button, styles.buttonClose]}
-                        onPress={() => setModalVisible(!modalVisible)}
-                      >
-                        <Text style={styles.textStyle}>Hide Modal</Text>
-                      </Pressable>
-                    </View>
-                  </View>
-                </Modal>
-                <Pressable
-                  // style={[styles.button, styles.buttonClose]}
-                  onPress={() => setModalVisible(!modalVisible)}
-                >
-                  <Ionicons
-                    name="ios-add-circle-outline"
-                    size={size}
-                    color={color}
-                  />
-                </Pressable>
+                <AntDesign name="profile" size={size} color={color} />
               </View>
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Edit Menu"
-          component={EditMenu}
-          options={{
-            tabBarLabel: "",
-            headerShown: true,
-            tabBarIcon: ({ color, size }) => (
-              <AntDesign name="edit" size={size} color={color} />
-            ),
-          }}
-        />
-        <Tab.Screen
-          name="Delate Menu"
-          component={DeleteMenu}
-          options={{
-            tabBarLabel: "",
-            headerShown: true,
-            tabBarIcon: ({ color, size }) => (
-              <AntDesign name="delete" size={size} color={color} />
             ),
           }}
         />
@@ -170,10 +116,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
-    marginTop: 22,
+    marginVertical: 20,
   },
   modalView: {
-    margin: 20,
+    marginVertical: 100,
     backgroundColor: "white",
     borderRadius: 20,
     padding: 35,
@@ -191,12 +137,16 @@ const styles = StyleSheet.create({
     borderRadius: 20,
     padding: 10,
     elevation: 2,
-  },
-  buttonOpen: {
-    backgroundColor: "#F194FF",
+    display: "flex",
+    alignItems: "center",
+    alignContent: "center",
   },
   buttonClose: {
     backgroundColor: "#2196F3",
+    marginLeft: 180,
+    display: "flex",
+    alignItems: "center",
+    width: 40,
   },
   textStyle: {
     color: "white",
@@ -206,5 +156,30 @@ const styles = StyleSheet.create({
   modalText: {
     marginBottom: 15,
     textAlign: "center",
+  },
+  container: {
+    flex: 1,
+  },
+  inner: {
+    padding: 24,
+    flex: 1,
+  },
+  header: {
+    fontSize: 36,
+    marginBottom: 48,
+  },
+  textInput: {
+    height: 40,
+    borderColor: "#000000",
+    borderBottomWidth: 1,
+    marginBottom: 36,
+  },
+  btnContainer: {
+    backgroundColor: "white",
+    marginTop: 12,
+  },
+  title_exit: {
+    display: "flex",
+    flexDirection: "row",
   },
 });
