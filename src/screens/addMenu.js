@@ -12,17 +12,17 @@ import {
   Button,
   Keyboard,
 } from "react-native";
-const EditMenu = () => {
-  const [modalVisible1, setModalVisible1] = useState(false);
+const AddMenu = () => {
+  const [modalVisible, setModalVisible] = useState(false);
   return (
     <>
       <Modal
         animationType="slide"
         transparent={true}
-        visible={modalVisible1}
+        visible={modalVisible}
         onRequestClose={() => {
           Alert.alert("Modal has been closed.");
-          setModalVisible1(!modalVisible1);
+          setModalVisible(!modalVisible);
         }}
       >
         <View style={styles.centeredView}>
@@ -31,7 +31,7 @@ const EditMenu = () => {
               <Pressable style={styles.title_exit}>
                 <Pressable
                   style={[styles.button, styles.buttonClose]}
-                  onPress={() => setModalVisible1(!modalVisible1)}
+                  onPress={() => setModalVisible(!modalVisible)}
                 >
                   <Text style={styles.textStyle}>X</Text>
                 </Pressable>
@@ -47,7 +47,7 @@ const EditMenu = () => {
                       <TextInput placeholder="Tên" style={styles.textInput} />
                       <TextInput placeholder="Giá" style={styles.textInput} />
                       <View style={styles.btnContainer}>
-                        <Button title="Sửa" onPress={() => null} />
+                        <Button title="Thêm" onPress={() => null} />
                       </View>
                     </View>
                   </TouchableWithoutFeedback>
@@ -57,11 +57,19 @@ const EditMenu = () => {
           </View>
         </View>
       </Modal>
-      <Pressable onPress={() => setModalVisible1(!modalVisible1)}>
-        <AntDesign name="edit" size={24} color={"#644AB5"} />
+      <Pressable
+        onPress={() => setModalVisible(!modalVisible)}
+        style={styles.addIconContainer}
+      >
+        <Ionicons
+          name="ios-add-circle-outline"
+          size={30}
+          color={"#644AB5"}
+          style={styles.addIcon}
+        />
       </Pressable>
     </>
   );
 };
 
-export default EditMenu;
+export default AddMenu;
