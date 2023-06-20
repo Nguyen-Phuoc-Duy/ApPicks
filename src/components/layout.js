@@ -8,7 +8,16 @@ import { Ionicons } from "@expo/vector-icons";
 import MenuAdmin from "../screens/menuAdmin";
 import Revenue from "../screens/revenue";
 import React, { useState } from "react";
+import styles from "../css/style";
 import { Alert, Modal, StyleSheet, Text, Pressable, View } from "react-native";
+import {
+    KeyboardAvoidingView,
+    TextInput,
+    Platform,
+    TouchableWithoutFeedback,
+    Button,
+    Keyboard,
+} from "react-native";
 function Layout() {
     const Tab = createBottomTabNavigator();
     const [modalVisible, setModalVisible] = useState(false);
@@ -74,36 +83,26 @@ function Layout() {
                     headerTintColor: "#fff",
                     headerTitleStyle: {
                         fontWeight: "bold",
-                        fontSize: 25
+                        fontSize: 25,
                     },
                     tabBarStyle: { backgroundColor: "#fff" },
+
                     tabBarActiveTintColor: "#644AB5",
                 }}
             >
                 <Tab.Screen
-                    name="Foods"
+                    name="Menu(Admin)"
                     component={MenuAdmin}
                     options={{
-                        tabBarLabel: "Foods",
+                        tabBarLabel: "Menu",
                         headerShown: true,
                         tabBarIcon: ({ color, size }) => (
-                            <AntDesign name="profile" size={size} color={color} />
+                            <>
+                                <AntDesign name="profile" size={size} color={color} />
+                            </>
                         ),
                     }}
                 />
-
-                <Tab.Screen
-                    name="Users"
-                    component={Revenue}
-                    options={{
-                        tabBarLabel: "Users",
-                        headerShown: true,
-                        tabBarIcon: ({ color, size }) => (
-                            <AntDesign name="user" size={size} color={color} />
-                        ),
-                    }}
-                />
-
                 <Tab.Screen
                     name="Revenue"
                     component={Revenue}
@@ -111,7 +110,7 @@ function Layout() {
                         tabBarLabel: "Revenue",
                         headerShown: true,
                         tabBarIcon: ({ color, size }) => (
-                            <AntDesign name="heart" size={size} color={color} />
+                            <AntDesign name="pay-circle-o1" size={size} color={color} />
                         ),
                     }}
                 />
@@ -121,76 +120,74 @@ function Layout() {
 }
 
 export default Layout;
-
-const styles = StyleSheet.create({
-    centeredView: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center",
-        marginVertical: 20,
-    },
-    modalView: {
-        marginVertical: 100,
-        backgroundColor: "white",
-        borderRadius: 20,
-        padding: 35,
-        alignItems: "center",
-        shadowColor: "#000",
-        shadowOffset: {
-            width: 0,
-            height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 4,
-        elevation: 5,
-    },
-    button: {
-        borderRadius: 20,
-        padding: 10,
-        elevation: 2,
-        display: "flex",
-        alignItems: "center",
-        alignContent: "center",
-    },
-    buttonClose: {
-        backgroundColor: "#2196F3",
-        marginLeft: 180,
-        display: "flex",
-        alignItems: "center",
-        width: 40,
-    },
-    textStyle: {
-        color: "white",
-        fontWeight: "bold",
-        textAlign: "center",
-    },
-    modalText: {
-        marginBottom: 15,
-        textAlign: "center",
-    },
-    container: {
-        flex: 1,
-    },
-    inner: {
-        padding: 24,
-        flex: 1,
-    },
-    header: {
-        fontSize: 36,
-        marginBottom: 48,
-    },
-    textInput: {
-        height: 40,
-        borderColor: "#000000",
-        borderBottomWidth: 1,
-        marginBottom: 36,
-    },
-    btnContainer: {
-        backgroundColor: "white",
-        marginTop: 12,
-    },
-    title_exit: {
-        display: "flex",
-        flexDirection: "row",
-    },
-});
+//   centeredView: {
+//     flex: 1,
+//     justifyContent: "center",
+//     alignItems: "center",
+//     marginVertical: 20,
+//   },
+//   modalView: {
+//     marginVertical: 100,
+//     backgroundColor: "white",
+//     borderRadius: 20,
+//     padding: 35,
+//     alignItems: "center",
+//     shadowColor: "#000",
+//     shadowOffset: {
+//       width: 0,
+//       height: 2,
+//     },
+//     shadowOpacity: 0.25,
+//     shadowRadius: 4,
+//     elevation: 5,
+//   },
+//   button: {
+//     borderRadius: 20,
+//     padding: 10,
+//     elevation: 2,
+//     display: "flex",
+//     alignItems: "center",
+//     alignContent: "center",
+//   },
+//   buttonClose: {
+//     backgroundColor: "#2196F3",
+//     marginLeft: 180,
+//     display: "flex",
+//     alignItems: "center",
+//     width: 40,
+//   },
+//   textStyle: {
+//     color: "white",
+//     fontWeight: "bold",
+//     textAlign: "center",
+//   },
+//   modalText: {
+//     marginBottom: 15,
+//     textAlign: "center",
+//   },
+//   container: {
+//     flex: 1,
+//   },
+//   inner: {
+//     padding: 24,
+//     flex: 1,
+//   },
+//   header: {
+//     fontSize: 36,
+//     marginBottom: 48,
+//   },
+//   textInput: {
+//     height: 40,
+//     borderColor: "#000000",
+//     borderBottomWidth: 1,
+//     marginBottom: 36,
+//   },
+//   btnContainer: {
+//     backgroundColor: "white",
+//     marginTop: 12,
+//   },
+//   title_exit: {
+//     display: "flex",
+//     flexDirection: "row",
+//   },
+// });

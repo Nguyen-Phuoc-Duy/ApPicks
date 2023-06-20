@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
+import styles from "../css/style";
 import {
     KeyboardAvoidingView,
     TextInput,
@@ -11,27 +12,26 @@ import {
     Button,
     Keyboard,
 } from "react-native";
-import styles from "../css/style";
-const DeleteMenu = () => {
-    const [modalVisible2, setModalVisible2] = useState(false);
+const AddMenu = () => {
+    const [modalVisible, setModalVisible] = useState(false);
     return (
         <>
             <Modal
                 animationType="slide"
                 transparent={true}
-                visible={modalVisible2}
+                visible={modalVisible}
                 onRequestClose={() => {
                     Alert.alert("Modal has been closed.");
-                    setModalVisible2(!modalVisible2);
+                    setModalVisible(!modalVisible);
                 }}
             >
-                <View style={styles.centeredView2}>
-                    <View style={styles.modalView2}>
+                <View style={styles.centeredView}>
+                    <View style={styles.modalView}>
                         <Pressable>
                             <Pressable style={styles.title_exit}>
                                 <Pressable
                                     style={[styles.button, styles.buttonClose]}
-                                    onPress={() => setModalVisible2(!modalVisible2)}
+                                    onPress={() => setModalVisible(!modalVisible)}
                                 >
                                     <Text style={styles.textStyle}>X</Text>
                                 </Pressable>
@@ -39,16 +39,15 @@ const DeleteMenu = () => {
                             <Pressable>
                                 <KeyboardAvoidingView
                                     behavior={Platform.OS === "ios" ? "padding" : "height"}
-                                    style={styles.container2}
+                                    style={styles.container}
                                 >
                                     <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                                        <View style={styles.inner2}>
-                                            <Text style={styles.header}>Xoá món</Text>
-                                            <Text style={styles.textDel}>
-                                                Bạn có chắc chắn muốn xoá món này khổng ??
-                                            </Text>
+                                        <View style={styles.inner}>
+                                            <Text style={styles.header}>Sửa món</Text>
+                                            <TextInput placeholder="Tên" style={styles.textInput} />
+                                            <TextInput placeholder="Giá" style={styles.textInput} />
                                             <View style={styles.btnContainer}>
-                                                <Button title="Xoá" onPress={() => null} />
+                                                <Button title="Thêm" onPress={() => null} />
                                             </View>
                                         </View>
                                     </TouchableWithoutFeedback>
@@ -58,12 +57,19 @@ const DeleteMenu = () => {
                     </View>
                 </View>
             </Modal>
-
-            <Pressable onPress={() => setModalVisible2(!modalVisible2)}>
-                <AntDesign name="delete" size={24} color={"#644AB5"} />
+            <Pressable
+                onPress={() => setModalVisible(!modalVisible)}
+                style={styles.addIconContainer}
+            >
+                <Ionicons
+                    name="ios-add-circle-outline"
+                    size={30}
+                    color={"#644AB5"}
+                    style={styles.addIcon}
+                />
             </Pressable>
         </>
     );
 };
 
-export default DeleteMenu;
+export default AddMenu;
