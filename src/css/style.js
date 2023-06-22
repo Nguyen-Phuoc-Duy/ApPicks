@@ -218,5 +218,21 @@ const styles = StyleSheet.create({
   addIcon: {
     marginVertical: 10,
   },
+  boxTable: {
+    marginTop: 20,
+    marginHorizontal: 20,
+    backgroundColor: "#c3c3c3",
+    height: 80,
+    display: "flex",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  textTable: {
+    color: "#644AB5",
+    fontSize: 25,
+    fontWeight: 700,
+  },
 });
 export default styles;

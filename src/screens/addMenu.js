@@ -43,7 +43,7 @@ const AddMenu = () => {
                 >
                   <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
                     <View style={styles.inner}>
-                      <Text style={styles.header}>Sửa món</Text>
+                      <Text style={styles.header}>Thêm món</Text>
                       <TextInput placeholder="Tên" style={styles.textInput} />
                       <TextInput placeholder="Giá" style={styles.textInput} />
                       <View style={styles.btnContainer}>

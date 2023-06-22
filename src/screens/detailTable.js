@@ -4,7 +4,7 @@ import React from "react";
 const DetailTable = () => {
   return (
     <View>
-      <Text>Detail Table</Text>
+      <Text>Detail Table = List Order</Text>
     </View>
   );
 };
