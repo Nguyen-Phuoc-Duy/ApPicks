@@ -6,6 +6,7 @@ import Tables from "../screens/table";
 import { AntDesign } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import MenuAdmin from "../screens/menuAdmin";
+import AddTable from "../screens/addTable";
 import Revenue from "../screens/revenue";
 import React, { useState } from "react";
 import styles from "../css/style";
@@ -39,6 +40,23 @@ function Layout() {
           tabBarActiveTintColor: "#644AB5",
         }}
       >
+        <Tab.Screen
+          name="Add Table"
+          component={AddTable}
+          options={{
+            tabBarLabel: "",
+            headerShown: true,
+            tabBarIcon: ({ color, size }) => (
+              <>
+                <Ionicons
+                  name="ios-add-circle-outline"
+                  size={30}
+                  color={"#644AB5"}
+                />
+              </>
+            ),
+          }}
+        />
         <Tab.Screen
           name="Tables"
           component={Tables}
