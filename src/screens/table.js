@@ -12,13 +12,13 @@ import {
   Button,
   Keyboard,
 } from "react-native";
-const Tables = () => {
+const Tables = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   return (
     <ScrollView>
       <View style={styles.boxTable}>
         <Text style={styles.textTable}>Table 1</Text>
-        <Modal
+        {/* <Modal
           animationType="slide"
           transparent={true}
           visible={modalVisible}
@@ -48,8 +48,6 @@ const Tables = () => {
                         <Text style={styles.header}>Order 1</Text>
                         <Text>Bia</Text>
                         <Text>20000/chai</Text>
-                        {/* <Text style={styles.textInput} />
-                        <Text style={styles.textInput} /> */}
                         <View style={styles.btnContainer}>
                           <Button title="Thêm" onPress={() => null} />
                         </View>
@@ -63,6 +61,17 @@ const Tables = () => {
         </Modal>
         <Pressable
           onPress={() => setModalVisible(!modalVisible)}
+          style={styles.addIconContainer}
+        >
+          <Ionicons
+            name="ios-add-circle-outline"
+            size={30}
+            color={"#644AB5"}
+            style={styles.addIcon}
+          />
+        </Pressable> */}
+        <Pressable
+          onPress={() => navigation.navigate("Detail Table", { name: "Jane" })}
           style={styles.addIconContainer}
         >
           <Ionicons

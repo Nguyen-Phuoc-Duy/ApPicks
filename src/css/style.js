@@ -234,5 +234,9 @@ const styles = StyleSheet.create({
     fontSize: 25,
     fontWeight: 700,
   },
+  viewAddTable: {
+    marginHorizontal: 20,
+    marginVertical: 30,
+  },
 });
 export default styles;
