@@ -1,48 +1,86 @@
-import { StyleSheet, Text, View } from "react-native";
-import React from "react";
+import { StyleSheet, Text, View, Pressable, Modal } from "react-native";
+import React, { useState } from "react";
 import { ScrollView } from "react-native";
 import { Entypo } from "@expo/vector-icons";
-const Tables = () => {
+import { Ionicons } from "@expo/vector-icons";
+import styles from "../css/style";
+import {
+  KeyboardAvoidingView,
+  TextInput,
+  Platform,
+  TouchableWithoutFeedback,
+  Button,
+  Keyboard,
+} from "react-native";
+const Tables = ({ navigation }) => {
+  const [modalVisible, setModalVisible] = useState(false);
   return (
     <ScrollView>
-      <View style={styles.box}>
-        <Text style={styles.text}>Table 1</Text>
-        <Entypo name="dots-three-horizontal" size={24} color="#644AB5" />
-      </View>
-      <View style={styles.box}>
-        <Text style={styles.text}>Table 2</Text>
-        <Entypo name="dots-three-horizontal" size={24} color="#644AB5" />
-      </View>
-      <View style={styles.box}>
-        <Text style={styles.text}>Table 3</Text>
-        <Entypo name="dots-three-horizontal" size={24} color="#644AB5" />
-      </View>
-      <View style={styles.box}>
-        <Text style={styles.text}>Table 4</Text>
-        <Entypo name="dots-three-horizontal" size={24} color="#644AB5" />
-      </View>
-      <View style={styles.box}>
-        <Text style={styles.text}>Table 5</Text>
-        <Entypo name="dots-three-horizontal" size={24} color="#644AB5" />
-      </View>
-      <View style={styles.box}>
-        <Text style={styles.text}>Table 6</Text>
-        <Entypo name="dots-three-horizontal" size={24} color="#644AB5" />
-      </View>
-      <View style={styles.box}>
-        <Text style={styles.text}>Table 7</Text>
-        <Entypo name="dots-three-horizontal" size={24} color="#644AB5" />
-      </View>
-      <View style={styles.box}>
-        <Text style={styles.text}>Table 8</Text>
-        <Entypo name="dots-three-horizontal" size={24} color="#644AB5" />
-      </View>
-      <View style={styles.box}>
-        <Text style={styles.text}>Table 9</Text>
-        <Entypo name="dots-three-horizontal" size={24} color="#644AB5" />
-      </View>
-      <View style={styles.box}>
-        <Text style={styles.text}>Table 10</Text>
+      <View style={styles.boxTable}>
+        <Text style={styles.textTable}>Table 1</Text>
+        {/* <Modal
+          animationType="slide"
+          transparent={true}
+          visible={modalVisible}
+          onRequestClose={() => {
+            Alert.alert("Modal has been closed.");
+            setModalVisible(!modalVisible);
+          }}
+        >
+          <View style={styles.centeredView}>
+            <View style={styles.modalView}>
+              <Pressable>
+                <Pressable style={styles.title_exit}>
+                  <Pressable
+                    style={[styles.button, styles.buttonClose]}
+                    onPress={() => setModalVisible(!modalVisible)}
+                  >
+                    <Text style={styles.textStyle}>X</Text>
+                  </Pressable>
+                </Pressable>
+                <Pressable>
+                  <KeyboardAvoidingView
+                    behavior={Platform.OS === "ios" ? "padding" : "height"}
+                    style={styles.container}
+                  >
+                    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
+                      <View style={styles.inner}>
+                        <Text style={styles.header}>Order 1</Text>
+                        <Text>Bia</Text>
+                        <Text>20000/chai</Text>
+                        <View style={styles.btnContainer}>
+                          <Button title="Thêm" onPress={() => null} />
+                        </View>
+                      </View>
+                    </TouchableWithoutFeedback>
+                  </KeyboardAvoidingView>
+                </Pressable>
+              </Pressable>
+            </View>
+          </View>
+        </Modal>
+        <Pressable
+          onPress={() => setModalVisible(!modalVisible)}
+          style={styles.addIconContainer}
+        >
+          <Ionicons
+            name="ios-add-circle-outline"
+            size={30}
+            color={"#644AB5"}
+            style={styles.addIcon}
+          />
+        </Pressable> */}
+        <Pressable
+          onPress={() => navigation.navigate("Detail Table", { name: "12" })}
+          style={styles.addIconContainer}
+        >
+          <Ionicons
+            name="ios-add-circle-outline"
+            size={30}
+            color={"#644AB5"}
+            style={styles.addIcon}
+          />
+        </Pressable>
         <Entypo name="dots-three-horizontal" size={24} color="#644AB5" />
       </View>
     </ScrollView>
@@ -50,22 +88,3 @@ const Tables = () => {
 };
 
 export default Tables;
-
-const styles = StyleSheet.create({
-  box: {
-    marginTop: 20,
-    marginHorizontal: 20,
-    backgroundColor: "#c3c3c3",
-    height: 80,
-    display: "flex",
-    justifyContent: "space-between",
-    paddingHorizontal: 20,
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  text: {
-    color: "#644AB5",
-    fontSize: 25,
-    fontWeight: 700,
-  },
-});

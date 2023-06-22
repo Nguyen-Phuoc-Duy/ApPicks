@@ -67,6 +67,13 @@ const styles = StyleSheet.create({
     shadowRadius: 4,
     elevation: 5,
   },
+  modalView1: {
+    backgroundColor: "white",
+    height: "100%",
+    paddingVertical: 30,
+    paddingHorizontal: 30,
+    // alignItems: "center",
+  },
   modalView2: {
     marginVertical: 100,
     backgroundColor: "white",
@@ -145,21 +152,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginVertical: 20,
   },
-  modalView: {
-    marginVertical: 100,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
-  },
   button: {
     borderRadius: 20,
     padding: 10,
@@ -218,6 +210,40 @@ const styles = StyleSheet.create({
   },
   addIcon: {
     marginVertical: 10,
+  },
+  boxTable: {
+    marginTop: 20,
+    marginHorizontal: 20,
+    backgroundColor: "#c3c3c3",
+    height: 80,
+    display: "flex",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  textTable: {
+    color: "#644AB5",
+    fontSize: 25,
+    fontWeight: 700,
+  },
+  viewAddTable: {
+    marginHorizontal: 20,
+    marginVertical: 30,
+  },
+  menu: {
+    height: "82%",
+  },
+  btnGrMenu: {
+    marginVertical: 20,
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-evenly",
+  },
+  btnMenu: {
+    paddingHorizontal: 10,
+    paddingVertical: 10,
   },
 });
 export default styles;
