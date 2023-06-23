@@ -60,7 +60,6 @@ const DetailOrder = () => {
 								maxLength={2}
 								defaultValue="1"
 								caretHidden={true}
-								value={quantity}
 							/>
 							<Pressable onPress={onPlusPress}>
 								<Text style={styling.counterContent}>+</Text>
@@ -82,7 +81,6 @@ const DetailOrder = () => {
 								maxLength={2}
 								defaultValue="1"
 								caretHidden={true}
-								value={quantity}
 							/>
 							<Pressable onPress={onPlusPress}>
 								<Text style={styling.counterContent}>+</Text>
@@ -127,7 +125,6 @@ const DetailOrder = () => {
 								maxLength={2}
 								defaultValue="1"
 								caretHidden={true}
-								value={quantity}
 							/>
 							<Pressable onPress={onPlusPress}>
 								<Text style={styling.counterContent}>+</Text>
@@ -149,7 +146,6 @@ const DetailOrder = () => {
 								maxLength={2}
 								defaultValue="1"
 								caretHidden={true}
-								value={quantity}
 							/>
 							<Pressable onPress={onPlusPress}>
 								<Text style={styling.counterContent}>+</Text>
