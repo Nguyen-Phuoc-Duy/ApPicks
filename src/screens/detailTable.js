@@ -1,10 +1,12 @@
 import { StyleSheet, Text, View, Pressable, Modal } from "react-native";
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
 import styles from "../css/style";
 import { Entypo } from "@expo/vector-icons";
+import SelectMultiple from "react-native-select-multiple";
+import { MultipleSelectList } from "react-native-dropdown-select-list";
 import {
   KeyboardAvoidingView,
   TextInput,
@@ -15,6 +17,34 @@ import {
 } from "react-native";
 const DetailTable = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [selected, setSelected] = useState([]);
+
+  const data = [
+    { key: "1", value: "Apple", disabled: true },
+    { key: "2", value: "Orange" },
+    { key: "3", value: "Pears" },
+    { key: "4", value: "Banana" },
+    { key: "5", value: "Watermelon", disabled: true },
+    { key: "6", value: "Coconut" },
+    { key: "7", value: "Tomato" },
+    { key: "8", value: "Kiwi" },
+    { key: "1", value: "Apple", disabled: true },
+    { key: "2", value: "Orange" },
+    { key: "3", value: "Pears" },
+    { key: "4", value: "Banana" },
+    { key: "5", value: "Watermelon", disabled: true },
+    { key: "6", value: "Coconut" },
+    { key: "7", value: "Tomato" },
+    { key: "8", value: "Kiwi" },
+    { key: "1", value: "Apple", disabled: true },
+    { key: "2", value: "Orange" },
+    { key: "3", value: "Pears" },
+    { key: "4", value: "Banana" },
+    { key: "5", value: "Watermelon", disabled: true },
+    { key: "6", value: "Coconut" },
+    { key: "7", value: "Tomato" },
+    { key: "8", value: "Kiwi" },
+  ];
   return (
     <>
       <ScrollView>
@@ -29,108 +59,32 @@ const DetailTable = ({ navigation }) => {
               setModalVisible(!modalVisible);
             }}
           >
-            <View
-            // style={styles.centeredView}
-            >
+            <View>
               <View style={styles.modalView1}>
-                <Pressable>
-                  <Pressable
-                  // style={styles.title_exit}
-                  >
-                    {/* <Pressable
-                      style={[styles.button, styles.buttonClose]}
+                <Text style={styles.text1}>Menu</Text>
+                <Pressable style={styles.menuContainer}>
+                  <View style={styles.menuContainerContent}>
+                    <MultipleSelectList
+                      setSelected={(val) => setSelected(val)}
+                      data={data}
+                      label="Categories"
+                      onSelect={() => console.log(selected)}
+                      save="value"
+                      notFoundText="No data existx"
+                    />
+                  </View>
+                  <View style={styles.btnGrMenu}>
+                    <Button
+                      style={styles.btnMenu}
+                      title="Lưu"
+                      onPress={() => null}
+                    />
+                    <Button
+                      style={styles.btnMenu}
+                      title="Huỷ"
                       onPress={() => setModalVisible(!modalVisible)}
-                    >
-                      <Text style={styles.textStyle}>X</Text>
-                    </Pressable> */}
-                    <Text style={styles.text1}>Menu</Text>
-                    <ScrollView style={styles.menu}>
-                      <View style={styles.box}>
-                        <View style={styles.boxLeft}>
-                          <Text style={styles.text1}>Bia</Text>
-                          <Text style={styles.text2}>20000/chai</Text>
-                        </View>
-                        <View style={styles.boxRight}></View>
-                      </View>
-                      <View style={styles.box}>
-                        <View style={styles.boxLeft}>
-                          <Text style={styles.text1}>Bia</Text>
-                          <Text style={styles.text2}>20000/chai</Text>
-                        </View>
-                        <View style={styles.boxRight}></View>
-                      </View>
-                      <View style={styles.box}>
-                        <View style={styles.boxLeft}>
-                          <Text style={styles.text1}>Bia</Text>
-                          <Text style={styles.text2}>20000/chai</Text>
-                        </View>
-                        <View style={styles.boxRight}></View>
-                      </View>
-                      <View style={styles.box}>
-                        <View style={styles.boxLeft}>
-                          <Text style={styles.text1}>Bia</Text>
-                          <Text style={styles.text2}>20000/chai</Text>
-                        </View>
-                        <View style={styles.boxRight}></View>
-                      </View>
-                      <View style={styles.box}>
-                        <View style={styles.boxLeft}>
-                          <Text style={styles.text1}>Bia</Text>
-                          <Text style={styles.text2}>20000/chai</Text>
-                        </View>
-                        <View style={styles.boxRight}></View>
-                      </View>
-                      <View style={styles.box}>
-                        <View style={styles.boxLeft}>
-                          <Text style={styles.text1}>Bia</Text>
-                          <Text style={styles.text2}>20000/chai</Text>
-                        </View>
-                        <View style={styles.boxRight}></View>
-                      </View>
-                      <View style={styles.box}>
-                        <View style={styles.boxLeft}>
-                          <Text style={styles.text1}>Bia</Text>
-                          <Text style={styles.text2}>20000/chai</Text>
-                        </View>
-                        <View style={styles.boxRight}></View>
-                      </View>
-                      <View style={styles.box}>
-                        <View style={styles.boxLeft}>
-                          <Text style={styles.text1}>Bia</Text>
-                          <Text style={styles.text2}>20000/chai</Text>
-                        </View>
-                        <View style={styles.boxRight}></View>
-                      </View>
-                      <View style={styles.box}>
-                        <View style={styles.boxLeft}>
-                          <Text style={styles.text1}>Bia</Text>
-                          <Text style={styles.text2}>20000/chai</Text>
-                        </View>
-                        <View style={styles.boxRight}></View>
-                      </View>
-                      <View style={styles.box}>
-                        <View style={styles.boxLeft}>
-                          <Text style={styles.text1}>Bia</Text>
-                          <Text style={styles.text2}>20000/chai</Text>
-                        </View>
-                        <View style={styles.boxRight}></View>
-                      </View>
-                    </ScrollView>
-                  </Pressable>
-                  <Pressable>
-                    <View style={styles.btnGrMenu}>
-                      <Button
-                        style={styles.btnMenu}
-                        title="Lưu"
-                        onPress={() => null}
-                      />
-                      <Button
-                        style={styles.btnMenu}
-                        title="Huỷ"
-                        onPress={() => setModalVisible(!modalVisible)}
-                      />
-                    </View>
-                  </Pressable>
+                    />
+                  </View>
                 </Pressable>
               </View>
             </View>

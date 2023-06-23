@@ -68,7 +68,7 @@ const styles = StyleSheet.create({
     elevation: 5,
   },
   modalView1: {
-    backgroundColor: "white",
+    backgroundColor: "#fff",
     height: "100%",
     paddingVertical: 30,
     paddingHorizontal: 30,
@@ -236,6 +236,7 @@ const styles = StyleSheet.create({
   },
   btnGrMenu: {
     marginVertical: 20,
+    marginBottom: 30,
     display: "flex",
     flexDirection: "row",
     width: "100%",
@@ -244,6 +245,20 @@ const styles = StyleSheet.create({
   btnMenu: {
     paddingHorizontal: 10,
     paddingVertical: 10,
+    flex: 1,
+  },
+  menuContainer: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    alignContent: "space-around",
+    alignItems: "stretch",
+    // backgroundColor: "green",
+    flex: 1,
+  },
+  menuContainerContent: {
+    flex: 2,
+    marginVertical: 20,
   },
 });
 export default styles;
