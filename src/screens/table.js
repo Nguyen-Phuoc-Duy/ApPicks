@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Pressable, Modal, TouchableOpacity } from "react-native";
-import React, { useContext, useEffect, useState } from "react";
+import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { ScrollView } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
@@ -13,15 +13,33 @@ import {
   Keyboard,
 } from "react-native";
 import { AuthContext } from "../context/authProvider";
-const Tables = ({ navigation }) => {
+import ModalAddTable from "../components/modal/addTable";
+const Tables = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [tables,setTables] = useState([]);
   
   const { useFetch } = useContext(AuthContext);
   
+
+  useLayoutEffect(() => {
+    navigation.setOptions({
+      headerRight: () => (
+        <TouchableOpacity style={styles.btnIcon}
+            onPress={() => setModalVisible(true)}>
+            <Ionicons
+                name="ios-add-circle-outline"
+                size={30}
+                color={"#644AB5"}
+                style={styles.addIcon}
+            />
+        </TouchableOpacity>
+    ),
+    })
+  },[]);
+
   useEffect(() => {
     getTables();
-  },[])
+  },[route.params?.reload])
 
   const getTables = async () => {
     let result = await useFetch('tables/getAll')
@@ -44,6 +62,9 @@ const Tables = ({ navigation }) => {
             </View>
           </TouchableOpacity>
       ))}
+      {modalVisible && (
+        <ModalAddTable setModalVisible={setModalVisible} />
+      )}
     </ScrollView>
   );
 };

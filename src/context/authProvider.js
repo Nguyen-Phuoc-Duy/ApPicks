@@ -89,7 +89,8 @@ function AuthProvider({ children }) {
                 logOut
             }}
         >
-        {isloading ? <Loader /> : children}
+        {isloading && <Loader />}
+        {children}
         </AuthContext.Provider>
     );
 }

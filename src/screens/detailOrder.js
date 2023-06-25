@@ -8,7 +8,7 @@ import { Modal } from "react-native";
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
 import useAlert from "../hook/useAlert";
 import Loader from "../components/loader";
-import ModalMenu from "../components/modalMenu";
+import ModalMenu from "../components/modal/modalMenu";
 import { AuthContext } from "../context/authProvider";
 
 const DetailOrder = ({ navigation, route }) => {
@@ -18,9 +18,8 @@ const DetailOrder = ({ navigation, route }) => {
 	const [changeQuantity, setChangeQuantity] = useState(false);
 	const [changeDetail, setChangeDetail] = useState(false);
 	const [modalVisible ,setModalVisible] = useState(false);
-	const [isLoading,setIsLoading] = useState(false);
 	
-	const { useFetch } = useContext(AuthContext);
+	const { useFetch, setIsLoading } = useContext(AuthContext);
 
 	useEffect(() => {
 		getAllProduct();
@@ -231,9 +230,6 @@ const DetailOrder = ({ navigation, route }) => {
 				</View>
 				{modalVisible && <ModalMenu setModalVisible={setModalVisible} menus={menuProduts} 
 				disabledList={listProduct.map(p => p.ID)} handleAddProducts={handleAddProducts} />}
-				{isLoading && (
-					<Loader />
-				)}
 			</View>
 		)
 };

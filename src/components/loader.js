@@ -18,6 +18,7 @@ const style = StyleSheet.create({
         right: 0,
         bottom: 0,
         flex: 1,
+        zIndex: 1,
         justifyContent: 'center',
         backgroundColor: 'rgba(230, 230, 230, 0.8)'
     }

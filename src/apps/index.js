@@ -31,16 +31,6 @@ function Home() {
                     component={AddTable}
                     options={{
                         headerTintColor: "#644AB5",
-                        headerShown: true,
-                        // tabBarIcon: ({ color, size }) => (
-                        //   <>
-                        //     <Ionicons
-                        //       name="ios-add-circle-outline"
-                        //       size={30}
-                        //       color={"#644AB5"}
-                        //     />
-                        //   </>
-                        // ),
                     }}
                 />
                     <Stack.Screen
@@ -50,17 +40,6 @@ function Home() {
                             headerTintColor: "#644AB5",
                             headerShown: true,
                             headerTitleAlign: 'center',
-                            headerRight: () => (
-                                <TouchableOpacity style={styles.btnIcon}
-                                    onPress={() => navigation.navigate("Add Table")}>
-                                    <Ionicons
-                                        name="ios-add-circle-outline"
-                                        size={30}
-                                        color={"#644AB5"}
-                                        style={styles.addIcon}
-                                    />
-                                </TouchableOpacity>
-                            ),
                             headerLeft: () => (
                                 <TouchableOpacity style={styles.btnIcon}
                                     onPress={() => logOut(navigation.navigate)}>

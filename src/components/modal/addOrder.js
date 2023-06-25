@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
-import styles from '../css/style';
+import styles from '../../css/style';
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
 
 

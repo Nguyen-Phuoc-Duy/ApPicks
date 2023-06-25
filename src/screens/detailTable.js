@@ -8,12 +8,12 @@ import { Entypo } from "@expo/vector-icons";
 import SelectMultiple from "react-native-select-multiple";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { AuthContext } from "../context/authProvider";
-import ModalAddOrder from "../components/modalAddOrder";
+import ModalAddOrder from "../components/modal/addOrder";
 const DetailTable = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [orders, setOrders] = useState([]);
 
-  const { useFetch } = useContext(AuthContext);
+  const { useFetch, setIsLoading } = useContext(AuthContext);
 
   useEffect(() => {
     if(route.params){
@@ -40,9 +40,14 @@ const DetailTable = ({ navigation, route }) => {
   },[route.params])
 
   const getOrders = async (ID) => {
-    let result = await useFetch('orders/getOrdersByTable/' + ID);
-    if(result.errCode === 200) {
-      setOrders(result.data)
+    try {
+      setIsLoading(true);
+      let result = await useFetch('orders/getOrdersByTable/' + ID);
+      if(result.errCode === 200) {
+        setOrders(result.data)
+      }
+    } finally {
+      setIsLoading(false);
     }
   }
 
