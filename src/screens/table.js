@@ -57,13 +57,31 @@ const Tables = ({ navigation, route }) => {
             onPress={() => navigation.navigate('Detail Table', { ID: table.ID })}
             style={styles.boxTable}
           >
-            <View key={table.ID}>
+            <View key={table.ID} style={styles.containerRow}>
               <Text style={styles.textTable}>{table.name}</Text>
+              <View style={{ flexDirection: 'row', gap: 10}}>
+                <TouchableOpacity>
+                  <Ionicons 
+                    name="create-outline"
+                    size={30}
+                    color={"#644AB5"}
+                    style={styles.addIcon}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity>
+                  <Ionicons 
+                    name="trash-outline"
+                    size={30}
+                    color={"#644AB5"}
+                    style={styles.addIcon}
+                  />
+                </TouchableOpacity>
+              </View>
             </View>
           </TouchableOpacity>
       ))}
       {modalVisible && (
-        <ModalAddTable setModalVisible={setModalVisible} />
+        <ModalAddTable setModalVisible={setModalVisible} onAdd={setTables} />
       )}
     </ScrollView>
   );

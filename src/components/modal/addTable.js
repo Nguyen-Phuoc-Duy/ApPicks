@@ -1,11 +1,39 @@
 import { Ionicons } from '@expo/vector-icons';
-import { useState } from 'react';
+import { useContext, useState } from 'react';
 import { TouchableOpacity, Text, TextInput, View } from 'react-native';
 import styles from '../../css/style';
 import { Modal } from 'react-native';
+import { AuthContext } from '../../context/authProvider';
+import Loader from '../loader';
 
 
-const ModalAddTable = ({ setModalVisible }) => {
+const ModalAddTable = ({ setModalVisible, onAdd }) => {
+    const [isLoading,setIsLoading] = useState(false);
+    const [nameTable, setNameTable] = useState('');
+
+    const { useFetch } = useContext(AuthContext);
+
+    const handleAddTable = async () => {
+        try {
+            if (nameTable) {
+                setIsLoading(true);
+                let result = await useFetch('admin/createTable', { name: nameTable }, 'POST');
+                if (result.errCode === 200) {
+                    result = result.data;
+                    onAdd(prev => {
+                        if (prev && Array.isArray(prev)) {
+                            prev.push(result);
+                            return [...prev];
+                        }
+                        return prev;
+                    })
+                }
+            }
+        } finally {
+            setModalVisible(false);
+            setIsLoading(false);
+        }
+    }
 
     return (
         <Modal
@@ -14,13 +42,14 @@ const ModalAddTable = ({ setModalVisible }) => {
             onRequestClose={() => {
                 setModalVisible(false);
             }}>
+                {isLoading && <Loader />}
             <View style={styles.viewAddTable}>
                 <Text style={styles.text1}>Bàn: </Text>
-                <TextInput placeholder="Name" style={styles.textInput} />
+                <TextInput placeholder="Name" style={styles.textInput} onChangeText={setNameTable} value={nameTable} />
                 <View style={styles.btnGrMenu}>
                     <TouchableOpacity
                         style={styles.btnIcon}
-                        // onPress={() => navigation.navigate("Tables", { name: "12" })}
+                        onPress={handleAddTable}
                     >
                         <Ionicons
                             name="checkmark-done-circle-outline"

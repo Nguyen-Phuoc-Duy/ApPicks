@@ -272,6 +272,12 @@ const styles = StyleSheet.create({
 	},
   btnLogout: {
     color: 'red',
+  },
+  containerRow: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
   }
 });
 
