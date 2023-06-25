@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, Pressable, Modal } from "react-native";
-import React, { useState, useEffect } from "react";
+import { TouchableOpacity, Text, View, Pressable, Modal } from "react-native";
+import React, { useState, useEffect, useContext } from "react";
 import { ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
@@ -7,107 +7,60 @@ import styles from "../css/style";
 import { Entypo } from "@expo/vector-icons";
 import SelectMultiple from "react-native-select-multiple";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
-import {
-  KeyboardAvoidingView,
-  TextInput,
-  Platform,
-  TouchableWithoutFeedback,
-  Button,
-  Keyboard,
-} from "react-native";
-const DetailTable = ({ navigation }) => {
+import { AuthContext } from "../context/authProvider";
+import ModalAddOrder from "../components/modalAddOrder";
+const DetailTable = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
-  const [selected, setSelected] = useState([]);
+  const [orders, setOrders] = useState([]);
 
-  const data = [
-    { key: "1", value: "Apple", disabled: true },
-    { key: "2", value: "Orange" },
-    { key: "3", value: "Pears" },
-    { key: "4", value: "Banana" },
-    { key: "5", value: "Watermelon", disabled: true },
-    { key: "6", value: "Coconut" },
-    { key: "7", value: "Tomato" },
-    { key: "8", value: "Kiwi" },
-    { key: "1", value: "Apple", disabled: true },
-    { key: "2", value: "Orange" },
-    { key: "3", value: "Pears" },
-    { key: "4", value: "Banana" },
-    { key: "5", value: "Watermelon", disabled: true },
-    { key: "6", value: "Coconut" },
-    { key: "7", value: "Tomato" },
-    { key: "8", value: "Kiwi" },
-    { key: "1", value: "Apple", disabled: true },
-    { key: "2", value: "Orange" },
-    { key: "3", value: "Pears" },
-    { key: "4", value: "Banana" },
-    { key: "5", value: "Watermelon", disabled: true },
-    { key: "6", value: "Coconut" },
-    { key: "7", value: "Tomato" },
-    { key: "8", value: "Kiwi" },
-  ];
+  const { useFetch } = useContext(AuthContext);
+
+  useEffect(() => {
+    if(route.params){
+      let { ID } = route.params;
+      if(ID) {
+        getOrders(ID)
+        navigation.setOptions({
+          headerRight: () => (
+            <TouchableOpacity style={{
+              backgroundColor: 'white',
+              alignItems: 'center',
+            }} onPress={() => setModalVisible(true)}>
+              <Ionicons
+                  name="ios-add-circle-outline"
+                  size={30}
+                  color={"#644AB5"}
+                  style={styles.addIcon}
+              />
+            </TouchableOpacity>
+          )
+        })
+      }
+    }
+  },[route.params])
+
+  const getOrders = async (ID) => {
+    let result = await useFetch('orders/getOrdersByTable/' + ID);
+    if(result.errCode === 200) {
+      setOrders(result.data)
+    }
+  }
+
   return (
     <>
       <ScrollView>
-        <View style={styles.boxTable}>
-          <Text style={styles.textTable}>Order 1</Text>
-          <Modal
-            animationType="slide"
-            transparent={true}
-            visible={modalVisible}
-            onRequestClose={() => {
-              Alert.alert("Modal has been closed.");
-              setModalVisible(!modalVisible);
-            }}
+        {orders && orders.map(order => (
+          <TouchableOpacity key={order.ID} style={styles.boxTable}
+            onPress={() => navigation.navigate({
+              name: "Detail Order",
+              params: { ID: order.ID, order }
+            })}
           >
-            <View>
-              <View style={styles.modalView1}>
-                <Text style={styles.text1}>Menu</Text>
-                <Pressable style={styles.menuContainer}>
-                  <View style={styles.menuContainerContent}>
-                    <MultipleSelectList
-                      setSelected={(val) => setSelected(val)}
-                      data={data}
-                      label="Categories"
-                      onSelect={() => console.log(selected)}
-                      save="value"
-                      notFoundText="No data existx"
-                    />
-                  </View>
-                  <View style={styles.btnGrMenu}>
-                    <Button
-                      style={styles.btnMenu}
-                      title="Lưu"
-                      onPress={() => null}
-                    />
-                    <Button
-                      style={styles.btnMenu}
-                      title="Huỷ"
-                      onPress={() => setModalVisible(!modalVisible)}
-                    />
-                  </View>
-                </Pressable>
-              </View>
-            </View>
-          </Modal>
-          <Pressable
-            onPress={() => setModalVisible(!modalVisible)}
-            style={styles.addIconContainer}
-          >
-            <Ionicons
-              name="ios-add-circle-outline"
-              size={30}
-              color={"#644AB5"}
-              style={styles.addIcon}
-            />
-          </Pressable>
-          <Pressable
-            onPress={() => navigation.navigate("Detail Order", { name: "12" })}
-            style={styles.addIconContainer}
-          >
-            <Entypo name="dots-three-horizontal" size={24} color="#644AB5" />
-          </Pressable>
-        </View>
+            <Text style={styles.textTable}>{order.name}</Text>
+          </TouchableOpacity>
+        ))}
       </ScrollView>
+      {modalVisible && <ModalAddOrder setModalVisible={setModalVisible} />}
     </>
   );
 };

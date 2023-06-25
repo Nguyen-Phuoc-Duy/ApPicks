@@ -1,5 +1,10 @@
 import { StyleSheet } from "react-native";
 const styles = StyleSheet.create({
+  defaultLayout: {
+    display: 'flex',
+    padding: 10,
+    paddingTop: 40
+  },
   textDel: {
     fontSize: 20,
     fontWeight: 600,
@@ -20,6 +25,7 @@ const styles = StyleSheet.create({
     color: "#644AB5",
     fontSize: 25,
     fontWeight: 700,
+    padding: 10,
   },
   text2: {
     color: "#644AB5",
@@ -133,13 +139,15 @@ const styles = StyleSheet.create({
     marginBottom: 48,
   },
   textInput: {
-    height: 40,
-    borderColor: "#000000",
-    borderBottomWidth: 1,
-    marginBottom: 36,
-  },
+    borderColor: 'gray',
+    borderWidth: 1,
+    borderRadius: 25,
+    padding: 10,
+    height: 50,
+},
   btnContainer: {
-    backgroundColor: "white",
+    backgroundColor: "black",
+    color: 'red',
     marginTop: 12,
   },
   title_exit: {
@@ -187,12 +195,6 @@ const styles = StyleSheet.create({
     fontSize: 36,
     marginBottom: 48,
   },
-  textInput: {
-    height: 40,
-    borderColor: "#000000",
-    borderBottomWidth: 1,
-    marginBottom: 36,
-  },
   btnContainer: {
     backgroundColor: "white",
     marginTop: 12,
@@ -207,6 +209,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     display: "flex",
     flexDirection: "row",
+    width: "100%",
   },
   addIcon: {
     marginVertical: 10,
@@ -214,7 +217,7 @@ const styles = StyleSheet.create({
   boxTable: {
     marginTop: 20,
     marginHorizontal: 20,
-    backgroundColor: "#c3c3c3",
+    backgroundColor: "rgb(200, 200, 200)",
     height: 80,
     display: "flex",
     justifyContent: "space-between",
@@ -260,5 +263,16 @@ const styles = StyleSheet.create({
     flex: 2,
     marginVertical: 20,
   },
+  btnIcon: {
+		padding: 10,
+		paddingTop: 0,
+		paddingBottom: 0,
+		borderRadius: 99,
+		backgroundColor: "transparent"
+	},
+  btnLogout: {
+    color: 'red',
+  }
 });
+
 export default styles;

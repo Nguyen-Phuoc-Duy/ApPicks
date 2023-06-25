@@ -1,5 +1,5 @@
-import { StyleSheet, Text, View, Pressable, Modal } from "react-native";
-import React, { useState } from "react";
+import { StyleSheet, Text, View, Pressable, Modal, TouchableOpacity } from "react-native";
+import React, { useContext, useEffect, useState } from "react";
 import { ScrollView } from "react-native";
 import { Entypo } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
@@ -12,13 +12,46 @@ import {
   Button,
   Keyboard,
 } from "react-native";
+import { AuthContext } from "../context/authProvider";
 const Tables = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
+  const [tables,setTables] = useState([]);
+  
+  const { useFetch } = useContext(AuthContext);
+  
+  useEffect(() => {
+    getTables();
+  },[])
+
+  const getTables = async () => {
+    let result = await useFetch('tables/getAll')
+    if(result.errCode === 200) {
+      setTables(result.data)
+    }else if ([400,401].includes(result?.errCode)){
+      navigation.navigate('Login');
+    }
+  }
+
   return (
     <ScrollView>
-      <View style={styles.boxTable}>
-        <Text style={styles.textTable}>Table 1</Text>
-        {/* <Modal
+      {tables && tables.map(table => (
+          <TouchableOpacity key={table.ID}
+            onPress={() => navigation.navigate('Detail Table', { ID: table.ID })}
+            style={styles.boxTable}
+          >
+            <View key={table.ID}>
+              <Text style={styles.textTable}>{table.name}</Text>
+            </View>
+          </TouchableOpacity>
+      ))}
+    </ScrollView>
+  );
+};
+
+export default Tables;
+
+
+{/* <Modal
           animationType="slide"
           transparent={true}
           visible={modalVisible}
@@ -70,21 +103,3 @@ const Tables = ({ navigation }) => {
             style={styles.addIcon}
           />
         </Pressable> */}
-        <Pressable
-          onPress={() => navigation.navigate("Detail Table", { name: "12" })}
-          style={styles.addIconContainer}
-        >
-          <Ionicons
-            name="ios-add-circle-outline"
-            size={30}
-            color={"#644AB5"}
-            style={styles.addIcon}
-          />
-        </Pressable>
-        <Entypo name="dots-three-horizontal" size={24} color="#644AB5" />
-      </View>
-    </ScrollView>
-  );
-};
-
-export default Tables;

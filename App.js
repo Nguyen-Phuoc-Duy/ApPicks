@@ -1,16 +1,22 @@
-import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
-import Layout from "./src/components/layout";
-import BaseLink from "./src/components/navigation";
+import AuthProvider from "./src/context/authProvider";
+import Home from "./src/apps";
+import { SafeAreaView, StyleSheet } from "react-native";
 export default function App() {
-  return <BaseLink />;
+  
+  return (
+    <SafeAreaView style={style.root}>
+        <AuthProvider>
+          <Home />
+        </AuthProvider>
+    </SafeAreaView>
+  )
 }
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: "#fff",
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});
+const style = StyleSheet.create({
+  root: {
+    position: 'relative',
+    width: '100%',
+    height: '100%',
+    boxSizing: 'border-box'
+  }
+})
