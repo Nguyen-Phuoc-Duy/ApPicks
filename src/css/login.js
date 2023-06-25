@@ -63,6 +63,13 @@ const loginStyles = StyleSheet.create({
     },
     disabled: {
         backgroundColor: disbabledColor
+    },
+    inputDisabled: {
+        width: '100%',
+        borderColor: '#999999',
+        borderBottomWidth: 1,
+        padding: 12,
+        color: '#644AB5'
     }
 })
 

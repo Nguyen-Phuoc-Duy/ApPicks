@@ -10,6 +10,7 @@ import styles from "../css/style";
 import { Ionicons } from "@expo/vector-icons";
 import { useContext } from "react";
 import { AuthContext } from "../context/authProvider";
+import HomeScreen from "../screens/homeScreen";
 
 function Home() {
     const Stack = createNativeStackNavigator();
@@ -34,24 +35,11 @@ function Home() {
                     }}
                 />
                     <Stack.Screen
-                        name="Tables"
-                        component={Tables}
-                        options={({ navigation }) => ({
-                            headerTintColor: "#644AB5",
-                            headerShown: true,
-                            headerTitleAlign: 'center',
-                            headerLeft: () => (
-                                <TouchableOpacity style={styles.btnIcon}
-                                    onPress={() => logOut(navigation.navigate)}>
-                                    <Ionicons
-                                        name="exit-outline"
-                                        size={30}
-                                        color={"#644AB5"}
-                                        style={styles.btnLogout}
-                                    />
-                                </TouchableOpacity>
-                            )
-                        })}
+                        name="HomeScreen"
+                        component={HomeScreen}
+                        options={{
+                            headerShown: false,
+                        }}
                     />
                     <Stack.Screen
                         name="Detail Table"

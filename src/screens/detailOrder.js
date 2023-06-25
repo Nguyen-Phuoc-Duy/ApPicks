@@ -18,8 +18,9 @@ const DetailOrder = ({ navigation, route }) => {
 	const [changeQuantity, setChangeQuantity] = useState(false);
 	const [changeDetail, setChangeDetail] = useState(false);
 	const [modalVisible ,setModalVisible] = useState(false);
-	
-	const { useFetch, setIsLoading } = useContext(AuthContext);
+	const [isLoading, setIsLoading] = useState(false);
+
+	const { useFetch } = useContext(AuthContext);
 
 	useEffect(() => {
 		getAllProduct();
@@ -155,82 +156,83 @@ const DetailOrder = ({ navigation, route }) => {
 
 	return (
 		<View style={styling.container}>
-				<View style={styling.header}>
-					<Text style={styling.orderName}>{route?.params?.order?.name || 'Detail Order'}</Text>
-					<View style={{ flexDirection: 'row'}}>
-						{changeQuantity && (
-							<TouchableOpacity style={styles.btnIcon}
-							onPress={handleSubmitChange}>
-								<Ionicons
-									name="checkmark-outline"
-									size={30}
-									color={"#644AB5"}
-									style={styles.addIcon}
-								/>
-							</TouchableOpacity>
-						)}
+			{isLoading && <Loader />}
+			<View style={styling.header}>
+				<Text style={styling.orderName}>{route?.params?.order?.name || 'Detail Order'}</Text>
+				<View style={{ flexDirection: 'row'}}>
+					{changeQuantity && (
 						<TouchableOpacity style={styles.btnIcon}
-						onPress={() => setModalVisible(true)}>
+						onPress={handleSubmitChange}>
 							<Ionicons
-								name="ios-add-circle-outline"
+								name="checkmark-outline"
 								size={30}
 								color={"#644AB5"}
 								style={styles.addIcon}
 							/>
 						</TouchableOpacity>
-					</View>
+					)}
+					<TouchableOpacity style={styles.btnIcon}
+					onPress={() => setModalVisible(true)}>
+						<Ionicons
+							name="ios-add-circle-outline"
+							size={30}
+							color={"#644AB5"}
+							style={styles.addIcon}
+						/>
+					</TouchableOpacity>
 				</View>
-					<ScrollView style={styling.menuRegion}>
-						{listProduct?.map(product => (
-							<View key={product.ID} style={styling.orderItem}>
-								<View>
-									<Text style={styling.itemName}>{product.name}</Text>
-									<Text style={styling.itemPrice}>{product.price}/{product.unit}</Text>
-								</View>
-								<View style={styling.counter}>
-									<TouchableOpacity style={styling.counterContent} 
-									onPress={() => onCounterQuantity(product.ID, '-')}>
-										<Text>-</Text>
-									</TouchableOpacity>
-									<TextInput
-										keyboardType='numeric'
-										style={styling.input}
-										maxLength={100}
-										value={(product?.quantity || 1) + ""}
-										caretHidden={true}
-									/>
-									<TouchableOpacity style={styling.counterContent} 
-									onPress={() => onCounterQuantity(product.ID, '+')}>
-										<Text>+</Text>
-									</TouchableOpacity>
-								</View>
-							</View>
-						))}
-					</ScrollView>
-				<View style={styling.checkoutRegion}>
-					<Text style={styling.totalMoney}>Total: {totalBill?.toLocaleString('en-gb')}đ</Text>
-					<View style={styling.actionButtons}>
-						<TouchableOpacity style={styling.button}
-							onPress={() => {
-								let opts = {
-									name: 'Detail Table'
-								}
-								if (changeDetail){
-									opts.params = { ID: route?.params?.order?.tableId || '' }
-								}
-								navigation.navigate(opts)
-							}}
-						>
-							<Text style={styling.buttonText}>Back</Text>
-						</TouchableOpacity>
-						<Pressable style={styling.button}>
-							<Text style={styling.buttonText}>Checkout</Text>
-						</Pressable>
-					</View>
-				</View>
-				{modalVisible && <ModalMenu setModalVisible={setModalVisible} menus={menuProduts} 
-				disabledList={listProduct.map(p => p.ID)} handleAddProducts={handleAddProducts} />}
 			</View>
+				<ScrollView style={styling.menuRegion}>
+					{listProduct?.map(product => (
+						<View key={product.ID} style={styling.orderItem}>
+							<View>
+								<Text style={styling.itemName}>{product.name}</Text>
+								<Text style={styling.itemPrice}>{product.price}/{product.unit}</Text>
+							</View>
+							<View style={styling.counter}>
+								<TouchableOpacity style={styling.counterContent} 
+								onPress={() => onCounterQuantity(product.ID, '-')}>
+									<Text>-</Text>
+								</TouchableOpacity>
+								<TextInput
+									keyboardType='numeric'
+									style={styling.input}
+									maxLength={100}
+									value={(product?.quantity || 1) + ""}
+									caretHidden={true}
+								/>
+								<TouchableOpacity style={styling.counterContent} 
+								onPress={() => onCounterQuantity(product.ID, '+')}>
+									<Text>+</Text>
+								</TouchableOpacity>
+							</View>
+						</View>
+					))}
+				</ScrollView>
+			<View style={styling.checkoutRegion}>
+				<Text style={styling.totalMoney}>Total: {totalBill?.toLocaleString('en-gb')}đ</Text>
+				<View style={styling.actionButtons}>
+					<TouchableOpacity style={styling.button}
+						onPress={() => {
+							let opts = {
+								name: 'Detail Table'
+							}
+							if (changeDetail){
+								opts.params = { ID: route?.params?.order?.tableId || '' }
+							}
+							navigation.navigate(opts)
+						}}
+					>
+						<Text style={styling.buttonText}>Back</Text>
+					</TouchableOpacity>
+					<Pressable style={styling.button}>
+						<Text style={styling.buttonText}>Checkout</Text>
+					</Pressable>
+				</View>
+			</View>
+			{modalVisible && <ModalMenu setModalVisible={setModalVisible} menus={menuProduts} 
+			disabledList={listProduct.map(p => p.ID)} handleAddProducts={handleAddProducts} />}
+		</View>
 		)
 };
 

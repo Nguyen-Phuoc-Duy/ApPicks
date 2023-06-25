@@ -7,26 +7,48 @@ import { AuthContext } from '../../context/authProvider';
 import Loader from '../loader';
 
 
-const ModalAddTable = ({ setModalVisible, onAdd }) => {
+const ModalAddTable = ({ setModalVisible, onChange, tableEdit = {} }) => {
     const [isLoading,setIsLoading] = useState(false);
-    const [nameTable, setNameTable] = useState('');
+    const [nameTable, setNameTable] = useState(tableEdit.name || '');
 
     const { useFetch } = useContext(AuthContext);
 
     const handleAddTable = async () => {
         try {
-            if (nameTable) {
-                setIsLoading(true);
-                let result = await useFetch('admin/createTable', { name: nameTable }, 'POST');
-                if (result.errCode === 200) {
-                    result = result.data;
-                    onAdd(prev => {
-                        if (prev && Array.isArray(prev)) {
-                            prev.push(result);
-                            return [...prev];
-                        }
-                        return prev;
-                    })
+            setIsLoading(true);
+            if(tableEdit?.name){
+                if (nameTable && nameTable !== tableEdit.name){
+                    let result = await useFetch('admin/updateTable', { ID: tableEdit.ID, name: nameTable }, 'POST');
+                    if (result.errCode === 200) {
+                        result = result.data;
+                        onChange(prev => {
+                            if (prev && Array.isArray(prev)) {
+                                prev.forEach(table => {
+                                    if (table.ID === tableEdit.ID){
+                                        table.name = nameTable;
+                                    }
+                                })
+                                return [...prev];
+                            }
+                            return prev;
+                        });
+                    }else {
+                        console.log(result)
+                    }
+                }
+            }else {
+                if (nameTable) {
+                    let result = await useFetch('admin/createTable', { name: nameTable }, 'POST');
+                    if (result.errCode === 200) {
+                        result = result.data;
+                        onChange(prev => {
+                            if (prev && Array.isArray(prev)) {
+                                prev.push(result);
+                                return [...prev];
+                            }
+                            return prev;
+                        });
+                    }
                 }
             }
         } finally {

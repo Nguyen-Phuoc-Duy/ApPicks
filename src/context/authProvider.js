@@ -40,17 +40,19 @@ function AuthProvider({ children }) {
                 ...headers,
                 authorization: 'Bearer ' + token
             }
-            url = (Platform.OS === 'ios' ? REACT_APP_HOST_IOS : REACT_APP_HOST_ANDROID) + url
+            url = (Platform.OS === 'ios' ? REACT_APP_HOST_IOS : REACT_APP_HOST_ANDROID) + url;
+            console.log(method + ' : ' + url);
             let result;
             switch (method) {
                 case 'GET':
                 case "DELETE":
-                    result = await axios.get(url,{
-                        headers: setHeaders
+                    result = await axios({
+                        method,
+                        url,
+                        headers: setHeaders,
                     });
                     return result.data;
                 case 'POST':
-                case "UPDATE":
                     result = await axios.post(url, data,{
                         headers: setHeaders
                     });

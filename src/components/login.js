@@ -13,7 +13,6 @@ const Login = (props) => {
         password: '',
         form: ''
     })
-
     const { user, setUser, setToken, setIsLoading, token, useFetch } = useContext(AuthContext);
 
     useEffect(() => {
@@ -21,7 +20,7 @@ const Login = (props) => {
             if (!token) {
                 setToken(user.token);
             }
-            props.navigation.navigate('Tables');
+            props.navigation.navigate('HomeScreen');
         }
     },[])
 
@@ -95,7 +94,7 @@ const Login = (props) => {
                     setToken(user.token);
                     await SecureStore.setItemAsync('user', JSON.stringify(user));
                     await SecureStore.setItemAsync('token', user.token)
-                    props.navigation.navigate('Tables');
+                    props.navigation.navigate('HomeScreen');
                 }else {
                     setErrMsg({
                         email: '',

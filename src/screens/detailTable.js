@@ -9,11 +9,13 @@ import SelectMultiple from "react-native-select-multiple";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { AuthContext } from "../context/authProvider";
 import ModalAddOrder from "../components/modal/addOrder";
+import Loader from "../components/loader";
 const DetailTable = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [orders, setOrders] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
 
-  const { useFetch, setIsLoading } = useContext(AuthContext);
+  const { useFetch } = useContext(AuthContext);
 
   useEffect(() => {
     if(route.params){
@@ -53,6 +55,7 @@ const DetailTable = ({ navigation, route }) => {
 
   return (
     <>
+      {isLoading && <Loader />}
       <ScrollView>
         {orders && orders.map(order => (
           <TouchableOpacity key={order.ID} style={styles.boxTable}

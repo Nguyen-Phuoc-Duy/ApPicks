@@ -1,28 +1,25 @@
-import { StyleSheet, Text, View, Pressable, Modal, TouchableOpacity } from "react-native";
+import { Text, View, TouchableOpacity } from "react-native";
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { ScrollView } from "react-native";
-import { Entypo } from "@expo/vector-icons";
 import { Ionicons } from "@expo/vector-icons";
 import styles from "../css/style";
-import {
-  KeyboardAvoidingView,
-  TextInput,
-  Platform,
-  TouchableWithoutFeedback,
-  Button,
-  Keyboard,
-} from "react-native";
 import { AuthContext } from "../context/authProvider";
 import ModalAddTable from "../components/modal/addTable";
+import { RefreshControl } from "react-native";
+import Loader from "../components/loader";
+
 const Tables = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [tables,setTables] = useState([]);
+  const [tableEdit,setTableEdit] = useState([]);
+  const [isLoading,setIsLoading] = useState(false);
+  const [refesh, setRefesh] = useState(false);
   
   const { useFetch } = useContext(AuthContext);
   
-
   useLayoutEffect(() => {
     navigation.setOptions({
+      headerTitle: "Tables",
       headerRight: () => (
         <TouchableOpacity style={styles.btnIcon}
             onPress={() => setModalVisible(true)}>
@@ -39,7 +36,7 @@ const Tables = ({ navigation, route }) => {
 
   useEffect(() => {
     getTables();
-  },[route.params?.reload])
+  },[])
 
   const getTables = async () => {
     let result = await useFetch('tables/getAll')
@@ -50,40 +47,70 @@ const Tables = ({ navigation, route }) => {
     }
   }
 
+  const handleDeleteTable = async (ID) => {
+    try {
+      if(!ID) return;
+      setIsLoading(true);
+      
+      const result = await useFetch('admin/deleteTable/' + ID, null, 'DELETE');
+
+      if (result.errCode === 200) {
+        let newTables = tables.filter(table => table.ID !== ID);
+        setTables(newTables);
+      }else {
+        console.log(result)
+      }
+
+
+    } finally {
+      setIsLoading(false);
+    }
+  }
+
+  const onRefresh = async () => {
+    setRefesh(true);
+    await getTables();
+    setRefesh(false);
+  }
+
   return (
-    <ScrollView>
-      {tables && tables.map(table => (
-          <TouchableOpacity key={table.ID}
-            onPress={() => navigation.navigate('Detail Table', { ID: table.ID })}
-            style={styles.boxTable}
-          >
-            <View key={table.ID} style={styles.containerRow}>
-              <Text style={styles.textTable}>{table.name}</Text>
-              <View style={{ flexDirection: 'row', gap: 10}}>
-                <TouchableOpacity>
-                  <Ionicons 
-                    name="create-outline"
-                    size={30}
-                    color={"#644AB5"}
-                    style={styles.addIcon}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity>
-                  <Ionicons 
-                    name="trash-outline"
-                    size={30}
-                    color={"#644AB5"}
-                    style={styles.addIcon}
-                  />
-                </TouchableOpacity>
+    <ScrollView refreshControl={<RefreshControl refreshing={refesh} onRefresh={onRefresh} />}>
+        {isLoading && <Loader />}
+        {tables && tables.map(table => (
+            <TouchableOpacity key={table.ID}
+              onPress={() => navigation.navigate('Detail Table', { ID: table.ID })}
+              style={styles.boxTable}
+            >
+              <View key={table.ID} style={styles.containerRow}>
+                <Text style={styles.textTable}>{table.name}</Text>
+                <View style={{ flexDirection: 'row', gap: 10}}>
+                  <TouchableOpacity onPress={() => {
+                    setTableEdit(table)
+                    setModalVisible(true);
+                  }}>
+                    <Ionicons 
+                      name="create-outline"
+                      size={30}
+                      color={"#644AB5"}
+                      style={styles.addIcon}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={() => handleDeleteTable(table.ID)}>
+                    <Ionicons 
+                      name="trash-outline"
+                      size={30}
+                      color={"#644AB5"}
+                      style={styles.addIcon}
+                    />
+                  </TouchableOpacity>
+                </View>
               </View>
-            </View>
-          </TouchableOpacity>
-      ))}
-      {modalVisible && (
-        <ModalAddTable setModalVisible={setModalVisible} onAdd={setTables} />
-      )}
-    </ScrollView>
+            </TouchableOpacity>
+        ))}
+        {modalVisible && (
+          <ModalAddTable setModalVisible={setModalVisible} onChange={setTables} tableEdit={tableEdit} />
+        )}
+      </ScrollView>
   );
 };
 
