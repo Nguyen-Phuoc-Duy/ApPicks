@@ -23,7 +23,7 @@ const Login = (props) => {
             }
             props.navigation.navigate('HomeScreen');
         }
-    },[])
+    },[user])
 
     const handleChangeValueForm = (field,value) => {
         if(!field) return;
@@ -88,7 +88,7 @@ const Login = (props) => {
                     password: '',
                     form: ''
                 })
-                const result = await useFetch(url, data, 'POST')
+                const result = await useFetch(url, data, 'POST');
                 if(result.errCode === 200){
                     let user = result.data;
                     setUser(user);

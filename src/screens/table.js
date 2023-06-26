@@ -16,7 +16,7 @@ const Tables = ({ navigation, route }) => {
   const [isLoading,setIsLoading] = useState(false);
   const [refesh, setRefesh] = useState(false);
   
-  const { useFetch } = useContext(AuthContext);
+  const { useFetch, user } = useContext(AuthContext);
   
   useLayoutEffect(() => {
     navigation.setOptions({
@@ -46,7 +46,7 @@ const Tables = ({ navigation, route }) => {
   },[])
 
   const getTables = async () => {
-    let result = await useFetch('tables/getAll')
+    let result = await useFetch('tables/getAll');
     if(result.errCode === 200) {
       setTables(result.data)
     }else if ([400,401].includes(result?.errCode)){
@@ -95,25 +95,30 @@ const Tables = ({ navigation, route }) => {
               <View key={table.ID} style={styles.containerRow}>
                 <Text style={styles.textTable}>{table.name}</Text>
                 <View style={{ flexDirection: 'row', gap: 10}}>
-                  <TouchableOpacity onPress={() => {
-                    setTableEdit(table)
-                    setModalVisible(true);
-                  }}>
-                    <Ionicons 
-                      name="create-outline"
-                      size={30}
-                      color={"#644AB5"}
-                      style={styles.addIcon}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={() => handleDeleteTable(table)}>
-                    <Ionicons 
-                      name="trash-outline"
-                      size={30}
-                      color={"#644AB5"}
-                      style={styles.addIcon}
-                    />
-                  </TouchableOpacity>
+                  {user && user.role === 'employee' && (
+                    <>
+                      <TouchableOpacity onPress={() => {
+                        setTableEdit(table)
+                        setModalVisible(true);
+                      }}>
+                        <Ionicons 
+                          name="create-outline"
+                          size={30}
+                          color={"#644AB5"}
+                          style={styles.addIcon}
+                        />
+                      </TouchableOpacity>
+                      <TouchableOpacity onPress={() => handleDeleteTable(table)}>
+                        <Ionicons 
+                          name="trash-outline"
+                          size={30}
+                          color={"#644AB5"}
+                          style={styles.addIcon}
+                        />
+                      </TouchableOpacity>
+                    </>
+                  )}
+                  
                 </View>
               </View>
             </TouchableOpacity>

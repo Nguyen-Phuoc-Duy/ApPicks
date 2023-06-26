@@ -94,7 +94,7 @@ const ModalAddOrder = ({ setModalVisible, menus = [], tableId, addOrder }) => {
                 />
                 <ScrollView>
                     {menus?.map(item => (
-                        <TouchableOpacity style={{...styling.itemBox, ...((selected[item?.ID] || item.isClose) ? styling.itemSelected : {})}}
+                        <TouchableOpacity key={item.ID} style={{...styling.itemBox, ...((selected[item?.ID] || item.isClose) ? styling.itemSelected : {})}}
                             disabled={item.isClose} onPress={() => handleChooseItem(item.ID)}
                         >
                             <Text style={selected[item?.ID] ? styling.itemSelected : {}}>{item?.name || ''}</Text>

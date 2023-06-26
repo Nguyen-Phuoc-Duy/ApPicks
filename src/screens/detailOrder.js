@@ -3,9 +3,6 @@ import { useContext, useEffect, useState } from "react";
 import { ScrollView } from "react-native";
 import styles from "../css/style";
 import { Ionicons } from "@expo/vector-icons";
-import { Alert } from "react-native";
-import { Modal } from "react-native";
-import { MultipleSelectList } from 'react-native-dropdown-select-list';
 import useAlert from "../hook/useAlert";
 import Loader from "../components/loader";
 import ModalMenu from "../components/modal/modalMenu";
@@ -249,9 +246,9 @@ const DetailOrder = ({ navigation, route }) => {
 					>
 						<Text style={styling.buttonText}>Back</Text>
 					</TouchableOpacity>
-					<Pressable style={styling.button}>
+					<TouchableOpacity style={styling.button}>
 						<Text style={styling.buttonText}>Checkout</Text>
-					</Pressable>
+					</TouchableOpacity>
 				</View>
 			</View>
 			{modalVisible && <ModalMenu setModalVisible={setModalVisible} menus={menuProduts} 
