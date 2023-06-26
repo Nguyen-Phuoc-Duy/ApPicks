@@ -19,13 +19,15 @@ const DetailOrder = ({ navigation, route }) => {
 	const [modalVisible ,setModalVisible] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
+	const { order = {} } = route?.params || {}
+
 	const { useFetch } = useContext(AuthContext);
 
 	useEffect(() => {
-		let { order = {}, ID } = route?.params || {};
+		let { ID } = route?.params || {};
 		const status = getColorStatus[order.status];
 		navigation.setOptions({
-			headerRight: () => ['started', 'finished'].includes(order.status) ? (
+			headerRight: () => ['started', 'inProgress'].includes(order.status) ? (
 				<TouchableOpacity onPress={() => cancelOrder(ID)}>
 					<Text style={{color: 'red'}}>Cancel</Text>
 				</TouchableOpacity>
@@ -180,33 +182,58 @@ const DetailOrder = ({ navigation, route }) => {
 	}
 
 
+	const setQuantityProduct = async (ID, value) => {
+		console.log(ID, value)
+		let newProducts = listProduct;
+		if (value <= 0) {
+			let title = 'Are you sure?';
+			let message = `Are you sure you want to remove this product?'`;
+			if((await useAlert.alertSync(title, message, true))){
+				newProducts = newProducts.filter(product => product.ID !== ID);
+				return setListProducts(newProducts);
+			}
+		}else {
+			newProducts = newProducts.map(product => {
+				if (product.ID === ID) {
+					product.quantity = value;
+				}
+				return product;
+			})
+			return setListProducts(newProducts);
+		}
+	}
+
 	return (
 		<View style={styling.container}>
 			{isLoading && <Loader />}
 			<View style={styling.header}>
 				<Text style={styling.orderName}>{route?.params?.order?.name || 'Detail Order'}</Text>
-				<View style={{ flexDirection: 'row'}}>
-					{changeQuantity && (
+				{['started', 'inProgess'].includes(order.status) && (
+					<View style={{ flexDirection: 'row'}}>
+						{changeQuantity && (
+							<TouchableOpacity style={styles.btnIcon}
+							onPress={handleSubmitChange}>
+								<Ionicons
+									name="checkmark-outline"
+									size={30}
+									color={"#644AB5"}
+									style={styles.addIcon}
+								/>
+							</TouchableOpacity>
+						)}
 						<TouchableOpacity style={styles.btnIcon}
-						onPress={handleSubmitChange}>
+							onPress={() => setModalVisible(true)}>
 							<Ionicons
-								name="checkmark-outline"
+								name="ios-add-circle-outline"
 								size={30}
 								color={"#644AB5"}
 								style={styles.addIcon}
 							/>
 						</TouchableOpacity>
-					)}
-					<TouchableOpacity style={styles.btnIcon}
-					onPress={() => setModalVisible(true)}>
-						<Ionicons
-							name="ios-add-circle-outline"
-							size={30}
-							color={"#644AB5"}
-							style={styles.addIcon}
-						/>
-					</TouchableOpacity>
-				</View>
+						
+							
+					</View>
+				)}
 			</View>
 				<ScrollView style={styling.menuRegion}>
 					{listProduct?.map(product => (
@@ -215,23 +242,28 @@ const DetailOrder = ({ navigation, route }) => {
 								<Text style={styling.itemName}>{product.name}</Text>
 								<Text style={styling.itemPrice}>{product.price?.toLocaleString('en-gb')}/{product.unit}</Text>
 							</View>
-							<View style={styling.counter}>
-								<TouchableOpacity style={styling.counterContent} 
-								onPress={() => onCounterQuantity(product.ID, '-')}>
-									<Text>-</Text>
-								</TouchableOpacity>
-								<TextInput
-									keyboardType='numeric'
-									style={styling.input}
-									maxLength={100}
-									value={(product?.quantity || 1) + ""}
-									caretHidden={true}
-								/>
-								<TouchableOpacity style={styling.counterContent} 
-								onPress={() => onCounterQuantity(product.ID, '+')}>
-									<Text>+</Text>
-								</TouchableOpacity>
-							</View>
+								<View style={styling.counter}>
+									{['started', 'inProgess'].includes(order.status) ? (
+										<>
+											<TouchableOpacity style={styling.counterContent} 
+											onPress={() => onCounterQuantity(product.ID, '-')}>
+												<Text>-</Text>
+											</TouchableOpacity>
+											<TextInput
+												keyboardType='numeric'
+												style={styling.input}
+												maxLength={100}
+												value={(product?.quantity || 1) + ""}
+												caretHidden={true}
+												onChangeText={(value) => setQuantityProduct(product.ID, value)}
+											/>
+											<TouchableOpacity style={styling.counterContent} 
+											onPress={() => onCounterQuantity(product.ID, '+')}>
+												<Text>+</Text>
+											</TouchableOpacity>
+										</>
+									) : <Text style={{ color: '#644AB5', fontSize: 20}}>{product.quantity}</Text>}
+								</View>
 						</View>
 					))}
 				</ScrollView>
@@ -251,9 +283,11 @@ const DetailOrder = ({ navigation, route }) => {
 					>
 						<Text style={styling.buttonText}>Back</Text>
 					</TouchableOpacity>
-					<TouchableOpacity style={styling.button}>
-						<Text style={styling.buttonText}>Checkout</Text>
-					</TouchableOpacity>
+					{['started', 'inProgess'].includes(order.status) && (
+						<TouchableOpacity style={styling.button}>
+							<Text style={styling.buttonText}>Checkout</Text>
+						</TouchableOpacity>
+					)}
 				</View>
 			</View>
 			{modalVisible && <ModalMenu setModalVisible={setModalVisible} menus={menuProduts} 
