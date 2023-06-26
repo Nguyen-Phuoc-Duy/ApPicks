@@ -8,6 +8,7 @@ import Loader from "../components/loader";
 import ModalMenu from "../components/modal/modalMenu";
 import { AuthContext } from "../context/authProvider";
 import Badge from "../components/badge";
+import { getColorStatus } from "../constant/status";
 
 const DetailOrder = ({ navigation, route }) => {
 	const [listProduct, setListProducts] = useState([]);
@@ -22,13 +23,13 @@ const DetailOrder = ({ navigation, route }) => {
 
 	useEffect(() => {
 		let { order = {}, ID } = route?.params || {};
-		const status = badgeStatus[order.status];
+		const status = getColorStatus[order.status];
 		navigation.setOptions({
-			headerRight: () => (
+			headerRight: () => ['started', 'finished'].includes(order.status) ? (
 				<TouchableOpacity onPress={() => cancelOrder(ID)}>
 					<Text style={{color: 'red'}}>Cancel</Text>
 				</TouchableOpacity>
-			),
+			) : '',
 			headerLeft: () => <Badge label={order.status} color={status} />
 		})
 	},[])
@@ -49,6 +50,10 @@ const DetailOrder = ({ navigation, route }) => {
 			console.log(e);
 		} finally {
 			setIsLoading(false);
+			navigation.navigate({
+				name: 'Detail Table',
+				params: { ID: route?.params?.order?.tableId || '' }
+			})
 		}
 	}
 
@@ -258,13 +263,6 @@ const DetailOrder = ({ navigation, route }) => {
 };
 
 export default DetailOrder;
-
-let badgeStatus = {
-	started: 'warning',
-	inProgress: 'info',
-	finished: 'success',
-	cancelled: 'danger',
-}
 
 const styling = StyleSheet.create({
 	container: {

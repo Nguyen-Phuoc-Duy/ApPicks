@@ -26,6 +26,10 @@ const HomeScreen = ({ navigation }) => {
         confirm && logOut(navigate);
     }
 
+    const RenderTableComponent = (props) => {
+        return <Tables navigationParent={navigation} {...props} />
+    }
+
     return (
         <Tab.Navigator initialRouteName='View Table'>
             <Tab.Screen 
@@ -53,7 +57,7 @@ const HomeScreen = ({ navigation }) => {
             />
             <Tab.Screen 
                 name="View Table"
-                component={Tables}
+                component={RenderTableComponent}
                 options={{
                     headerTintColor: "#644AB5",
                     headerShown: true,

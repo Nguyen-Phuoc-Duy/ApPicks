@@ -9,7 +9,7 @@ import { RefreshControl } from "react-native";
 import Loader from "../components/loader";
 import useAlert from "../hook/useAlert";
 
-const Tables = ({ navigation, route }) => {
+const Tables = ({ navigation, navigationParent }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [tables,setTables] = useState([]);
   const [tableEdit,setTableEdit] = useState({});
@@ -21,7 +21,7 @@ const Tables = ({ navigation, route }) => {
   useLayoutEffect(() => {
     navigation.setOptions({
       headerTitle: "Tables",
-      headerRight: () => (
+      headerRight: () => (user && ['admin', 'manager'].includes(user.role)) ? (
         <TouchableOpacity style={styles.btnIcon}
             onPress={() => setModalVisible(true)}>
             <Ionicons
@@ -31,7 +31,7 @@ const Tables = ({ navigation, route }) => {
                 style={styles.addIcon}
             />
         </TouchableOpacity>
-    ),
+      ) : '',
     })
   },[]);
 
@@ -50,14 +50,14 @@ const Tables = ({ navigation, route }) => {
     if(result.errCode === 200) {
       setTables(result.data)
     }else if ([400,401].includes(result?.errCode)){
-      navigation.navigate('Login');
+      navigationParent.navigate('Login');
     }
   }
 
   const handleDeleteTable = async (table) => {
     try {
       let { ID, name } = table; 
-      if(!ID) return;
+      if(!ID || isLoading) return;
       setIsLoading(true);
       let confirm = await useAlert.alertSync('Are you sure?', `Are you sure you want to delete table: ${name}`, true);
       
@@ -71,7 +71,6 @@ const Tables = ({ navigation, route }) => {
           console.log(result)
         }
       }
-
 
     } finally {
       setIsLoading(false);

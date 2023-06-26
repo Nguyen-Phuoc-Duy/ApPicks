@@ -22,11 +22,16 @@ const AccountInfo = ({ navigation }) => {
         let newForm = {...formValue};
         newForm[field] = value;
         setFormValue(newForm);
+        setErrForm({
+            name: '',
+            password: ''
+        })
     }
     
     const handleSubmitForm = async () => {
         try {
             let { name, password } = formValue;
+            if (name === user.name && !password) return;
             if (password && formValue['Re-password'] !== password) {
                 setErrForm({
                     ...errForm,
@@ -69,12 +74,18 @@ const AccountInfo = ({ navigation }) => {
                     <TextInput style={loginStyles.input} placeholder='Name*'
                         value={formValue.name}
                         onChangeText={(value) => handleChangeValueForm('name',value)} />
+                    {errForm.name && (
+                        <Text style={loginStyles.textError}>{errForm.name}</Text>
+                    )}
                     <TextInput style={loginStyles.input} placeholder='Password*' autoCompleteType="password" 
                         secureTextEntry autoCorrect={false} value={formValue.password}
                         onChangeText={(value) => handleChangeValueForm('password',value)}
                     />
                     <TextInput style={loginStyles.input} placeholder='Confirm password' secureTextEntry autoCorrect={false} value={formValue['Re-password']}
                         onChangeText={(value) => handleChangeValueForm('Re-password',value)} />
+                    {errForm.password && (
+                        <Text style={loginStyles.textError}>{errForm.password}</Text>
+                    )}
                     <TouchableOpacity
                         style={{...loginStyles.button, ...loginStyles.alignCenter}} 
                         onPress={handleSubmitForm}>

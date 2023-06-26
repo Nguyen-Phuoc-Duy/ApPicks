@@ -75,6 +75,7 @@ const ModalAddOrder = ({ setModalVisible, menus = [], tableId, addOrder }) => {
             console.log(err);
         } finally {
             setIsLoading(false);
+            setModalVisible(false);
         }
     }
 

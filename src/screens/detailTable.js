@@ -10,6 +10,8 @@ import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { AuthContext } from "../context/authProvider";
 import ModalAddOrder from "../components/modal/addOrder";
 import Loader from "../components/loader";
+import Badge from "../components/badge";
+import { getColorStatus } from "../constant/status";
 const DetailTable = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [orders, setOrders] = useState([]);
@@ -95,6 +97,7 @@ const DetailTable = ({ navigation, route }) => {
             })}
           >
             <Text style={styles.textTable}>{order.name}</Text>
+            <Text><Badge label={order.status} color={getColorStatus[order.status]} /></Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -102,5 +105,6 @@ const DetailTable = ({ navigation, route }) => {
     </>
   );
 };
+
 
 export default DetailTable;
