@@ -7,7 +7,7 @@ import { AuthContext } from '../../context/authProvider';
 import Loader from '../loader';
 
 
-const ModalAddTable = ({ setModalVisible, onChange, tableEdit = {} }) => {
+const ModalAddTable = ({ setModalVisible, onChange, tableEdit = {}, endEdit }) => {
     const [isLoading,setIsLoading] = useState(false);
     const [nameTable, setNameTable] = useState(tableEdit.name || '');
 
@@ -32,6 +32,7 @@ const ModalAddTable = ({ setModalVisible, onChange, tableEdit = {} }) => {
                             }
                             return prev;
                         });
+                        endEdit();
                     }else {
                         console.log(result)
                     }
@@ -43,7 +44,7 @@ const ModalAddTable = ({ setModalVisible, onChange, tableEdit = {} }) => {
                         result = result.data;
                         onChange(prev => {
                             if (prev && Array.isArray(prev)) {
-                                prev.push(result);
+                                prev.unshift(result);
                                 return [...prev];
                             }
                             return prev;

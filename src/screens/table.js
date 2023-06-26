@@ -7,11 +7,12 @@ import { AuthContext } from "../context/authProvider";
 import ModalAddTable from "../components/modal/addTable";
 import { RefreshControl } from "react-native";
 import Loader from "../components/loader";
+import useAlert from "../hook/useAlert";
 
 const Tables = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [tables,setTables] = useState([]);
-  const [tableEdit,setTableEdit] = useState([]);
+  const [tableEdit,setTableEdit] = useState({});
   const [isLoading,setIsLoading] = useState(false);
   const [refesh, setRefesh] = useState(false);
   
@@ -35,6 +36,12 @@ const Tables = ({ navigation, route }) => {
   },[]);
 
   useEffect(() => {
+    if(!modalVisible) {
+      setTableEdit({});
+    }
+  },[modalVisible])
+
+  useEffect(() => {
     getTables();
   },[])
 
@@ -47,18 +54,22 @@ const Tables = ({ navigation, route }) => {
     }
   }
 
-  const handleDeleteTable = async (ID) => {
+  const handleDeleteTable = async (table) => {
     try {
+      let { ID, name } = table; 
       if(!ID) return;
       setIsLoading(true);
+      let confirm = await useAlert.alertSync('Are you sure?', `Are you sure you want to delete table: ${name}`, true);
       
-      const result = await useFetch('admin/deleteTable/' + ID, null, 'DELETE');
+      if (confirm) {
+        const result = await useFetch('admin/deleteTable/' + ID, null, 'DELETE');
 
-      if (result.errCode === 200) {
-        let newTables = tables.filter(table => table.ID !== ID);
-        setTables(newTables);
-      }else {
-        console.log(result)
+        if (result.errCode === 200) {
+          let newTables = tables.filter(table => table.ID !== ID);
+          setTables(newTables);
+        }else {
+          console.log(result)
+        }
       }
 
 
@@ -95,7 +106,7 @@ const Tables = ({ navigation, route }) => {
                       style={styles.addIcon}
                     />
                   </TouchableOpacity>
-                  <TouchableOpacity onPress={() => handleDeleteTable(table.ID)}>
+                  <TouchableOpacity onPress={() => handleDeleteTable(table)}>
                     <Ionicons 
                       name="trash-outline"
                       size={30}

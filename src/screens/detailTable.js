@@ -1,4 +1,4 @@
-import { TouchableOpacity, Text, View, Pressable, Modal } from "react-native";
+import { TouchableOpacity, Text, View, Pressable, Modal, RefreshControl } from "react-native";
 import React, { useState, useEffect, useContext } from "react";
 import { ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -13,6 +13,7 @@ import Loader from "../components/loader";
 const DetailTable = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [orders, setOrders] = useState([]);
+  const [menuProducts, setMenuProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
 
   const { useFetch } = useContext(AuthContext);
@@ -21,7 +22,8 @@ const DetailTable = ({ navigation, route }) => {
     if(route.params){
       let { ID } = route.params;
       if(ID) {
-        getOrders(ID)
+        getOrders(ID);
+        getAllProduct();
         navigation.setOptions({
           headerRight: () => (
             <TouchableOpacity style={{
@@ -53,22 +55,50 @@ const DetailTable = ({ navigation, route }) => {
     }
   }
 
+  const getAllProduct = async () => {
+		const result = await useFetch('products/getAll');
+		if(result.errCode === 200){
+			setMenuProducts(result?.data || [])
+		}
+	}
+
+  const addOrder = (newOrder) => {
+    if(!newOrder) return;
+    setOrders(prev => {
+      if (prev && Array.isArray(prev)){
+        prev.unshift(newOrder);
+        return [...prev];
+      }
+      return prev;
+    })
+  }
+
+  const onRefresh = () => {
+    if(route.params){
+      let { ID } = route.params;
+      if(ID) {
+        getOrders(ID);
+        getAllProduct();
+      }
+    }
+  }
+
   return (
     <>
       {isLoading && <Loader />}
-      <ScrollView>
+      <ScrollView refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} />}>
         {orders && orders.map(order => (
           <TouchableOpacity key={order.ID} style={styles.boxTable}
             onPress={() => navigation.navigate({
               name: "Detail Order",
-              params: { ID: order.ID, order }
+              params: { ID: order.ID, order, menuProducts }
             })}
           >
             <Text style={styles.textTable}>{order.name}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
-      {modalVisible && <ModalAddOrder setModalVisible={setModalVisible} />}
+      {modalVisible && <ModalAddOrder setModalVisible={setModalVisible} menus={menuProducts} tableId={route.params?.ID} addOrder={addOrder} />}
     </>
   );
 };

@@ -4,18 +4,26 @@ import Tables from './table';
 import { Ionicons } from '@expo/vector-icons';
 import AccountInfo from './Account';
 import styles from '../css/style';
-import { useContext } from 'react';
+import { useContext, useLayoutEffect } from 'react';
 import { AuthContext } from '../context/authProvider';
-import Login from '../components/login';
+import useAlert from '../hook/useAlert';
 
 const HomeScreen = ({ navigation }) => {
 
     const Tab = createBottomTabNavigator();
 
-    const { logOut } = useContext(AuthContext);
+    const { logOut, user } = useContext(AuthContext);
     
-    const HandleLogout = async () => {
-        return <Login />
+    useLayoutEffect(() => {
+        if (!user) {
+            navigation.navigate('Login');
+        }
+    },[])
+
+    const HandleLogout = async (navigate) => {
+        if(!navigate) return null;
+        let confirm = await useAlert.alertSync('Logout', 'Are you sure you want to log out?');
+        confirm && logOut(navigate);
     }
 
     return (
@@ -31,7 +39,7 @@ const HomeScreen = ({ navigation }) => {
                     tabBarLabelStyle: { display: 'none' },
                     tabBarIcon: () => (
                         <TouchableOpacity style={styles.btnIcon}
-                        onPress={() => logOut(navigation.navigate)}
+                        onPress={() => HandleLogout(navigation.navigate)}
                         >
                             <Ionicons
                                 name="exit-outline"

@@ -1,7 +1,7 @@
 import { Alert } from "react-native";
 
 const useAlert = {
-    alertSync: (title, message, btnCancel) => {
+    alertSync: (title, message, btnCancel = true) => {
         return new Promise((resolve, reject) => {
             let btn = [
                 {

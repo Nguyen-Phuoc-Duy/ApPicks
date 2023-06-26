@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { Modal, View, Text, TouchableOpacity, StyleSheet } from 'react-native';
+import { Modal, View, Text, TouchableOpacity, StyleSheet, ScrollView } from 'react-native';
 import styles from '../../css/style';
 import { MultipleSelectList } from 'react-native-dropdown-select-list';
 
@@ -32,16 +32,16 @@ const ModalMenu = ({ setModalVisible, menus = [], disabledList = [], handleAddPr
     return (
         <Modal
             animationType="slide"
+            placement="bottom"
             transparent={true}
             visible={true}
             onRequestClose={() => {
                 setModalVisible(false);
             }}
         >
-            <View>
-            <View style={styles.modalView1}>
-                <Text style={styles.text1}>Menu</Text>
-                <TouchableOpacity style={styles.menuContainer}>
+            <ScrollView style={styles.modalView1}>
+                <View style={styles.menuContainer}>
+                    <Text style={styles.text1}>Menu</Text>
                     <View style={styles.menuContainerContent}>
                         <MultipleSelectList
                             setSelected={setSelected}
@@ -49,7 +49,7 @@ const ModalMenu = ({ setModalVisible, menus = [], disabledList = [], handleAddPr
                             label="Categories"
                             di
                             save="key"
-                            notFoundText="No data existx"
+                            notFoundText="No data exists"
                         />
                     </View>
                     <View style={styles.btnGrMenu}>
@@ -64,9 +64,8 @@ const ModalMenu = ({ setModalVisible, menus = [], disabledList = [], handleAddPr
                             <Text style={styling.buttonText}>Back</Text>
                         </TouchableOpacity>
                     </View>
-                </TouchableOpacity>
-            </View>
-            </View>
+                </View>
+            </ScrollView>
         </Modal>
     )
 }

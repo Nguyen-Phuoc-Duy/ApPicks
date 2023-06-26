@@ -3,17 +3,18 @@ import { View, Text, TextInput, TextLin, Button, TouchableOpacity } from 'react-
 import loginStyles from '../css/login';
 import * as SecureStore from 'expo-secure-store';
 import { AuthContext } from '../context/authProvider';
+import Loader from './loader';
 
 const Login = (props) => {
     const [formData,setFormData] = useState({});
     const [action,setAction] = useState('login');
-    // const [isLoading,setIsLoading] = useState(false);
+    const [isLoading,setIsLoading] = useState(false);
     const [errMsg, setErrMsg] = useState({
         email: '',
         password: '',
         form: ''
     })
-    const { user, setUser, setToken, setIsLoading, token, useFetch } = useContext(AuthContext);
+    const { user, setUser, setToken, token, useFetch } = useContext(AuthContext);
 
     useEffect(() => {
         if (user) {
@@ -112,6 +113,7 @@ const Login = (props) => {
 
     return (
             <View style={loginStyles.root}>
+                {isLoading && <Loader />}
                 <View style={loginStyles.container}>
                     <Text style={loginStyles.title}>{action}</Text>
                     <View style={loginStyles.form}>

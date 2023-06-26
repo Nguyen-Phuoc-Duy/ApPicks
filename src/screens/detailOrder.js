@@ -10,6 +10,7 @@ import useAlert from "../hook/useAlert";
 import Loader from "../components/loader";
 import ModalMenu from "../components/modal/modalMenu";
 import { AuthContext } from "../context/authProvider";
+import Badge from "../components/badge";
 
 const DetailOrder = ({ navigation, route }) => {
 	const [listProduct, setListProducts] = useState([]);
@@ -23,24 +24,34 @@ const DetailOrder = ({ navigation, route }) => {
 	const { useFetch } = useContext(AuthContext);
 
 	useEffect(() => {
-		getAllProduct();
+		let { order = {}, ID } = route?.params || {};
+		const status = badgeStatus[order.status];
+		navigation.setOptions({
+			headerRight: () => (
+				<TouchableOpacity onPress={() => cancelOrder(ID)}>
+					<Text style={{color: 'red'}}>Cancel</Text>
+				</TouchableOpacity>
+			),
+			headerLeft: () => <Badge label={order.status} color={status} />
+		})
 	},[])
 
-	const getAllProduct = async () => {
-		const result = await useFetch('products/getAll');
-		if(result.errCode === 200){
-			let menus = []
-			result?.data?.map(product => {
-				menus.push({
-					key: product.ID,
-					value: product.name,
-					disabled: product.isClose,
-					price: product.price,
-					isClose: product.isClose,
-					unit: product.unit
-				})
-			})
-			setMenuProducts(menus)
+	const cancelOrder = async (ID) => {
+		try {
+			setIsLoading(true);
+			let confirm = await useAlert.alertSync('Are you sure?', 'Are you sure you want to cancel order?');
+			if (confirm) {
+				let result = await useFetch('orders/updateStatus', { ID, status: 'cancelled' }, 'POST')
+				if (result.status === 200) {
+	
+				}else {
+					console.log(result);
+				}
+			}
+		} catch (e) {
+			console.log(e);
+		} finally {
+			setIsLoading(false);
 		}
 	}
 
@@ -50,7 +61,6 @@ const DetailOrder = ({ navigation, route }) => {
 		if (result.errCode === 200){
 			let details = result.data;
 			setListProducts(details || [])
-			getAllProduct(details || [])
 		}else {
 			console.log(result)
 		}
@@ -59,14 +69,28 @@ const DetailOrder = ({ navigation, route }) => {
 
 	useEffect(() => {
 		if(route.params){
-			const { ID = '' } = route.params;
+			const { ID = '', menuProducts } = route.params;
 			if(ID) {
 				getOrderDetails(ID)
 				setChangeQuantity(false);
 				setChangeDetail(false);
 			}
+			if(menuProducts){
+				let menus = [];
+				menuProducts.map(product => {
+					menus.push({
+						key: product.ID,
+						value: product.name,
+						disabled: product.isClose,
+						price: product.price,
+						isClose: product.isClose,
+						unit: product.unit
+					})
+				})
+				setMenuProducts(menus)
+			}
 		}
-	},[route?.params?.ID])
+	},[route?.params?.ID, route?.params?.menuProducts])
 
 	useEffect(() => {
 		let initBill = 0;
@@ -187,7 +211,7 @@ const DetailOrder = ({ navigation, route }) => {
 						<View key={product.ID} style={styling.orderItem}>
 							<View>
 								<Text style={styling.itemName}>{product.name}</Text>
-								<Text style={styling.itemPrice}>{product.price}/{product.unit}</Text>
+								<Text style={styling.itemPrice}>{product.price?.toLocaleString('en-gb')}/{product.unit}</Text>
 							</View>
 							<View style={styling.counter}>
 								<TouchableOpacity style={styling.counterContent} 
@@ -233,10 +257,17 @@ const DetailOrder = ({ navigation, route }) => {
 			{modalVisible && <ModalMenu setModalVisible={setModalVisible} menus={menuProduts} 
 			disabledList={listProduct.map(p => p.ID)} handleAddProducts={handleAddProducts} />}
 		</View>
-		)
+	)
 };
 
 export default DetailOrder;
+
+let badgeStatus = {
+	started: 'warning',
+	inProgress: 'info',
+	finished: 'success',
+	cancelled: 'danger',
+}
 
 const styling = StyleSheet.create({
 	container: {

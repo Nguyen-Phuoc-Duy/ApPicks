@@ -41,7 +41,6 @@ function AuthProvider({ children }) {
                 authorization: 'Bearer ' + token
             }
             url = (Platform.OS === 'ios' ? REACT_APP_HOST_IOS : REACT_APP_HOST_ANDROID) + url;
-            console.log(method + ' : ' + url);
             let result;
             switch (method) {
                 case 'GET':
@@ -86,7 +85,6 @@ function AuthProvider({ children }) {
                 setUser,
                 token,
                 setToken,
-                setIsLoading,
                 useFetch,
                 logOut
             }}
