@@ -95,7 +95,7 @@ const Tables = ({ navigation, route }) => {
               <View key={table.ID} style={styles.containerRow}>
                 <Text style={styles.textTable}>{table.name}</Text>
                 <View style={{ flexDirection: 'row', gap: 10}}>
-                  {user && user.role === 'employee' && (
+                  {user && ['admin','manager'].includes(user.role) && (
                     <>
                       <TouchableOpacity onPress={() => {
                         setTableEdit(table)
