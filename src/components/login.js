@@ -5,7 +5,7 @@ import * as SecureStore from 'expo-secure-store';
 import { AuthContext } from '../context/authProvider';
 import Loader from './loader';
 
-const Login = (props) => {
+const Login = ({ navigation }) => {
     const [formData,setFormData] = useState({});
     const [action,setAction] = useState('login');
     const [isLoading,setIsLoading] = useState(false);
@@ -21,7 +21,7 @@ const Login = (props) => {
             if (!token) {
                 setToken(user.token);
             }
-            props.navigation.navigate('HomeScreen');
+            navigation.navigate('HomeScreen');
         }
     },[user])
 
@@ -95,7 +95,7 @@ const Login = (props) => {
                     setToken(user.token);
                     await SecureStore.setItemAsync('user', JSON.stringify(user));
                     await SecureStore.setItemAsync('token', user.token)
-                    props.navigation.navigate('HomeScreen');
+                    navigation.navigate('HomeScreen');
                 }else {
                     setErrMsg({
                         email: '',
