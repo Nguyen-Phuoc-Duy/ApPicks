@@ -6,9 +6,9 @@ import { AuthContext } from '../context/authProvider';
 import Loader from './loader';
 
 const Login = ({ navigation }) => {
-    const [formData,setFormData] = useState({});
-    const [action,setAction] = useState('login');
-    const [isLoading,setIsLoading] = useState(false);
+    const [formData, setFormData] = useState({});
+    const [action, setAction] = useState('login');
+    const [isLoading, setIsLoading] = useState(false);
     const [errMsg, setErrMsg] = useState({
         email: '',
         password: '',
@@ -23,10 +23,10 @@ const Login = ({ navigation }) => {
             }
             navigation.navigate('HomeScreen');
         }
-    },[user])
+    }, [user])
 
-    const handleChangeValueForm = (field,value) => {
-        if(!field) return;
+    const handleChangeValueForm = (field, value) => {
+        if (!field) return;
 
         let newFormData = formData;
         setErrMsg({
@@ -34,6 +34,7 @@ const Login = ({ navigation }) => {
             password: '',
             form: ''
         })
+
         newFormData[field] = value || '';
         setFormData(newFormData)
     }
@@ -60,17 +61,17 @@ const Login = ({ navigation }) => {
                     url = 'users/login'
                     break;
                 case 'register':
-                    if(password !== formData['Re-password']) {
+                    if (password !== formData['Re-password']) {
                         setErrMsg({
                             ...errMsg,
                             password: 'Confirm password is not match!'
                         })
-                    }else if(!name) {
+                    } else if (!name) {
                         setErrMsg({
                             ...errMsg,
                             form: 'Name is required!'
                         })
-                    }else {
+                    } else {
                         data = {
                             email,
                             name,
@@ -79,24 +80,24 @@ const Login = ({ navigation }) => {
                         url = 'users/register'
                     }
                     break;
-                default: 
+                default:
                     break;
             }
-            if(data) {
+            if (data) {
                 setErrMsg({
                     email: '',
                     password: '',
                     form: ''
                 })
                 const result = await useFetch(url, data, 'POST');
-                if(result.errCode === 200){
+                if (result.errCode === 200) {
                     let user = result.data;
                     setUser(user);
                     setToken(user.token);
                     await SecureStore.setItemAsync('user', JSON.stringify(user));
                     await SecureStore.setItemAsync('token', user.token)
                     navigation.navigate('HomeScreen');
-                }else {
+                } else {
                     setErrMsg({
                         email: '',
                         password: '',
@@ -104,7 +105,7 @@ const Login = ({ navigation }) => {
                     })
                 }
             }
-        } catch(e) {
+        } catch (e) {
             console.log(e);
         } finally {
             setIsLoading(false);
@@ -112,74 +113,74 @@ const Login = ({ navigation }) => {
     }
 
     return (
-            <View style={loginStyles.root}>
-                {isLoading && <Loader />}
-                <View style={loginStyles.container}>
-                    <Text style={loginStyles.title}>{action}</Text>
-                    <View style={loginStyles.form}>
-                        <TextInput style={loginStyles.input} placeholder='Email*' autoCompleteType="email"
-                        onChangeText={(value) => handleChangeValueForm('email',value)} />
-                        {errMsg.email && (
-                            <Text style={loginStyles.textError}>
-                                {errMsg.email}
-                            </Text>
-                        )}
-                        {action === 'register' && (
-                            <TextInput style={loginStyles.input} placeholder='Name*'
-                            onChangeText={(value) => handleChangeValueForm('name',value)} />
-                        )}
-                        <TextInput style={loginStyles.input} placeholder='Password*' autoCompleteType="password" 
-                        secureTextEntry autoCorrect={false} 
-                        onChangeText={(value) => handleChangeValueForm('password',value)}
-                        />
-                        {action === 'register' && (
-                            <>
-                                <TextInput style={loginStyles.input} placeholder='Confirm password' secureTextEntry autoCorrect={false}
-                                onChangeText={(value) => handleChangeValueForm('Re-password',value)} />
-                                {errMsg.password && (
-                                    <Text style={loginStyles.textError}>
-                                        {errMsg.password}
-                                    </Text>
-                                )}
-                            </>
-                        )}
-                        {errMsg.form && (
-                            <Text style={loginStyles.textError}>
-                                {errMsg.form}
-                            </Text>
-                        )}
-                        <View style={{ justifyContent: 'space-between', flexDirection: 'row'}}>
-                            {action === 'login' ? (
-                                <TouchableOpacity onPress={() => setAction('register')}>
-                                    <Text style={loginStyles.textLink}>
-                                        Sign up
-                                    </Text>
-                                </TouchableOpacity>
-                            ) : (
-                                <TouchableOpacity onPress={() => setAction('login')}>
-                                    <Text style={loginStyles.textLink}>
-                                        Sign in
-                                    </Text>
-                                </TouchableOpacity>
+        <View style={loginStyles.root}>
+            {isLoading && <Loader />}
+            <View style={loginStyles.container}>
+                <Text style={loginStyles.title}>{action}</Text>
+                <View style={loginStyles.form}>
+                    <TextInput style={loginStyles.input} placeholder='Email*' autoCompleteType="email"
+                        onChangeText={(value) => handleChangeValueForm('email', value)} />
+                    {errMsg.email && (
+                        <Text style={loginStyles.textError}>
+                            {errMsg.email}
+                        </Text>
+                    )}
+                    {action === 'register' && (
+                        <TextInput style={loginStyles.input} placeholder='Name*'
+                            onChangeText={(value) => handleChangeValueForm('name', value)} />
+                    )}
+                    <TextInput style={loginStyles.input} placeholder='Password*' autoCompleteType="password"
+                        secureTextEntry autoCorrect={false}
+                        onChangeText={(value) => handleChangeValueForm('password', value)}
+                    />
+                    {action === 'register' && (
+                        <>
+                            <TextInput style={loginStyles.input} placeholder='Confirm password' secureTextEntry autoCorrect={false}
+                                onChangeText={(value) => handleChangeValueForm('Re-password', value)} />
+                            {errMsg.password && (
+                                <Text style={loginStyles.textError}>
+                                    {errMsg.password}
+                                </Text>
                             )}
-                            {action === 'login' && (
-                                <TouchableOpacity>
-                                    <Text style={loginStyles.textLink}>
-                                        Forgot password?
-                                    </Text>
-                                </TouchableOpacity>
-                            )}
-                        </View>
-                        <TouchableOpacity
-                        style={{...loginStyles.button, ...loginStyles.alignCenter}} 
-                        onPress={handleSubmitForm}>
-                            <Text style={{ color: 'white' }}>
-                                Submit
-                            </Text>
-                        </TouchableOpacity>
+                        </>
+                    )}
+                    {errMsg.form && (
+                        <Text style={loginStyles.textError}>
+                            {errMsg.form}
+                        </Text>
+                    )}
+                    <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                        {action === 'login' ? (
+                            <TouchableOpacity onPress={() => setAction('register')}>
+                                <Text style={loginStyles.textLink}>
+                                    Sign up
+                                </Text>
+                            </TouchableOpacity>
+                        ) : (
+                            <TouchableOpacity onPress={() => setAction('login')}>
+                                <Text style={loginStyles.textLink}>
+                                    Sign in
+                                </Text>
+                            </TouchableOpacity>
+                        )}
+                        {action === 'login' && (
+                            <TouchableOpacity>
+                                <Text style={loginStyles.textLink}>
+                                    Forgot password?
+                                </Text>
+                            </TouchableOpacity>
+                        )}
                     </View>
+                    <TouchableOpacity
+                        style={{ ...loginStyles.button, ...loginStyles.alignCenter }}
+                        onPress={handleSubmitForm}>
+                        <Text style={{ color: 'white' }}>
+                            Submit
+                        </Text>
+                    </TouchableOpacity>
                 </View>
             </View>
+        </View>
     )
 }
 export default Login;

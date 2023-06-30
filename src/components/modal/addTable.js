@@ -7,8 +7,8 @@ import { AuthContext } from '../../context/authProvider';
 import Loader from '../loader';
 
 
-const ModalAddTable = ({ setModalVisible, onChange, tableEdit = {}, endEdit }) => {
-    const [isLoading,setIsLoading] = useState(false);
+const ModalAddTable = ({ setModalVisible, onChange, tableEdit = {} }) => {
+    const [isLoading, setIsLoading] = useState(false);
     const [nameTable, setNameTable] = useState(tableEdit.name || '');
 
     const { useFetch } = useContext(AuthContext);
@@ -16,15 +16,15 @@ const ModalAddTable = ({ setModalVisible, onChange, tableEdit = {}, endEdit }) =
     const handleAddTable = async () => {
         try {
             setIsLoading(true);
-            if(tableEdit?.name){
-                if (nameTable && nameTable !== tableEdit.name){
+            if (tableEdit?.name) {
+                if (nameTable && nameTable !== tableEdit.name) {
                     let result = await useFetch('admin/updateTable', { ID: tableEdit.ID, name: nameTable }, 'POST');
                     if (result.errCode === 200) {
                         result = result.data;
                         onChange(prev => {
                             if (prev && Array.isArray(prev)) {
                                 prev.forEach(table => {
-                                    if (table.ID === tableEdit.ID){
+                                    if (table.ID === tableEdit.ID) {
                                         table.name = nameTable;
                                     }
                                 })
@@ -32,12 +32,11 @@ const ModalAddTable = ({ setModalVisible, onChange, tableEdit = {}, endEdit }) =
                             }
                             return prev;
                         });
-                        endEdit();
-                    }else {
+                    } else {
                         console.log(result)
                     }
                 }
-            }else {
+            } else {
                 if (nameTable) {
                     let result = await useFetch('admin/createTable', { name: nameTable }, 'POST');
                     if (result.errCode === 200) {
@@ -65,7 +64,7 @@ const ModalAddTable = ({ setModalVisible, onChange, tableEdit = {}, endEdit }) =
             onRequestClose={() => {
                 setModalVisible(false);
             }}>
-                {isLoading && <Loader />}
+            {isLoading && <Loader />}
             <View style={styles.viewAddTable}>
                 <Text style={styles.text1}>Bàn: </Text>
                 <TextInput placeholder="Name" style={styles.textInput} onChangeText={setNameTable} value={nameTable} />

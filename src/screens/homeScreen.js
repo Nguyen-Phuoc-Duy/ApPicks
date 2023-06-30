@@ -7,21 +7,22 @@ import styles from '../css/style';
 import { useContext, useLayoutEffect } from 'react';
 import { AuthContext } from '../context/authProvider';
 import useAlert from '../hook/useAlert';
+import Revenue from './revenue';
 
 const HomeScreen = ({ navigation }) => {
 
     const Tab = createBottomTabNavigator();
 
     const { logOut, user } = useContext(AuthContext);
-    
+
     useLayoutEffect(() => {
         if (!user) {
             navigation.navigate('Login');
         }
-    },[])
+    }, [])
 
     const HandleLogout = async (navigate) => {
-        if(!navigate) return null;
+        if (!navigate) return null;
         let confirm = await useAlert.alertSync('Logout', 'Are you sure you want to log out?');
         confirm && logOut(navigate);
     }
@@ -32,7 +33,7 @@ const HomeScreen = ({ navigation }) => {
 
     return (
         <Tab.Navigator initialRouteName='View Table'>
-            <Tab.Screen 
+            <Tab.Screen
                 name="Logout"
                 component={HandleLogout}
                 options={{
@@ -43,19 +44,19 @@ const HomeScreen = ({ navigation }) => {
                     tabBarLabelStyle: { display: 'none' },
                     tabBarIcon: () => (
                         <TouchableOpacity style={styles.btnIcon}
-                        onPress={() => HandleLogout(navigation.navigate)}
+                            onPress={() => HandleLogout(navigation.navigate)}
                         >
                             <Ionicons
                                 name="exit-outline"
                                 size={30}
                                 color={"#644AB5"}
                                 style={styles.btnLogout}
-                                />
+                            />
                         </TouchableOpacity>
                     )
                 }}
             />
-            <Tab.Screen 
+            <Tab.Screen
                 name="View Table"
                 component={RenderTableComponent}
                 options={{
@@ -66,16 +67,38 @@ const HomeScreen = ({ navigation }) => {
                     tabBarLabelStyle: { display: 'none' },
                     tabBarIcon: ({ color, size }) => (
                         <>
-                          <Ionicons
-                            name="grid-outline"
-                            size={25}
-                            color={"#644AB5"}
-                          />
+                            <Ionicons
+                                name="grid-outline"
+                                size={25}
+                                color={"#644AB5"}
+                            />
                         </>
-                      )
+                    )
                 }}
             />
-            <Tab.Screen 
+            {user && ['admin', 'manager'].includes(user.role) && (
+                <Tab.Screen
+                    name="Revenue"
+                    component={Revenue}
+                    options={{
+                        headerTintColor: "#644AB5",
+                        headerShown: true,
+                        headerTitleAlign: 'center',
+                        headerLeft: () => '',
+                        tabBarLabelStyle: { display: 'none' },
+                        tabBarIcon: ({ color, size }) => (
+                            <>
+                                <Ionicons
+                                    name="cash-outline"
+                                    size={25}
+                                    color={"#644AB5"}
+                                />
+                            </>
+                        )
+                    }}
+                />
+            )}
+            <Tab.Screen
                 name="Account"
                 component={AccountInfo}
                 options={{
@@ -86,11 +109,11 @@ const HomeScreen = ({ navigation }) => {
                     tabBarLabelStyle: { display: 'none' },
                     tabBarIcon: ({ color, size }) => (
                         <>
-                        <Ionicons
-                            name="person-circle-outline"
-                            size={25}
-                            color={"#644AB5"}
-                        />
+                            <Ionicons
+                                name="person-circle-outline"
+                                size={25}
+                                color={"#644AB5"}
+                            />
                         </>
                     ),
                 }}
