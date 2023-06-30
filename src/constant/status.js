@@ -1,6 +1,6 @@
 
 const getColorStatus = {
-    started: 'warning',
+    started: 'info',
     inProgress: 'info',
     finished: 'success',
     cancelled: 'danger'
