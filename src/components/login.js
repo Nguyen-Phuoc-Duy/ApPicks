@@ -4,6 +4,7 @@ import loginStyles from '../css/login';
 import * as SecureStore from 'expo-secure-store';
 import { AuthContext } from '../context/authProvider';
 import Loader from './loader';
+import InputCustom from './inputCustom';
 
 const Login = (props) => {
     const [formData,setFormData] = useState({});
@@ -117,34 +118,28 @@ const Login = (props) => {
                 <View style={loginStyles.container}>
                     <Text style={loginStyles.title}>{action}</Text>
                     <View style={loginStyles.form}>
-                        <TextInput style={loginStyles.input} placeholder='Email*' autoCompleteType="email"
-                        onChangeText={(value) => handleChangeValueForm('email',value)} />
-                        {errMsg.email && (
-                            <Text style={loginStyles.textError}>
-                                {errMsg.email}
-                            </Text>
-                        )}
-                        {action === 'register' && (
-                            <TextInput style={loginStyles.input} placeholder='Name*'
-                            onChangeText={(value) => handleChangeValueForm('name',value)} />
-                        )}
-                        <TextInput style={loginStyles.input} placeholder='Password*' autoCompleteType="password" 
-                        secureTextEntry autoCorrect={false} 
-                        onChangeText={(value) => handleChangeValueForm('password',value)}
+                        <InputCustom name='email' placeholder='Email' type='email' label='Email'
+                            onChange={(value) => handleChangeValueForm('email',value)}
+                            errMsg={errMsg.email} required
                         />
                         {action === 'register' && (
-                            <>
-                                <TextInput style={loginStyles.input} placeholder='Confirm password' secureTextEntry autoCorrect={false}
-                                onChangeText={(value) => handleChangeValueForm('Re-password',value)} />
-                                {errMsg.password && (
-                                    <Text style={loginStyles.textError}>
-                                        {errMsg.password}
-                                    </Text>
-                                )}
-                            </>
+                            <InputCustom placeholder='Name' name='name' label='Name'
+                                onChange={(value) => handleChangeValueForm('name',value)}
+                                required
+                            />
+                        )}
+                        <InputCustom name='password' placeholder='Password' label='Password' 
+                            onChange={(value) => handleChangeValueForm('password',value)}
+                            required type='password'
+                        />
+                        {action === 'register' && (
+                            <InputCustom name='Re-password'  placeholder='Confirm password' label='Confirm password'
+                                onChange={(value) => handleChangeValueForm('Re-password',value)}
+                                required errMsg={errMsg.password} type='password'
+                            />
                         )}
                         {errMsg.form && (
-                            <Text style={loginStyles.textError}>
+                            <Text style={labelErr}>
                                 {errMsg.form}
                             </Text>
                         )}
@@ -182,4 +177,13 @@ const Login = (props) => {
             </View>
     )
 }
+
+
+let labelErr = {
+    textTransform: 'capitalize',
+    fontSize: 12,
+    marginVertical: 5,
+    color: 'red'
+}
+
 export default Login;

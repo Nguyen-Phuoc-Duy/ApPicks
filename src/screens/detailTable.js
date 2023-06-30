@@ -12,6 +12,7 @@ import ModalAddOrder from "../components/modal/addOrder";
 import Loader from "../components/loader";
 import Badge from "../components/badge";
 import { getColorStatus } from "../constant/status";
+import color from "../constant/colorVariable";
 const DetailTable = ({ navigation, route }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [orders, setOrders] = useState([]);
@@ -35,7 +36,7 @@ const DetailTable = ({ navigation, route }) => {
               <Ionicons
                   name="ios-add-circle-outline"
                   size={30}
-                  color={"#644AB5"}
+                  color={color.primary}
                   style={styles.addIcon}
               />
             </TouchableOpacity>

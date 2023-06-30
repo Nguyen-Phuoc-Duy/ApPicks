@@ -4,6 +4,7 @@ import Login from "../components/login";
 import DetailTable from "../screens/detailTable";
 import DetailOrder from "../screens/detailOrder";
 import HomeScreen from "../screens/homeScreen";
+import color from "../constant/colorVariable";
 
 function Home() {
     const Stack = createNativeStackNavigator();
@@ -30,7 +31,7 @@ function Home() {
                     component={DetailTable}
                     options={{
                         headerTitleAlign: "center",
-                        headerTintColor: "#644AB5",
+                        headerTintColor: color.primary,
                         headerShown: true
                     }}
                 />
@@ -39,7 +40,7 @@ function Home() {
                     component={DetailOrder}
                     options={{
                         headerTitleAlign: "center",
-                        headerTintColor: "#644AB5",
+                        headerTintColor: color.primary,
                         headerShown: true,
                         headerLeft: () => ''
                     }}
