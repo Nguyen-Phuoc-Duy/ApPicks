@@ -5,6 +5,7 @@ import * as SecureStore from 'expo-secure-store';
 import { AuthContext } from '../context/authProvider';
 import Loader from './loader';
 import InputCustom from './inputCustom';
+import color from '../constant/colorVariable';
 
 const Login = (props) => {
     const [formData,setFormData] = useState({});
@@ -95,7 +96,8 @@ const Login = (props) => {
                     setUser(user);
                     setToken(user.token);
                     await SecureStore.setItemAsync('user', JSON.stringify(user));
-                    await SecureStore.setItemAsync('token', user.token)
+                    await SecureStore.setItemAsync('token', user.token);
+                    setFormData({})
                     props.navigation.navigate('HomeScreen');
                 }else {
                     setErrMsg({
@@ -183,7 +185,7 @@ let labelErr = {
     textTransform: 'capitalize',
     fontSize: 12,
     marginVertical: 5,
-    color: 'red'
+    color: color.danger
 }
 
 export default Login;

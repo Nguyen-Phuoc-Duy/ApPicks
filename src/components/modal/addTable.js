@@ -18,10 +18,9 @@ const ModalAddTable = ({ setModalVisible, onChange, tableEdit = {}, endEdit }) =
             setIsLoading(true);
             if(tableEdit?.name){
                 if (nameTable && nameTable !== tableEdit.name){
-                    let result = await useFetch('admin/updateTable', { ID: '25df8599-cfc6-4ebe-84dc-09ac6be7f123ddf', name: nameTable }, 'POST');
+                    let result = await useFetch('admin/updateTable', { ID: tableEdit.ID, name: nameTable }, 'POST');
                     if (result.errCode === 200) {
                         result = result.data;
-                        console.log(onChange);
                         onChange?.(prev => {
                             if (prev && Array.isArray(prev)) {
                                 prev.forEach(table => {

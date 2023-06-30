@@ -44,7 +44,10 @@ const DetailOrder = ({ navigation, route }) => {
 			if (confirm) {
 				let result = await useFetch('orders/updateStatus', { ID, status: 'cancelled' }, 'POST')
 				if (result.status === 200) {
-	
+					navigation.navigate({
+						name: 'Detail Table',
+						params: { ID: route?.params?.order?.tableId || '' }
+					})
 				}else {
 					console.log(result);
 				}
@@ -53,10 +56,6 @@ const DetailOrder = ({ navigation, route }) => {
 			console.log(e);
 		} finally {
 			setIsLoading(false);
-			navigation.navigate({
-				name: 'Detail Table',
-				params: { ID: route?.params?.order?.tableId || '' }
-			})
 		}
 	}
 
