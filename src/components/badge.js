@@ -1,10 +1,10 @@
 import { View, Text, StyleSheet } from 'react-native';
 
-const Badge = ({ label = 'Badge', color = 'info'}) => {
+const Badge = ({ label = 'Badge', color = 'info' }) => {
 
     return (
-        <View style={{...badgeStyle.root, ...(badgeStyle[color] || badgeStyle.info)}}>
-            <Text style={{ color: 'white', fontSize: 11 }}>{label}</Text>
+        <View style={{ ...badgeStyle.root, ...(badgeStyle[color] || badgeStyle.info) }}>
+            <Text style={{ color: 'white', fontSize: 16 }}>{label}</Text>
         </View>
     )
 }

@@ -13,10 +13,10 @@ import { getColorStatus } from "../constant/status";
 const DetailOrder = ({ navigation, route }) => {
 	const [listProduct, setListProducts] = useState([]);
 	const [menuProduts, setMenuProducts] = useState([]);
-	const [totalBill,setTotalBill] = useState(0);
+	const [totalBill, setTotalBill] = useState(0);
 	const [changeQuantity, setChangeQuantity] = useState(false);
 	const [changeDetail, setChangeDetail] = useState(false);
-	const [modalVisible ,setModalVisible] = useState(false);
+	const [modalVisible, setModalVisible] = useState(false);
 	const [isLoading, setIsLoading] = useState(false);
 
 	const { order = {} } = route?.params || {}
@@ -29,12 +29,12 @@ const DetailOrder = ({ navigation, route }) => {
 		navigation.setOptions({
 			headerRight: () => ['started', 'inProgress'].includes(order.status) ? (
 				<TouchableOpacity onPress={() => cancelOrder(ID)}>
-					<Text style={{color: 'red'}}>Cancel</Text>
+					<Text style={{ color: 'red' }}>Cancel</Text>
 				</TouchableOpacity>
 			) : '',
 			headerLeft: () => <Badge label={order.status} color={status} />
 		})
-	},[])
+	}, [])
 
 	const cancelOrder = async (ID) => {
 		try {
@@ -43,8 +43,8 @@ const DetailOrder = ({ navigation, route }) => {
 			if (confirm) {
 				let result = await useFetch('orders/updateStatus', { ID, status: 'cancelled' }, 'POST')
 				if (result.status === 200) {
-	
-				}else {
+
+				} else {
 					console.log(result);
 				}
 			}
@@ -62,24 +62,24 @@ const DetailOrder = ({ navigation, route }) => {
 	const getOrderDetails = async (ID) => {
 		setIsLoading(true);
 		const result = await useFetch('orders/getDetailOrder/' + ID);
-		if (result.errCode === 200){
+		if (result.errCode === 200) {
 			let details = result.data;
 			setListProducts(details || [])
-		}else {
+		} else {
 			console.log(result)
 		}
 		setIsLoading(false);
 	}
 
 	useEffect(() => {
-		if(route.params){
+		if (route.params) {
 			const { ID = '', menuProducts } = route.params;
-			if(ID) {
+			if (ID) {
 				getOrderDetails(ID)
 				setChangeQuantity(false);
 				setChangeDetail(false);
 			}
-			if(menuProducts){
+			if (menuProducts) {
 				let menus = [];
 				menuProducts.map(product => {
 					menus.push({
@@ -94,57 +94,57 @@ const DetailOrder = ({ navigation, route }) => {
 				setMenuProducts(menus)
 			}
 		}
-	},[route?.params?.ID, route?.params?.menuProducts])
+	}, [route?.params?.ID, route?.params?.menuProducts])
 
 	useEffect(() => {
 		let initBill = 0;
-		
+
 		(listProduct || []).map(product => {
-			if(product){
+			if (product) {
 				initBill += product.price * product.quantity
 			}
 			return product.ID
 		})
 		setTotalBill(initBill)
-	},[listProduct])
+	}, [listProduct])
 
 	const checkChangeDetail = (newProducts) => {
 		try {
 			let { order: { products = [] } } = route.params;
-			if(products.length !== newProducts.length) {
+			if (products.length !== newProducts.length) {
 				setChangeQuantity(true);
-			}else {
+			} else {
 				let change = false;
 				newProducts.map((product, index) => {
-					if(products[index].quantity !== product.quantity) {
+					if (products[index].quantity !== product.quantity) {
 						change = true;
 					}
 				})
 				setChangeQuantity(change);
 			}
-		} catch(err) {
+		} catch (err) {
 			setChangeQuantity(false);
 		}
 	}
 
 	const onCounterQuantity = async (ID, prefix) => {
-		if(!ID) return;
+		if (!ID) return;
 		let newProducts = []
 		for (let product of listProduct) {
-			if(product?.ID === ID){
+			if (product?.ID === ID) {
 				let func = new Function('quantity', 'return quantity ' + prefix + ' 1');
 				let quantity = func(product.quantity || 1);
 				if (quantity <= 0) {
 					let title = 'Are you sure?';
 					let message = `Are you sure you want to remove '${product.name}?'`;
-					if(!(await useAlert.alertSync(title, message, true))){
+					if (!(await useAlert.alertSync(title, message, true))) {
 						newProducts.push(product);
 					}
-				}else {
+				} else {
 					product.quantity = quantity
 					newProducts.push(product);
 				}
-			}else {
+			} else {
 				newProducts.push(product);
 			}
 		}
@@ -158,10 +158,10 @@ const DetailOrder = ({ navigation, route }) => {
 		setIsLoading(true);
 		let data = Object.assign({}, order, { listProduct });
 		let result = await useFetch('orders/update', data, 'POST');
-		if (result.errCode === 200){
+		if (result.errCode === 200) {
 			setChangeQuantity(false);
 			setChangeDetail(true);
-		}else {
+		} else {
 			console.log(result)
 		}
 		setIsLoading(false);
@@ -188,11 +188,11 @@ const DetailOrder = ({ navigation, route }) => {
 		if (value <= 0) {
 			let title = 'Are you sure?';
 			let message = `Are you sure you want to remove this product?'`;
-			if((await useAlert.alertSync(title, message, true))){
+			if ((await useAlert.alertSync(title, message, true))) {
 				newProducts = newProducts.filter(product => product.ID !== ID);
 				return setListProducts(newProducts);
 			}
-		}else {
+		} else {
 			newProducts = newProducts.map(product => {
 				if (product.ID === ID) {
 					product.quantity = value;
@@ -209,10 +209,10 @@ const DetailOrder = ({ navigation, route }) => {
 			<View style={styling.header}>
 				<Text style={styling.orderName}>{route?.params?.order?.name || 'Detail Order'}</Text>
 				{['started', 'inProgess'].includes(order.status) && (
-					<View style={{ flexDirection: 'row'}}>
+					<View style={{ flexDirection: 'row' }}>
 						{changeQuantity && (
 							<TouchableOpacity style={styles.btnIcon}
-							onPress={handleSubmitChange}>
+								onPress={handleSubmitChange}>
 								<Ionicons
 									name="checkmark-outline"
 									size={30}
@@ -230,43 +230,43 @@ const DetailOrder = ({ navigation, route }) => {
 								style={styles.addIcon}
 							/>
 						</TouchableOpacity>
-						
-							
+
+
 					</View>
 				)}
 			</View>
-				<ScrollView style={styling.menuRegion}>
-					{listProduct?.map(product => (
-						<View key={product.ID} style={styling.orderItem}>
-							<View>
-								<Text style={styling.itemName}>{product.name}</Text>
-								<Text style={styling.itemPrice}>{product.price?.toLocaleString('en-gb')}/{product.unit}</Text>
-							</View>
-								<View style={styling.counter}>
-									{['started', 'inProgess'].includes(order.status) ? (
-										<>
-											<TouchableOpacity style={styling.counterContent} 
-											onPress={() => onCounterQuantity(product.ID, '-')}>
-												<Text>-</Text>
-											</TouchableOpacity>
-											<TextInput
-												keyboardType='numeric'
-												style={styling.input}
-												maxLength={100}
-												value={(product?.quantity || 1) + ""}
-												caretHidden={true}
-												onChangeText={(value) => setQuantityProduct(product.ID, value)}
-											/>
-											<TouchableOpacity style={styling.counterContent} 
-											onPress={() => onCounterQuantity(product.ID, '+')}>
-												<Text>+</Text>
-											</TouchableOpacity>
-										</>
-									) : <Text style={{ color: '#644AB5', fontSize: 20}}>{product.quantity}</Text>}
-								</View>
+			<ScrollView style={styling.menuRegion}>
+				{listProduct?.map(product => (
+					<View key={product.ID} style={styling.orderItem}>
+						<View>
+							<Text style={styling.itemName}>{product.name}</Text>
+							<Text style={styling.itemPrice}>{product.price?.toLocaleString('en-gb')}/{product.unit}</Text>
 						</View>
-					))}
-				</ScrollView>
+						<View style={styling.counter}>
+							{['started', 'inProgess'].includes(order.status) ? (
+								<>
+									<TouchableOpacity style={styling.counterContent}
+										onPress={() => onCounterQuantity(product.ID, '-')}>
+										<Text>-</Text>
+									</TouchableOpacity>
+									<TextInput
+										keyboardType='numeric'
+										style={styling.input}
+										maxLength={100}
+										value={(product?.quantity || 1) + ""}
+										caretHidden={true}
+										onChangeText={(value) => setQuantityProduct(product.ID, value)}
+									/>
+									<TouchableOpacity style={styling.counterContent}
+										onPress={() => onCounterQuantity(product.ID, '+')}>
+										<Text>+</Text>
+									</TouchableOpacity>
+								</>
+							) : <Text style={{ color: '#644AB5', fontSize: 20 }}>{product.quantity}</Text>}
+						</View>
+					</View>
+				))}
+			</ScrollView>
 			<View style={styling.checkoutRegion}>
 				<Text style={styling.totalMoney}>Total: {totalBill?.toLocaleString('en-gb')}đ</Text>
 				<View style={styling.actionButtons}>
@@ -275,7 +275,7 @@ const DetailOrder = ({ navigation, route }) => {
 							let opts = {
 								name: 'Detail Table'
 							}
-							if (changeDetail){
+							if (changeDetail) {
 								opts.params = { ID: route?.params?.order?.tableId || '' }
 							}
 							navigation.navigate(opts)
@@ -290,8 +290,8 @@ const DetailOrder = ({ navigation, route }) => {
 					)}
 				</View>
 			</View>
-			{modalVisible && <ModalMenu setModalVisible={setModalVisible} menus={menuProduts} 
-			disabledList={listProduct.map(p => p.ID)} handleAddProducts={handleAddProducts} />}
+			{modalVisible && <ModalMenu setModalVisible={setModalVisible} menus={menuProduts}
+				disabledList={listProduct.map(p => p.ID)} handleAddProducts={handleAddProducts} />}
 		</View>
 	)
 };

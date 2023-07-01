@@ -5,6 +5,7 @@ import DetailTable from "../screens/detailTable";
 import DetailOrder from "../screens/detailOrder";
 import HomeScreen from "../screens/homeScreen";
 import Revenue from "../screens/revenue";
+import ViewDetailOrder from "../screens/viewDetailOrder";
 
 function Home() {
     const Stack = createNativeStackNavigator();
@@ -53,6 +54,15 @@ function Home() {
                         headerTintColor: "#644AB5",
                         headerShown: true,
                         headerLeft: () => ''
+                    }}
+                />
+                <Stack.Screen
+                    name="ViewDetailOrder"
+                    component={ViewDetailOrder}
+                    options={{
+                        headerTitleAlign: "center",
+                        headerTintColor: "#644AB5",
+                        headerShown: true
                     }}
                 />
             </Stack.Navigator>
