@@ -6,6 +6,7 @@ import DetailOrder from "../screens/detailOrder";
 import HomeScreen from "../screens/homeScreen";
 import Revenue from "../screens/revenue";
 import ViewDetailOrder from "../screens/viewDetailOrder";
+import color from "../constant/colorVariable";
 
 function Home() {
     const Stack = createNativeStackNavigator();
@@ -32,7 +33,7 @@ function Home() {
                     component={DetailTable}
                     options={{
                         headerTitleAlign: "center",
-                        headerTintColor: "#644AB5",
+                        headerTintColor: color.primary,
                         headerShown: true
                     }}
                 />
@@ -41,7 +42,7 @@ function Home() {
                     component={DetailOrder}
                     options={{
                         headerTitleAlign: "center",
-                        headerTintColor: "#644AB5",
+                        headerTintColor: color.primary,
                         headerShown: true,
                         headerLeft: () => ''
                     }}

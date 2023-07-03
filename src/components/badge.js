@@ -1,10 +1,11 @@
 import { View, Text, StyleSheet } from 'react-native';
+import color from '../constant/colorVariable';
 
 const Badge = ({ label = 'Badge', color = 'info' }) => {
 
     return (
-        <View style={{ ...badgeStyle.root, ...(badgeStyle[color] || badgeStyle.info) }}>
-            <Text style={{ color: 'white', fontSize: 16 }}>{label}</Text>
+        <View style={badgeStyle.root}>
+            <Text style={badgeStyle[color] || badgeStyle.info}>{label}</Text>
         </View>
     )
 }
@@ -17,18 +18,23 @@ const badgeStyle = StyleSheet.create({
         padding: 6,
         paddingTop: 3,
         paddingBottom: 3,
-        borderRadius: 15
+        borderRadius: 15,
+        backgroundColor: 'white'
     },
     danger: {
-        backgroundColor: 'rgb(255, 70, 70)',
+        color: color.danger,
+        fontSize: 11
     },
     warning: {
-        backgroundColor: 'rgb(255, 162, 63)',
+        color: color.warning,
+        fontSize: 11
     },
     success: {
-        backgroundColor: 'rgb(32, 195, 0)',
+        color: color.success,
+        fontSize: 11
     },
     info: {
-        backgroundColor: 'rgb(0, 140, 255)'
+        color: color.second,
+        fontSize: 11
     }
 })

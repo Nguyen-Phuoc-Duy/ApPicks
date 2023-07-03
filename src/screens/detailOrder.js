@@ -9,6 +9,7 @@ import ModalMenu from "../components/modal/modalMenu";
 import { AuthContext } from "../context/authProvider";
 import Badge from "../components/badge";
 import { getColorStatus } from "../constant/status";
+import color from "../constant/colorVariable";
 
 const DetailOrder = ({ navigation, route }) => {
 	const [listProduct, setListProducts] = useState([]);
@@ -29,7 +30,7 @@ const DetailOrder = ({ navigation, route }) => {
 		navigation.setOptions({
 			headerRight: () => ['started', 'inProgress'].includes(order.status) ? (
 				<TouchableOpacity onPress={() => cancelOrder(ID)}>
-					<Text style={{ color: 'red' }}>Cancel</Text>
+					<Text style={{ color: color.danger }}>Cancel</Text>
 				</TouchableOpacity>
 			) : '',
 			headerLeft: () => <Badge label={order.status} color={status} />
@@ -183,7 +184,6 @@ const DetailOrder = ({ navigation, route }) => {
 
 
 	const setQuantityProduct = async (ID, value) => {
-		console.log(ID, value)
 		let newProducts = listProduct;
 		if (value <= 0) {
 			let title = 'Are you sure?';
@@ -216,7 +216,7 @@ const DetailOrder = ({ navigation, route }) => {
 								<Ionicons
 									name="checkmark-outline"
 									size={30}
-									color={"#644AB5"}
+									color={color.primary}
 									style={styles.addIcon}
 								/>
 							</TouchableOpacity>
@@ -226,7 +226,7 @@ const DetailOrder = ({ navigation, route }) => {
 							<Ionicons
 								name="ios-add-circle-outline"
 								size={30}
-								color={"#644AB5"}
+								color={color.primary}
 								style={styles.addIcon}
 							/>
 						</TouchableOpacity>
@@ -262,7 +262,7 @@ const DetailOrder = ({ navigation, route }) => {
 										<Text>+</Text>
 									</TouchableOpacity>
 								</>
-							) : <Text style={{ color: '#644AB5', fontSize: 20 }}>{product.quantity}</Text>}
+							) : <Text style={{ color: color.primary, fontSize: 20 }}>{product.quantity}</Text>}
 						</View>
 					</View>
 				))}
@@ -300,7 +300,7 @@ export default DetailOrder;
 
 const styling = StyleSheet.create({
 	container: {
-		borderColor: "#644AB5",
+		borderColor: color.primary,
 		borderWidth: 2,
 		margin: 10,
 		borderRadius: 5,
@@ -309,8 +309,8 @@ const styling = StyleSheet.create({
 		justifyContent: 'space-between'
 	},
 	input: {
-		borderColor: "#644AB5",
-		color: "#644AB5",
+		borderColor: color.primary,
+		color: color.primary,
 		borderWidth: 2,
 		width: 30,
 		padding: 0,
@@ -318,27 +318,27 @@ const styling = StyleSheet.create({
 		borderRadius: 3
 	},
 	header: {
-		borderBottomColor: '#644AB5',
+		borderBottomColor: color.primary,
 		borderBottomWidth: 2,
 		flexDirection: 'row',
 		justifyContent: 'space-between'
 	},
 	orderName: {
 		fontSize: 30,
-		color: "#644AB5",
+		color: color.primary,
 		fontWeight: "bold",
 		paddingBottom: 5,
 		textAlignVertical: 'center'
 	},
 	employeeName: {
 		fontSize: 15,
-		color: "#644AB5",
+		color: color.primary,
 		fontWeight: "bold",
 		textAlignVertical: 'center'
 	},
 	menuRegion: {
 		marginTop: 10,
-		borderBottomColor: '#644AB5',
+		borderBottomColor: color.primary,
 		borderBottomWidth: 2,
 		paddingBottom: 10,
 		flex: 1
@@ -349,26 +349,25 @@ const styling = StyleSheet.create({
 		justifyContent: "space-between"
 	},
 	itemName: {
-		color: "#644AB5",
+		color: color.primary,
 		fontSize: 22,
 		fontWeight: "bold"
 	},
 	itemPrice: {
-		color: "#644AB5",
+		color: color.primary,
 		fontSize: 18
 	},
 	counter: {
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		width: 80
 	},
 	checkoutRegion: {
 		padding: 10,
 	},
 	totalMoney: {
 		fontSize: 22,
-		color: "#644AB5",
+		color: color.primary,
 		fontWeight: "bold",
 		textAlign: "right"
 	},
@@ -378,7 +377,7 @@ const styling = StyleSheet.create({
 		marginTop: 20
 	},
 	button: {
-		backgroundColor: "#644AB5",
+		backgroundColor: color.primary,
 		width: 155,
 		height: 40,
 		borderRadius: 5,
@@ -392,9 +391,7 @@ const styling = StyleSheet.create({
 		//textAlignVertical: 'center'
 	},
 	counterContent: {
-		padding: 10,
-		paddingTop: 5,
-		paddingBottom: 5,
+		padding: 15,
 		borderRadius: 5
 	}
 })

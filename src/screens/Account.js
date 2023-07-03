@@ -4,18 +4,23 @@ import { AuthContext } from "../context/authProvider"
 import loginStyles from "../css/login";
 import useAlert from '../hook/useAlert';
 import Loader from "../components/loader";
+import InputCustom from "../components/inputCustom";
+import { Button } from "react-native";
 
 const AccountInfo = ({ navigation }) => {
     const { user, useFetch, setUser } = useContext(AuthContext);
     const [isLoading, setIsloading] = useState(false);
+    const [changePWD, setChangePWD] = useState(false);
     const [formValue,setFormValue] = useState({
         name: user?.name || '',
+        currentPWD: '',
         password: '',
         'Re-password': ''
     });
     const [errForm, setErrForm] = useState({
         name: '',
-        password: ''
+        password: '',
+        currentPWD: ''
     })
 
     const handleChangeValueForm = (field,value) => {
@@ -24,13 +29,14 @@ const AccountInfo = ({ navigation }) => {
         setFormValue(newForm);
         setErrForm({
             name: '',
-            password: ''
+            password: '',
+            currentPWD: ''
         })
     }
     
     const handleSubmitForm = async () => {
         try {
-            let { name, password } = formValue;
+            let { name, password, currentPWD } = formValue;
             if (name === user.name && !password) return;
             if (password && formValue['Re-password'] !== password) {
                 setErrForm({
@@ -44,7 +50,7 @@ const AccountInfo = ({ navigation }) => {
                 })
             }else {
                 setIsloading(true);
-                let result = await useFetch('users/updateProfile', { ID: user.ID, name, password }, 'POST')
+                let result = await useFetch('users/updateProfile', { ID: user.ID, name, password, currentPWD }, 'POST')
                 if (result.errCode === 200) {
                     setUser(prev => {
                         if(prev){
@@ -52,10 +58,19 @@ const AccountInfo = ({ navigation }) => {
                         }
                         return prev;
                     });
-                    setFormValue({...formValue, password: '', ['Re-password']: ''})
+                    setFormValue({...formValue, password: '', ['Re-password']: '', currentPWD: ''})
                     useAlert.alert('Update user', 'User updated successfully!');
-                }else {
-                    console.log(result);
+                } else if (result.errCode === 400) {
+                    setErrForm({
+                        ...errForm,
+                        currentPWD: result.errMsg || 'Forbidden!'
+                    })
+                }
+                else {
+                    setErrForm({
+                        ...errForm,
+                        password: result.errMsg || 'System Error!'
+                    })
                 }
             }
         } catch (e) {
@@ -71,21 +86,21 @@ const AccountInfo = ({ navigation }) => {
             <View style={loginStyles.container}>
                 <View style={loginStyles.form}>
                     <TextInput editable={false} style={loginStyles.inputDisabled} value={user?.email || 'Invalid mail!'} />
-                    <TextInput style={loginStyles.input} placeholder='Name*'
-                        value={formValue.name}
-                        onChangeText={(value) => handleChangeValueForm('name',value)} />
-                    {errForm.name && (
-                        <Text style={loginStyles.textError}>{errForm.name}</Text>
-                    )}
-                    <TextInput style={loginStyles.input} placeholder='Password*' autoCompleteType="password" 
-                        secureTextEntry autoCorrect={false} value={formValue.password}
-                        onChangeText={(value) => handleChangeValueForm('password',value)}
+                    <InputCustom name='name' label='Name' required errMsg={errForm.name}
+                        value={formValue.name} onChange={(value) => handleChangeValueForm('name',value)}
                     />
-                    <TextInput style={loginStyles.input} placeholder='Confirm password' secureTextEntry autoCorrect={false} value={formValue['Re-password']}
-                        onChangeText={(value) => handleChangeValueForm('Re-password',value)} />
-                    {errForm.password && (
-                        <Text style={loginStyles.textError}>{errForm.password}</Text>
-                    )}
+                    <InputCustom name='Current-password' label='Current Password' placeholder='Current password'
+                        value={formValue.currentPWD} onChange={(value) => handleChangeValueForm('currentPWD',value)}
+                        required  type='password' errMsg={errForm.currentPWD}
+                    />
+                    <InputCustom name='password' label='Password' type='password' placeholder='Password'
+                        value={formValue.password} onChange={(value) => handleChangeValueForm('password',value)}
+                        required
+                    />
+                    <InputCustom name='Re-password' label='Confirm password' type='password' placeholder='Confirm password' errMsg={errForm.password}
+                        value={formValue['Re-password']} onChange={(value) => handleChangeValueForm('Re-password',value)}
+                        required
+                    />
                     <TouchableOpacity
                         style={{...loginStyles.button, ...loginStyles.alignCenter}} 
                         onPress={handleSubmitForm}>

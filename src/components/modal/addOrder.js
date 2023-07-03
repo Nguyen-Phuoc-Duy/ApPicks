@@ -4,6 +4,7 @@ import styles from '../../css/style';
 import useAlert from '../../hook/useAlert';
 import { AuthContext } from '../../context/authProvider';
 import Loader from '../loader';
+import color from '../../constant/colorVariable';
 
 
 const ModalAddOrder = ({ setModalVisible, menus = [], tableId, addOrder }) => {
@@ -150,7 +151,7 @@ const styling = StyleSheet.create({
         // alignItems: "center",
     },
 	button: {
-		backgroundColor: "#644AB5",
+		backgroundColor: color.primary,
 		width: 155,
 		height: 40,
 		borderRadius: 5,
@@ -162,11 +163,11 @@ const styling = StyleSheet.create({
 		fontSize: 18,
 	},
     inputTextHeader: {
-        color: "#644AB5",
+        color: color.primary,
         fontSize: 25,
         padding: 10,
         borderBottomWidth: 0.5,
-        borderColor: '#644AB5'
+        borderColor: color.primary
     },
     itemBox: {
         marginTop: 10,
@@ -179,10 +180,11 @@ const styling = StyleSheet.create({
         alignItems: "center",
     },
     itemSelected: {
-        backgroundColor: "rgb(218, 218, 218)",
+        backgroundColor: color.primary,
+        color: color.primaryText
     },
     input: {
-		color: "#644AB5",
+		color: color.primaryText,
 		width: 30,
 		padding: 0,
         fontSize: 18,
@@ -193,12 +195,9 @@ const styling = StyleSheet.create({
 		flexDirection: 'row',
 		justifyContent: 'space-between',
 		alignItems: 'center',
-		width: 80
 	},
     counterContent: {
-		padding: 10,
-		paddingTop: 5,
-		paddingBottom: 5,
-		borderRadius: 5
+		padding: 15,
+		borderRadius: 5,
 	}
 })

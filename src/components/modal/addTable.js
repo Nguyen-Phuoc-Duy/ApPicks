@@ -21,7 +21,8 @@ const ModalAddTable = ({ setModalVisible, onChange, tableEdit = {} }) => {
                     let result = await useFetch('admin/updateTable', { ID: tableEdit.ID, name: nameTable }, 'POST');
                     if (result.errCode === 200) {
                         result = result.data;
-                        onChange(prev => {
+                        console.log(onChange);
+                        onChange?.(prev => {
                             if (prev && Array.isArray(prev)) {
                                 prev.forEach(table => {
                                     if (table.ID === tableEdit.ID) {
@@ -41,7 +42,7 @@ const ModalAddTable = ({ setModalVisible, onChange, tableEdit = {} }) => {
                     let result = await useFetch('admin/createTable', { name: nameTable }, 'POST');
                     if (result.errCode === 200) {
                         result = result.data;
-                        onChange(prev => {
+                        onChange?.(prev => {
                             if (prev && Array.isArray(prev)) {
                                 prev.unshift(result);
                                 return [...prev];
@@ -51,7 +52,10 @@ const ModalAddTable = ({ setModalVisible, onChange, tableEdit = {} }) => {
                     }
                 }
             }
-        } finally {
+        } catch (e) {
+            console.log(e);
+        }
+        finally {
             setModalVisible(false);
             setIsLoading(false);
         }

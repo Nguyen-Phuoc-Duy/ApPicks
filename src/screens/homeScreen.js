@@ -8,6 +8,7 @@ import { useContext, useLayoutEffect } from 'react';
 import { AuthContext } from '../context/authProvider';
 import useAlert from '../hook/useAlert';
 import Revenue from './revenue';
+import color from '../constant/colorVariable';
 
 const HomeScreen = ({ navigation }) => {
 
@@ -37,7 +38,7 @@ const HomeScreen = ({ navigation }) => {
                 name="Logout"
                 component={HandleLogout}
                 options={{
-                    headerTintColor: "#644AB5",
+                    headerTintColor: color.primary,
                     headerShown: true,
                     headerTitleAlign: 'center',
                     headerLeft: () => '',
@@ -49,7 +50,7 @@ const HomeScreen = ({ navigation }) => {
                             <Ionicons
                                 name="exit-outline"
                                 size={30}
-                                color={"#644AB5"}
+                                color={color.danger}
                                 style={styles.btnLogout}
                             />
                         </TouchableOpacity>
@@ -60,17 +61,17 @@ const HomeScreen = ({ navigation }) => {
                 name="View Table"
                 component={RenderTableComponent}
                 options={{
-                    headerTintColor: "#644AB5",
+                    headerTintColor: color.primary,
                     headerShown: true,
                     headerTitleAlign: 'center',
                     headerLeft: () => '',
                     tabBarLabelStyle: { display: 'none' },
-                    tabBarIcon: ({ color, size }) => (
+                    tabBarIcon: () => (
                         <>
                             <Ionicons
                                 name="grid-outline"
                                 size={25}
-                                color={"#644AB5"}
+                                color={color.primary}
                             />
                         </>
                     )
@@ -103,16 +104,16 @@ const HomeScreen = ({ navigation }) => {
                 component={AccountInfo}
                 options={{
                     headerTitle: "Account",
-                    headerTintColor: "#644AB5",
+                    headerTintColor: color.primary,
                     headerShown: true,
                     headerTitleAlign: 'center',
                     tabBarLabelStyle: { display: 'none' },
-                    tabBarIcon: ({ color, size }) => (
+                    tabBarIcon: () => (
                         <>
                             <Ionicons
                                 name="person-circle-outline"
                                 size={25}
-                                color={"#644AB5"}
+                                color={color.primary}
                             />
                         </>
                     ),

@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import color from "../constant/colorVariable";
 const styles = StyleSheet.create({
   defaultLayout: {
     display: 'flex',
@@ -217,7 +218,7 @@ const styles = StyleSheet.create({
   boxTable: {
     marginTop: 20,
     marginHorizontal: 20,
-    backgroundColor: "rgb(200, 200, 200)",
+    backgroundColor: color.primary,
     height: 80,
     display: "flex",
     justifyContent: "space-between",
@@ -226,7 +227,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textTable: {
-    color: "#644AB5",
+    color: color.primaryText,
     fontSize: 25,
     fontWeight: 700,
   },

@@ -8,6 +8,7 @@ import ModalAddTable from "../components/modal/addTable";
 import { RefreshControl } from "react-native";
 import Loader from "../components/loader";
 import useAlert from "../hook/useAlert";
+import color from "../constant/colorVariable";
 
 const Tables = ({ navigation, navigationParent }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -27,7 +28,7 @@ const Tables = ({ navigation, navigationParent }) => {
           <Ionicons
             name="ios-add-circle-outline"
             size={30}
-            color={"#644AB5"}
+            color={color.primary}
             style={styles.addIcon}
           />
         </TouchableOpacity>
@@ -103,7 +104,7 @@ const Tables = ({ navigation, navigationParent }) => {
                     <Ionicons
                       name="create-outline"
                       size={30}
-                      color={"#644AB5"}
+                      color={color.primaryText}
                       style={styles.addIcon}
                     />
                   </TouchableOpacity>
@@ -111,7 +112,7 @@ const Tables = ({ navigation, navigationParent }) => {
                     <Ionicons
                       name="trash-outline"
                       size={30}
-                      color={"#644AB5"}
+                      color={color.primaryText}
                       style={styles.addIcon}
                     />
                   </TouchableOpacity>
@@ -130,57 +131,3 @@ const Tables = ({ navigation, navigationParent }) => {
 };
 
 export default Tables;
-
-
-{/* <Modal
-          animationType="slide"
-          transparent={true}
-          visible={modalVisible}
-          onRequestClose={() => {
-            Alert.alert("Modal has been closed.");
-            setModalVisible(!modalVisible);
-          }}
-        >
-          <View style={styles.centeredView}>
-            <View style={styles.modalView}>
-              <Pressable>
-                <Pressable style={styles.title_exit}>
-                  <Pressable
-                    style={[styles.button, styles.buttonClose]}
-                    onPress={() => setModalVisible(!modalVisible)}
-                  >
-                    <Text style={styles.textStyle}>X</Text>
-                  </Pressable>
-                </Pressable>
-                <Pressable>
-                  <KeyboardAvoidingView
-                    behavior={Platform.OS === "ios" ? "padding" : "height"}
-                    style={styles.container}
-                  >
-                    <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-                      <View style={styles.inner}>
-                        <Text style={styles.header}>Order 1</Text>
-                        <Text>Bia</Text>
-                        <Text>20000/chai</Text>
-                        <View style={styles.btnContainer}>
-                          <Button title="Thêm" onPress={() => null} />
-                        </View>
-                      </View>
-                    </TouchableWithoutFeedback>
-                  </KeyboardAvoidingView>
-                </Pressable>
-              </Pressable>
-            </View>
-          </View>
-        </Modal>
-        <Pressable
-          onPress={() => setModalVisible(!modalVisible)}
-          style={styles.addIconContainer}
-        >
-          <Ionicons
-            name="ios-add-circle-outline"
-            size={30}
-            color={"#644AB5"}
-            style={styles.addIcon}
-          />
-        </Pressable> */}

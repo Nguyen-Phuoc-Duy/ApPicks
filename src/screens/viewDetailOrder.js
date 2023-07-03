@@ -52,8 +52,8 @@ const ViewDetailOrder = ({ navigation, navigationParent }) => {
             </View>
             <View style={styling.menuRegion}>
                 <ScrollView>
-                    {orderDetails && orderDetails.map(orderDetail => (
-                        <View style={styling.orderItem}>
+                    {orderDetails && orderDetails.map((orderDetail) => (
+                        <View key={orderDetail.ID} style={styling.orderItem}>
                             <View>
                                 <Text style={styling.itemName}>{orderDetail.name}</Text>
                                 <Text style={styling.itemPrice}>{orderDetail.price}/{orderDetail.unit}</Text>
