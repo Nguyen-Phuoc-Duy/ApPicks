@@ -52,7 +52,7 @@ function Home() {
                     component={Revenue}
                     options={{
                         headerTitleAlign: "center",
-                        headerTintColor: "#644AB5",
+                        headerTintColor: color.primary,
                         headerShown: true,
                         headerLeft: () => ''
                     }}
@@ -62,7 +62,7 @@ function Home() {
                     component={ViewDetailOrder}
                     options={{
                         headerTitleAlign: "center",
-                        headerTintColor: "#644AB5",
+                        headerTintColor: color.primary,
                         headerShown: true
                     }}
                 />

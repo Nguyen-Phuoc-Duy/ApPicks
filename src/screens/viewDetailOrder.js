@@ -4,8 +4,9 @@ import { useRoute } from '@react-navigation/native';
 import { AuthContext } from "../context/authProvider";
 import Badge from '../components/badge';
 import { getColorStatus } from '../constant/status';
+import color from '../constant/colorVariable';
 
-const ViewDetailOrder = ({ navigation, navigationParent }) => {
+const ViewDetailOrder = ({ navigation }) => {
     const route = useRoute();
     const { useFetch } = useContext(AuthContext);
 
@@ -20,8 +21,6 @@ const ViewDetailOrder = ({ navigation, navigationParent }) => {
         if (result.errCode === 200) {
             setOrderName(result?.data.name)
             setOrderStatus(result?.data.status)
-        } else if ([400, 401].includes(result?.errCode)) {
-            navigationParent.navigate('Login');
         }
     }
 
@@ -56,7 +55,7 @@ const ViewDetailOrder = ({ navigation, navigationParent }) => {
                         <View key={orderDetail.ID} style={styling.orderItem}>
                             <View>
                                 <Text style={styling.itemName}>{orderDetail.name}</Text>
-                                <Text style={styling.itemPrice}>{orderDetail.price}/{orderDetail.unit}</Text>
+                                <Text style={styling.itemPrice}>{orderDetail.price?.toLocaleString('en-gb')}/{orderDetail.unit}</Text>
                             </View>
                             <View style={styling.counter}>
                                 <Text style={styling.itemQuantity}>Quantity: {orderDetail.quantity}</Text>
@@ -65,7 +64,7 @@ const ViewDetailOrder = ({ navigation, navigationParent }) => {
                     ))}
                 </ScrollView>
                 <View style={styling.totalMoneyRegion}>
-                    <Text style={styling.totalMoney}>Total Price: {orderTotalPrice} vnd</Text>
+                    <Text style={styling.totalMoney}>Total Price: {orderTotalPrice?.toLocaleString('en-gb')} vnđ</Text>
                 </View>
             </View>
         </View>
@@ -76,7 +75,7 @@ export default ViewDetailOrder;
 
 const styling = StyleSheet.create({
     container: {
-        borderColor: "#644AB5",
+        borderColor: color.primary,
         borderWidth: 2,
         margin: 10,
         borderRadius: 5,
@@ -85,7 +84,7 @@ const styling = StyleSheet.create({
         justifyContent: 'space-between'
     },
     header: {
-        borderBottomColor: '#644AB5',
+        borderBottomColor: color.primary,
         borderBottomWidth: 2,
         flexDirection: 'row',
         justifyContent: 'space-between',
@@ -93,14 +92,14 @@ const styling = StyleSheet.create({
     },
     orderName: {
         fontSize: 30,
-        color: "#644AB5",
+        color: color.primary,
         fontWeight: "bold",
         paddingBottom: 5,
         textAlignVertical: 'center'
     },
     employeeName: {
         fontSize: 15,
-        color: "#644AB5",
+        color: color.primary,
         fontWeight: "bold",
         textAlignVertical: 'center'
     },
@@ -114,12 +113,12 @@ const styling = StyleSheet.create({
         justifyContent: "space-between"
     },
     itemName: {
-        color: "#644AB5",
+        color: color.primary,
         fontSize: 22,
         fontWeight: "bold"
     },
     itemPrice: {
-        color: "#644AB5",
+        color: color.primary,
         fontSize: 18
     },
     counter: {
@@ -130,7 +129,7 @@ const styling = StyleSheet.create({
     },
     totalMoney: {
         fontSize: 25,
-        color: "#644AB5",
+        color: color.primary,
         fontWeight: "bold",
         textAlign: "right"
     },
@@ -140,10 +139,10 @@ const styling = StyleSheet.create({
     itemQuantity: {
         fontSize: 20,
         fontWeight: "bold",
-        color: "#644AB5"
+        color: color.primary
     },
     totalMoneyRegion: {
-        borderTopColor: '#644AB5',
+        borderTopColor: color.primary,
         borderTopWidth: 2,
         paddingRight: 5,
         paddingTop: 10

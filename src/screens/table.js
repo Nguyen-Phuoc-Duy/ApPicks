@@ -50,8 +50,6 @@ const Tables = ({ navigation, navigationParent }) => {
     let result = await useFetch('tables/getAll');
     if (result.errCode === 200) {
       setTables(result.data)
-    } else if ([400, 401].includes(result?.errCode)) {
-      navigationParent.navigate('Login');
     }
   }
 

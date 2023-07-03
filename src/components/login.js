@@ -15,7 +15,7 @@ const Login = ({ navigation }) => {
         password: '',
         form: ''
     })
-    const { user, setUser, setToken, token, useFetch } = useContext(AuthContext);
+    const { user, setUser, setToken, token, useFetch, setNavigationApp } = useContext(AuthContext);
 
     useEffect(() => {
         if (user) {
@@ -25,6 +25,10 @@ const Login = ({ navigation }) => {
             navigation.navigate('HomeScreen');
         }
     }, [user])
+
+    useEffect(() => {
+        setNavigationApp(navigation)
+    },[])
 
     const handleChangeValueForm = (field, value) => {
         if (!field) return;
@@ -90,7 +94,7 @@ const Login = ({ navigation }) => {
                     form: ''
                 })
                 const result = await useFetch(url, data, 'POST');
-                if (result.errCode === 200) {
+                 if (result?.errCode === 200) {
                     let user = result.data;
                     setUser(user);
                     setToken(user.token);

@@ -82,19 +82,17 @@ const HomeScreen = ({ navigation }) => {
                     name="Revenue"
                     component={Revenue}
                     options={{
-                        headerTintColor: "#644AB5",
+                        headerTintColor: color.primary,
                         headerShown: true,
                         headerTitleAlign: 'center',
                         headerLeft: () => '',
                         tabBarLabelStyle: { display: 'none' },
-                        tabBarIcon: ({ color, size }) => (
-                            <>
-                                <Ionicons
-                                    name="cash-outline"
-                                    size={25}
-                                    color={"#644AB5"}
-                                />
-                            </>
+                        tabBarIcon: () => (
+                            <Ionicons
+                                name="cash-outline"
+                                size={25}
+                                color={color.primary}
+                            />
                         )
                     }}
                 />
