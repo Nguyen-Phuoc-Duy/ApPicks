@@ -4,6 +4,8 @@ import Login from "../components/login";
 import DetailTable from "../screens/detailTable";
 import DetailOrder from "../screens/detailOrder";
 import HomeScreen from "../screens/homeScreen";
+import Revenue from "../screens/revenue";
+import ViewDetailOrder from "../screens/viewDetailOrder";
 import color from "../constant/colorVariable";
 
 function Home() {
@@ -43,6 +45,25 @@ function Home() {
                         headerTintColor: color.primary,
                         headerShown: true,
                         headerLeft: () => ''
+                    }}
+                />
+                <Stack.Screen
+                    name="Revenue"
+                    component={Revenue}
+                    options={{
+                        headerTitleAlign: "center",
+                        headerTintColor: color.primary,
+                        headerShown: true,
+                        headerLeft: () => ''
+                    }}
+                />
+                <Stack.Screen
+                    name="ViewDetailOrder"
+                    component={ViewDetailOrder}
+                    options={{
+                        headerTitleAlign: "center",
+                        headerTintColor: color.primary,
+                        headerShown: true
                     }}
                 />
             </Stack.Navigator>

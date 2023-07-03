@@ -7,28 +7,32 @@ import Loader from './loader';
 import InputCustom from './inputCustom';
 import color from '../constant/colorVariable';
 
-const Login = (props) => {
-    const [formData,setFormData] = useState({});
-    const [action,setAction] = useState('login');
-    const [isLoading,setIsLoading] = useState(false);
+const Login = ({ navigation }) => {
+    const [formData, setFormData] = useState({});
+    const [action, setAction] = useState('login');
+    const [isLoading, setIsLoading] = useState(false);
     const [errMsg, setErrMsg] = useState({
         email: '',
         password: '',
         form: ''
     })
-    const { user, setUser, setToken, token, useFetch } = useContext(AuthContext);
+    const { user, setUser, setToken, token, useFetch, setNavigationApp } = useContext(AuthContext);
 
     useEffect(() => {
         if (user) {
             if (!token) {
                 setToken(user.token);
             }
-            props.navigation.navigate('HomeScreen');
+            navigation.navigate('HomeScreen');
         }
-    },[user])
+    }, [user])
 
-    const handleChangeValueForm = (field,value) => {
-        if(!field) return;
+    useEffect(() => {
+        setNavigationApp(navigation)
+    },[])
+
+    const handleChangeValueForm = (field, value) => {
+        if (!field) return;
 
         let newFormData = formData;
         setErrMsg({
@@ -62,17 +66,17 @@ const Login = (props) => {
                     url = 'users/login'
                     break;
                 case 'register':
-                    if(password !== formData['Re-password']) {
+                    if (password !== formData['Re-password']) {
                         setErrMsg({
                             ...errMsg,
                             password: 'Confirm password is not match!'
                         })
-                    }else if(!name) {
+                    } else if (!name) {
                         setErrMsg({
                             ...errMsg,
                             form: 'Name is required!'
                         })
-                    }else {
+                    } else {
                         data = {
                             email,
                             name,
@@ -81,24 +85,24 @@ const Login = (props) => {
                         url = 'users/register'
                     }
                     break;
-                default: 
+                default:
                     break;
             }
-            if(data) {
+            if (data) {
                 setErrMsg({
                     email: '',
                     password: '',
                     form: ''
                 })
                 const result = await useFetch(url, data, 'POST');
-                if(result.errCode === 200){
+                 if (result?.errCode === 200) {
                     let user = result.data;
                     setUser(user);
                     setToken(user.token);
                     await SecureStore.setItemAsync('user', JSON.stringify(user));
                     await SecureStore.setItemAsync('token', user.token);
                     setFormData({})
-                    props.navigation.navigate('HomeScreen');
+                    navigation.navigate('HomeScreen');
                 }else {
                     setErrMsg({
                         email: '',
@@ -107,7 +111,7 @@ const Login = (props) => {
                     })
                 }
             }
-        } catch(e) {
+        } catch (e) {
             console.log(e);
         } finally {
             setIsLoading(false);
@@ -115,68 +119,68 @@ const Login = (props) => {
     }
 
     return (
-            <View style={loginStyles.root}>
-                {isLoading && <Loader />}
-                <View style={loginStyles.container}>
-                    <Text style={loginStyles.title}>{action}</Text>
-                    <View style={loginStyles.form}>
-                        <InputCustom name='email' placeholder='Email' type='email' label='Email'
-                            onChange={(value) => handleChangeValueForm('email',value)}
-                            errMsg={errMsg.email} required
+        <View style={loginStyles.root}>
+            {isLoading && <Loader />}
+            <View style={loginStyles.container}>
+                <Text style={loginStyles.title}>{action}</Text>
+                <View style={loginStyles.form}>
+                    <InputCustom name='email' placeholder='Email' type='email' label='Email'
+                        onChange={(value) => handleChangeValueForm('email', value)}
+                        errMsg={errMsg.email} required
+                    />
+                    {action === 'register' && (
+                        <InputCustom placeholder='Name' name='name' label='Name'
+                            onChange={(value) => handleChangeValueForm('name', value)}
+                            required
                         />
-                        {action === 'register' && (
-                            <InputCustom placeholder='Name' name='name' label='Name'
-                                onChange={(value) => handleChangeValueForm('name',value)}
-                                required
-                            />
-                        )}
-                        <InputCustom name='password' placeholder='Password' label='Password' 
-                            onChange={(value) => handleChangeValueForm('password',value)}
-                            required type='password'
+                    )}
+                    <InputCustom name='password' placeholder='Password' label='Password'
+                        onChange={(value) => handleChangeValueForm('password', value)}
+                        required type='password'
+                    />
+                    {action === 'register' && (
+                        <InputCustom name='Re-password' placeholder='Confirm password' label='Confirm password'
+                            onChange={(value) => handleChangeValueForm('Re-password', value)}
+                            required errMsg={errMsg.password} type='password'
                         />
-                        {action === 'register' && (
-                            <InputCustom name='Re-password'  placeholder='Confirm password' label='Confirm password'
-                                onChange={(value) => handleChangeValueForm('Re-password',value)}
-                                required errMsg={errMsg.password} type='password'
-                            />
+                    )}
+                    {errMsg.form && (
+                        <Text style={labelErr}>
+                            {errMsg.form}
+                        </Text>
+                    )}
+                    <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
+                        {action === 'login' ? (
+                            <TouchableOpacity onPress={() => setAction('register')}>
+                                <Text style={loginStyles.textLink}>
+                                    Sign up
+                                </Text>
+                            </TouchableOpacity>
+                        ) : (
+                            <TouchableOpacity onPress={() => setAction('login')}>
+                                <Text style={loginStyles.textLink}>
+                                    Sign in
+                                </Text>
+                            </TouchableOpacity>
                         )}
-                        {errMsg.form && (
-                            <Text style={labelErr}>
-                                {errMsg.form}
-                            </Text>
+                        {action === 'login' && (
+                            <TouchableOpacity>
+                                <Text style={loginStyles.textLink}>
+                                    Forgot password?
+                                </Text>
+                            </TouchableOpacity>
                         )}
-                        <View style={{ justifyContent: 'space-between', flexDirection: 'row'}}>
-                            {action === 'login' ? (
-                                <TouchableOpacity onPress={() => setAction('register')}>
-                                    <Text style={loginStyles.textLink}>
-                                        Sign up
-                                    </Text>
-                                </TouchableOpacity>
-                            ) : (
-                                <TouchableOpacity onPress={() => setAction('login')}>
-                                    <Text style={loginStyles.textLink}>
-                                        Sign in
-                                    </Text>
-                                </TouchableOpacity>
-                            )}
-                            {action === 'login' && (
-                                <TouchableOpacity>
-                                    <Text style={loginStyles.textLink}>
-                                        Forgot password?
-                                    </Text>
-                                </TouchableOpacity>
-                            )}
-                        </View>
-                        <TouchableOpacity
-                        style={{...loginStyles.button, ...loginStyles.alignCenter}} 
-                        onPress={handleSubmitForm}>
-                            <Text style={{ color: 'white' }}>
-                                Submit
-                            </Text>
-                        </TouchableOpacity>
                     </View>
+                    <TouchableOpacity
+                        style={{ ...loginStyles.button, ...loginStyles.alignCenter }}
+                        onPress={handleSubmitForm}>
+                        <Text style={{ color: 'white' }}>
+                            Submit
+                        </Text>
+                    </TouchableOpacity>
                 </View>
             </View>
+        </View>
     )
 }
 

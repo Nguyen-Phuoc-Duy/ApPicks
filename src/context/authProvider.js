@@ -10,6 +10,7 @@ export const AuthContext = createContext();
 function AuthProvider({ children }) {
     const [user, setUser] = useState();
     const [token, setToken] = useState();
+    const [navigationApp, setNavigationApp] = useState();
 
     const [isloading, setIsLoading] = useState(false);
 
@@ -50,17 +51,29 @@ function AuthProvider({ children }) {
                         url,
                         headers: setHeaders,
                     });
-                    return result.data;
+                    result = result.data;
+                    break;
                 case 'POST':
                     result = await axios.post(url, data,{
                         headers: setHeaders
                     });
-                    return result.data;
+                    result = result.data;
+                    break;
                 default:
-                    return 'Method not supported!';
+                    result = {
+                        errCode: 500,
+                        errMsg: 'Method not supported!'
+                    };
+                    break;
+            }
+            if([400, 401].includes(result?.errCode)){
+                navigationApp?.navigate('Login')
+                return result;
+            } else {
+                return result;
             }
         } catch (err) {
-            console.log(err);
+            console.log('useFetch:',err);
             return 'System Error!';
         }
     },[user, token])
@@ -86,7 +99,9 @@ function AuthProvider({ children }) {
                 token,
                 setToken,
                 useFetch,
-                logOut
+                logOut,
+                navigationApp,
+                setNavigationApp
             }}
         >
         {isloading && <Loader />}
