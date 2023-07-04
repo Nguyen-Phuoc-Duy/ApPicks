@@ -1,7 +1,7 @@
 import { View, Text, StyleSheet } from 'react-native';
 import color from '../constant/colorVariable';
 
-const Badge = ({ label = 'Badge', color = 'info'}) => {
+const Badge = ({ label = 'Badge', color = 'info' }) => {
 
     return (
         <View style={badgeStyle.root}>
