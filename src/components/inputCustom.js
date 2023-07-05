@@ -27,7 +27,8 @@ const InputCustom = ({ formValue = {}, name, value, type = 'input', placeholder,
             Object.assign(initStyle, style.inputError);
         }
         if (disabled) {
-            initStyle.backgroundColor = '#9999';
+            initStyle.backgroundColor = disbabledColor;
+            initStyle.borderRadius = borderRadius;
         }
         return initStyle;
     },[focus, disabled, errMsg])
@@ -73,7 +74,7 @@ const InputCustom = ({ formValue = {}, name, value, type = 'input', placeholder,
 export default InputCustom;
 
 const buttonColor = 'rgb(30, 150, 255)';
-const disbabledColor = 'rgb(180, 180, 180)';
+const disbabledColor = '#dadada';
 const borderRadius = 20;
 const borderColor = '#999999';
 

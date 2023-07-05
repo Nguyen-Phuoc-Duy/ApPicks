@@ -7,6 +7,7 @@ import HomeScreen from "../screens/homeScreen";
 import Revenue from "../screens/revenue";
 import ViewDetailOrder from "../screens/viewDetailOrder";
 import color from "../constant/colorVariable";
+import ViewProfile from "../screens/ViewProfile";
 
 function Home() {
     const Stack = createNativeStackNavigator();
@@ -53,7 +54,18 @@ function Home() {
                     options={{
                         headerTitleAlign: "center",
                         headerTintColor: color.primary,
-                        headerShown: true
+                        headerShown: true,
+                        headerTitle: 'Detail Order'
+                    }}
+                />
+                <Stack.Screen
+                    name="ViewProfile"
+                    component={ViewProfile}
+                    options={{
+                        headerTitleAlign: "center",
+                        headerTintColor: color.primary,
+                        headerShown: true,
+                        headerTitle: "User Profile"
                     }}
                 />
             </Stack.Navigator>

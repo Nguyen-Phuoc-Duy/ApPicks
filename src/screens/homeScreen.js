@@ -2,7 +2,6 @@ import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TouchableOpacity } from 'react-native';
 import Tables from './table';
 import { Ionicons } from '@expo/vector-icons';
-import AccountInfo from './Account';
 import styles from '../css/style';
 import { useContext } from 'react';
 import { AuthContext } from '../context/authProvider';
@@ -68,46 +67,72 @@ const HomeScreen = ({ navigation }) => {
                     )
                 }}
             />
-            {user && ['admin', 'manager'].includes(user.role) && (
+            {user && ['admin', 'manager'].includes(user.role) ? (
+                <>
+                    <Tab.Screen
+                        name="Revenue"
+                        component={Revenue}
+                        options={{
+                            headerTintColor: color.primary,
+                            headerShown: true,
+                            headerTitleAlign: 'center',
+                            headerLeft: () => '',
+                            tabBarLabelStyle: { display: 'none' },
+                            tabBarIcon: () => (
+                                <Ionicons
+                                    name="cash-outline"
+                                    size={25}
+                                    color={color.primary}
+                                />
+                            )
+                        }}
+                    />
+                    <Tab.Screen
+                        name="Users"
+                        component={Users}
+                        options={{
+                            headerTintColor: color.primary,
+                            headerShown: true,
+                            headerTitleAlign: 'center',
+                            tabBarLabelStyle: { display: 'none' },
+                            tabBarIcon: () => (
+                                <>
+                                    <Ionicons
+                                        name="people-outline"
+                                        size={25}
+                                        color={color.primary}
+                                    />
+                                </>
+                            ),
+                        }}
+                    />
+                </>
+            ) : (
                 <Tab.Screen
-                    name="Revenue"
-                    component={Revenue}
+                    name="ViewUser"
+                    component={HandleLogout}
                     options={{
                         headerTintColor: color.primary,
                         headerShown: true,
                         headerTitleAlign: 'center',
-                        headerLeft: () => '',
                         tabBarLabelStyle: { display: 'none' },
                         tabBarIcon: () => (
-                            <Ionicons
-                                name="cash-outline"
-                                size={25}
-                                color={color.primary}
-                            />
-                        )
+                            <TouchableOpacity style={styles.btnIcon}
+                                onPress={() => navigation.navigate({
+                                    name: 'ViewProfile',
+                                    params: { info: user }
+                                  })}
+                            >
+                                <Ionicons
+                                    name="person-circle-outline"
+                                    size={30}
+                                    color={color.primary}
+                                />
+                            </TouchableOpacity>
+                        ),
                     }}
                 />
             )}
-            <Tab.Screen
-                name="Users"
-                component={Users}
-                options={{
-                    headerTitle: "Users",
-                    headerTintColor: color.primary,
-                    headerShown: true,
-                    headerTitleAlign: 'center',
-                    tabBarLabelStyle: { display: 'none' },
-                    tabBarIcon: () => (
-                        <>
-                            <Ionicons
-                                name="people-outline"
-                                size={25}
-                                color={color.primary}
-                            />
-                        </>
-                    ),
-                }}
-            />
         </Tab.Navigator>
     )
 }

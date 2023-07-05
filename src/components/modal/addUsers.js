@@ -10,7 +10,11 @@ import { AuthContext } from "../../context/authProvider"
 
 const ModalAddUsers = ({ setModalVisible, addNewUser }) => {
     const [isLoading, setIsLoading] = useState(false);
-    const [formValue, setFormValue] = useState({});
+    const [formValue, setFormValue] = useState({
+        email: '',
+        name: '',
+        password: '',
+    });
 
     const { useFetch } = useContext(AuthContext);
 
@@ -61,7 +65,7 @@ const ModalAddUsers = ({ setModalVisible, addNewUser }) => {
             <SafeAreaView style={loginStyles.root}>
                 {isLoading && <Loader />}
                 <View style={loginStyles.container}>
-                    <Text style={loginStyles.title}>New user</Text>
+                    <Text style={loginStyles.title}>Create user</Text>
                     <View style={loginStyles.form}>
                         <InputCustom label='Email' placeholder='VD: thanh@gmail.com' required
                             value={formValue.email} onChange={(value) => handleChangeValueForm('email',value)}

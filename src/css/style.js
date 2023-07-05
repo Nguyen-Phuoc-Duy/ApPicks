@@ -280,6 +280,11 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
+  },
+  boxIcon: {
+    flexDirection: 'row',
+    gap: 10,
+    alignItems: 'center',
   }
 });
 
