@@ -2,23 +2,15 @@ import { TouchableOpacity, Text, View, Pressable, Modal, RefreshControl } from "
 import React, { useState, useEffect, useContext } from "react";
 import { ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import { AntDesign } from "@expo/vector-icons";
 import styles from "../css/style";
-import { Entypo } from "@expo/vector-icons";
-import SelectMultiple from "react-native-select-multiple";
-import { MultipleSelectList } from "react-native-dropdown-select-list";
 import { AuthContext } from "../context/authProvider";
-import ModalAddOrder from "../components/modal/addOrder";
 import Loader from "../components/loader";
-import Badge from "../components/badge";
-import { getColorStatus } from "../constant/status";
 import color from "../constant/colorVariable";
 import ModalAddUsers from "../components/modal/addUsers";
 import useAlert from "../hook/useAlert";
-const Users = ({ navigation, route }) => {
+const Users = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [listUsers, setListUsers] = useState([]);
-  const [menuProducts, setMenuProducts] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isRefesh, setIsRefesh] = useState(false);
 
@@ -39,6 +31,7 @@ const Users = ({ navigation, route }) => {
             </TouchableOpacity>
         )
     })
+    getAllUsers();
   },[])
 
   const getAllUsers = async () => {
