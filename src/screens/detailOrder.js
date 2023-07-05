@@ -29,7 +29,7 @@ const DetailOrder = ({ navigation, route }) => {
 		const status = getColorStatus[order.status];
 		navigation.setOptions({
 			headerRight: () => ['started', 'inProgress'].includes(order.status) ? (
-				<TouchableOpacity onPress={() => cancelOrder(ID)}>
+				<TouchableOpacity onPress={() => handleChangeStatus(ID, 'cancelled')}>
 					<Text style={{ color: color.danger }}>Cancel</Text>
 				</TouchableOpacity>
 			) : '',
@@ -37,13 +37,28 @@ const DetailOrder = ({ navigation, route }) => {
 		})
 	}, [])
 
-	const cancelOrder = async (ID) => {
+	const handleChangeStatus = async (ID, status) => {
 		try {
 			setIsLoading(true);
-			let confirm = await useAlert.alertSync('Are you sure?', 'Are you sure you want to cancel order?');
+			let confirm;
+			switch (status) {
+				case 'cancelled':
+					confirm = 'Are you sure you want to cancel order?';
+					break;
+					case 'inProgess':
+					confirm = 'Are you sure you want to change order is InProgess status?';
+					break;
+				case 'finished':
+					confirm = 'This order has Finished?';
+					break;
+				default:
+					return ;
+			}
+			confirm = await useAlert.alertSync('Are you sure?', confirm);
+			if (!confirm) return;
 			if (confirm) {
-				let result = await useFetch('orders/updateStatus', { ID, status: 'cancelled' }, 'POST')
-				if (result.status === 200) {
+				let result = await useFetch('orders/updateStatus', { ID, status }, 'POST')
+				if (result.errCode === 200) {
 					navigation.navigate({
 						name: 'Detail Table',
 						params: { ID: route?.params?.order?.tableId || '' }
@@ -261,7 +276,7 @@ const DetailOrder = ({ navigation, route }) => {
 										<Text>+</Text>
 									</TouchableOpacity>
 								</>
-							) : <Text style={{ color: color.primary, fontSize: 20 }}>{product.quantity}</Text>}
+							) : <Text style={{ color: color.primary, fontSize: 20 }}>Quantity: {product.quantity}</Text>}
 						</View>
 					</View>
 				))}
@@ -283,7 +298,7 @@ const DetailOrder = ({ navigation, route }) => {
 						<Text style={styling.buttonText}>Back</Text>
 					</TouchableOpacity>
 					{['started', 'inProgess'].includes(order.status) && (
-						<TouchableOpacity style={styling.button}>
+						<TouchableOpacity style={styling.button} onPress={() => handleChangeStatus(order.ID, 'finished')}>
 							<Text style={styling.buttonText}>Checkout</Text>
 						</TouchableOpacity>
 					)}

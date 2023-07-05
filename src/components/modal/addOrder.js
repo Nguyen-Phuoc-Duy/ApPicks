@@ -5,6 +5,7 @@ import useAlert from '../../hook/useAlert';
 import { AuthContext } from '../../context/authProvider';
 import Loader from '../loader';
 import color from '../../constant/colorVariable';
+import InputCustom from '../inputCustom';
 
 
 const ModalAddOrder = ({ setModalVisible, menus = [], tableId, addOrder }) => {
@@ -39,10 +40,6 @@ const ModalAddOrder = ({ setModalVisible, menus = [], tableId, addOrder }) => {
     }
 
     const handleCreateOrder = async () => {
-        if (!name) {
-            useAlert.alert('Name is required!', 'Please enter a name!');
-            return;
-        }
         let products = [];
         for (let [key,value] of Object.entries(selected)) {
             if(value){
@@ -91,9 +88,7 @@ const ModalAddOrder = ({ setModalVisible, menus = [], tableId, addOrder }) => {
         >
             {isLoading && <Loader />}
             <View style={styling.modalView1}>
-                <TextInput style={styling.inputTextHeader} placeholder='New Order' value={name}
-                    onChangeText={setName}
-                />
+                <InputCustom placeholder='New Order' value={name} onChange={setName} />
                 <ScrollView>
                     {menus?.map(item => (
                         <TouchableOpacity key={item.ID} style={{...styling.itemBox, ...((selected[item?.ID] || item.isClose) ? styling.itemSelected : {})}}

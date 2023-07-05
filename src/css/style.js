@@ -23,13 +23,13 @@ const styles = StyleSheet.create({
     borderRadius: 10
   },
   text1: {
-    color: "#644AB5",
+    color: color.primary,
     fontSize: 25,
     fontWeight: 700,
     padding: 10,
   },
   text2: {
-    color: "#644AB5",
+    color: color.primary,
     fontSize: 20,
   },
   boxRight: {
@@ -214,6 +214,7 @@ const styles = StyleSheet.create({
   },
   addIcon: {
     marginVertical: 10,
+    // marginRight: 20
   },
   boxTable: {
     marginTop: 20,

@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import color from "../constant/colorVariable";
 
 const buttonColor = 'rgb(30, 150, 255)';
 const disbabledColor = 'rgb(180, 180, 180)';
@@ -69,7 +70,12 @@ const loginStyles = StyleSheet.create({
         borderColor: '#999999',
         borderBottomWidth: 1,
         padding: 12,
-        color: '#644AB5'
+        color: color.primary
+    },
+    grButton: {
+        flexDirection: 'row',
+        alignItems: 'center',
+        justifyContent: 'space-around'
     }
 })
 

@@ -5,6 +5,7 @@ import styles from '../../css/style';
 import { Modal } from 'react-native';
 import { AuthContext } from '../../context/authProvider';
 import Loader from '../loader';
+import color from '../../constant/colorVariable';
 
 
 const ModalAddTable = ({ setModalVisible, onChange, tableEdit = {} }) => {
@@ -79,7 +80,7 @@ const ModalAddTable = ({ setModalVisible, onChange, tableEdit = {} }) => {
                         <Ionicons
                             name="checkmark-done-circle-outline"
                             size={30}
-                            color={"#644AB5"}
+                            color={color.primary}
                             style={styles.addIcon}
                         />
                     </TouchableOpacity>
@@ -90,7 +91,7 @@ const ModalAddTable = ({ setModalVisible, onChange, tableEdit = {} }) => {
                         <Ionicons
                             name="close-circle-outline"
                             size={30}
-                            color={"#644AB5"}
+                            color={color.primary}
                             style={styles.addIcon}
                         />
                     </TouchableOpacity>

@@ -1,5 +1,5 @@
-import { useContext, useEffect, useState } from 'react';
-import { View, Text, TextInput, TextLin, Button, TouchableOpacity } from 'react-native';
+import { useContext, useEffect, useLayoutEffect, useState } from 'react';
+import { View, Text, TouchableOpacity } from 'react-native';
 import loginStyles from '../css/login';
 import * as SecureStore from 'expo-secure-store';
 import { AuthContext } from '../context/authProvider';
@@ -9,20 +9,16 @@ import color from '../constant/colorVariable';
 
 const Login = ({ navigation }) => {
     const [formData, setFormData] = useState({});
-    const [action, setAction] = useState('login');
     const [isLoading, setIsLoading] = useState(false);
     const [errMsg, setErrMsg] = useState({
         email: '',
         password: '',
         form: ''
     })
-    const { user, setUser, setToken, token, useFetch, setNavigationApp } = useContext(AuthContext);
+    const { user, setUser, setToken, useFetch, setNavigationApp } = useContext(AuthContext);
 
-    useEffect(() => {
+    useLayoutEffect(() => {
         if (user) {
-            if (!token) {
-                setToken(user.token);
-            }
             navigation.navigate('HomeScreen');
         }
     }, [user])
@@ -33,7 +29,6 @@ const Login = ({ navigation }) => {
 
     const handleChangeValueForm = (field, value) => {
         if (!field) return;
-
         let newFormData = formData;
         setErrMsg({
             email: '',
@@ -47,7 +42,7 @@ const Login = ({ navigation }) => {
     const handleSubmitForm = async () => {
         try {
             setIsLoading(true);
-            let { email, name, password } = formData;
+            let { email, password } = formData;
             if (!email || !password) {
                 setErrMsg({
                     ...errMsg,
@@ -55,61 +50,29 @@ const Login = ({ navigation }) => {
                 })
                 return;
             }
-            let data;
-            let url;
-            switch (action) {
-                case 'login':
-                    data = {
-                        email,
-                        password
-                    }
-                    url = 'users/login'
-                    break;
-                case 'register':
-                    if (password !== formData['Re-password']) {
-                        setErrMsg({
-                            ...errMsg,
-                            password: 'Confirm password is not match!'
-                        })
-                    } else if (!name) {
-                        setErrMsg({
-                            ...errMsg,
-                            form: 'Name is required!'
-                        })
-                    } else {
-                        data = {
-                            email,
-                            name,
-                            password
-                        }
-                        url = 'users/register'
-                    }
-                    break;
-                default:
-                    break;
-            }
-            if (data) {
+            let data = {
+                email,
+                password
+            };
+            setErrMsg({
+                email: '',
+                password: '',
+                form: ''
+            })
+            const result = await useFetch('users/login', data, 'POST');
+            if (result?.errCode === 200) {
+                let user = result.data;
+                setUser(user);
+                setToken(user.token);
+                await SecureStore.setItemAsync('token', user.token);
+                setFormData({})
+                navigation.navigate('HomeScreen');
+            }else {
                 setErrMsg({
                     email: '',
                     password: '',
-                    form: ''
+                    form: result.errMsg || "Submit Failed!",
                 })
-                const result = await useFetch(url, data, 'POST');
-                 if (result?.errCode === 200) {
-                    let user = result.data;
-                    setUser(user);
-                    setToken(user.token);
-                    await SecureStore.setItemAsync('user', JSON.stringify(user));
-                    await SecureStore.setItemAsync('token', user.token);
-                    setFormData({})
-                    navigation.navigate('HomeScreen');
-                }else {
-                    setErrMsg({
-                        email: '',
-                        password: '',
-                        form: result.errMsg || "Submit Failed!",
-                    })
-                }
             }
         } catch (e) {
             console.log(e);
@@ -122,55 +85,21 @@ const Login = ({ navigation }) => {
         <View style={loginStyles.root}>
             {isLoading && <Loader />}
             <View style={loginStyles.container}>
-                <Text style={loginStyles.title}>{action}</Text>
+                <Text style={loginStyles.title}>Login</Text>
                 <View style={loginStyles.form}>
                     <InputCustom name='email' placeholder='Email' type='email' label='Email'
                         onChange={(value) => handleChangeValueForm('email', value)}
-                        errMsg={errMsg.email} required
+                        errMsg={errMsg.email} required value={formData['email']}
                     />
-                    {action === 'register' && (
-                        <InputCustom placeholder='Name' name='name' label='Name'
-                            onChange={(value) => handleChangeValueForm('name', value)}
-                            required
-                        />
-                    )}
                     <InputCustom name='password' placeholder='Password' label='Password'
                         onChange={(value) => handleChangeValueForm('password', value)}
-                        required type='password'
+                        required type='password' value={formData['password']}
                     />
-                    {action === 'register' && (
-                        <InputCustom name='Re-password' placeholder='Confirm password' label='Confirm password'
-                            onChange={(value) => handleChangeValueForm('Re-password', value)}
-                            required errMsg={errMsg.password} type='password'
-                        />
-                    )}
                     {errMsg.form && (
                         <Text style={labelErr}>
                             {errMsg.form}
                         </Text>
                     )}
-                    <View style={{ justifyContent: 'space-between', flexDirection: 'row' }}>
-                        {action === 'login' ? (
-                            <TouchableOpacity onPress={() => setAction('register')}>
-                                <Text style={loginStyles.textLink}>
-                                    Sign up
-                                </Text>
-                            </TouchableOpacity>
-                        ) : (
-                            <TouchableOpacity onPress={() => setAction('login')}>
-                                <Text style={loginStyles.textLink}>
-                                    Sign in
-                                </Text>
-                            </TouchableOpacity>
-                        )}
-                        {action === 'login' && (
-                            <TouchableOpacity>
-                                <Text style={loginStyles.textLink}>
-                                    Forgot password?
-                                </Text>
-                            </TouchableOpacity>
-                        )}
-                    </View>
                     <TouchableOpacity
                         style={{ ...loginStyles.button, ...loginStyles.alignCenter }}
                         onPress={handleSubmitForm}>

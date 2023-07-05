@@ -4,11 +4,12 @@ import Tables from './table';
 import { Ionicons } from '@expo/vector-icons';
 import AccountInfo from './Account';
 import styles from '../css/style';
-import { useContext, useLayoutEffect } from 'react';
+import { useContext } from 'react';
 import { AuthContext } from '../context/authProvider';
 import useAlert from '../hook/useAlert';
 import Revenue from './revenue';
 import color from '../constant/colorVariable';
+import Users from './Users';
 
 const HomeScreen = ({ navigation }) => {
 
@@ -16,20 +17,10 @@ const HomeScreen = ({ navigation }) => {
 
     const { logOut, user } = useContext(AuthContext);
 
-    useLayoutEffect(() => {
-        if (!user) {
-            navigation.navigate('Login');
-        }
-    }, [])
-
     const HandleLogout = async (navigate) => {
         if (!navigate) return null;
         let confirm = await useAlert.alertSync('Logout', 'Are you sure you want to log out?');
         confirm && logOut(navigate);
-    }
-
-    const RenderTableComponent = (props) => {
-        return <Tables navigationParent={navigation} {...props} />
     }
 
     return (
@@ -59,7 +50,7 @@ const HomeScreen = ({ navigation }) => {
             />
             <Tab.Screen
                 name="View Table"
-                component={RenderTableComponent}
+                component={Tables}
                 options={{
                     headerTintColor: color.primary,
                     headerShown: true,
@@ -98,10 +89,10 @@ const HomeScreen = ({ navigation }) => {
                 />
             )}
             <Tab.Screen
-                name="Account"
-                component={AccountInfo}
+                name="Users"
+                component={Users}
                 options={{
-                    headerTitle: "Account",
+                    headerTitle: "Users",
                     headerTintColor: color.primary,
                     headerShown: true,
                     headerTitleAlign: 'center',
@@ -109,7 +100,7 @@ const HomeScreen = ({ navigation }) => {
                     tabBarIcon: () => (
                         <>
                             <Ionicons
-                                name="person-circle-outline"
+                                name="people-outline"
                                 size={25}
                                 color={color.primary}
                             />

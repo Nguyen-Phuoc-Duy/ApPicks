@@ -1,7 +1,6 @@
 import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View } from 'react-native';
-import checkEmail from '../helpers/checkEmail';
 
 const InputCustom = ({ formValue = {}, name, value, type = 'input', placeholder, onChange, color = "black", label, iconPrefix, rule, errMsg, required, disabled }) => {
     const [stateValue, setStateValue] = useState(value);

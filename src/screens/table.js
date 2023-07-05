@@ -10,7 +10,7 @@ import Loader from "../components/loader";
 import useAlert from "../hook/useAlert";
 import color from "../constant/colorVariable";
 
-const Tables = ({ navigation, navigationParent }) => {
+const Tables = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [tables, setTables] = useState([]);
   const [tableEdit, setTableEdit] = useState({});

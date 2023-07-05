@@ -48,16 +48,6 @@ function Home() {
                     }}
                 />
                 <Stack.Screen
-                    name="Revenue"
-                    component={Revenue}
-                    options={{
-                        headerTitleAlign: "center",
-                        headerTintColor: color.primary,
-                        headerShown: true,
-                        headerLeft: () => ''
-                    }}
-                />
-                <Stack.Screen
                     name="ViewDetailOrder"
                     component={ViewDetailOrder}
                     options={{

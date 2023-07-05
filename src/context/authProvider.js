@@ -4,6 +4,7 @@ import axios from 'axios';
 import { Platform } from 'react-native';
 import { REACT_APP_HOST_IOS, REACT_APP_HOST_ANDROID } from "@env"
 import * as SecureStore from 'expo-secure-store';
+import useAlert from '../hook/useAlert';
 
 export const AuthContext = createContext();
 
@@ -14,23 +15,25 @@ function AuthProvider({ children }) {
 
     const [isloading, setIsLoading] = useState(false);
 
-    useLayoutEffect(() => {
-        const checkLogin = async () => {
-            let user = await SecureStore.getItemAsync('user');
-            if (user){
-                try {
-                    user = JSON.parse(user);
-                    setUser(user);
-                    setToken(user.token);
-                    await SecureStore.setItemAsync('token', user.token)
-                }catch(e) {
-                    console.log(e);
-                } finally {
-                    setIsLoading(false);
+    const loginWithToken = async () => {
+        setIsLoading(true);
+        let accessToken = await SecureStore.getItemAsync('token');
+        if (accessToken) {
+            try {
+                let result = await useFetch('users/loginWithToken/' + accessToken);
+                if (result.errCode === 200) {
+                    setUser(result.data);
+                    setToken(accessToken);
                 }
+            }catch(e) {
+                console.log(e);
             }
         }
-        checkLogin();
+        setIsLoading(false);
+    }
+
+    useLayoutEffect(() => {
+        loginWithToken();
     },[])
 
     const useFetch = useCallback(async (url, data, method = 'GET', headers = {}) => {
@@ -66,7 +69,8 @@ function AuthProvider({ children }) {
                     };
                     break;
             }
-            if([400, 401].includes(result?.errCode)){
+            if(result?.errCode === 400){
+                await useAlert.alertSync('Forbidden', result.errMsg, '')
                 navigationApp?.navigate('Login')
                 return result;
             } else {
@@ -81,7 +85,6 @@ function AuthProvider({ children }) {
     const logOut = async (navigate) => {
         try {
             setIsLoading(true);
-            await SecureStore.deleteItemAsync('user');
             await SecureStore.deleteItemAsync('token');
             setUser(null);
             setToken(null);
@@ -104,8 +107,7 @@ function AuthProvider({ children }) {
                 setNavigationApp
             }}
         >
-        {isloading && <Loader />}
-        {children}
+        {isloading ? <Loader /> : children}
         </AuthContext.Provider>
     );
 }

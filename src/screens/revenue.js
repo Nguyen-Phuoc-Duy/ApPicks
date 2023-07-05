@@ -1,18 +1,33 @@
 import { StyleSheet, Text, View, ScrollView, RefreshControl, TouchableOpacity, SafeAreaView } from "react-native";
-import React, { useEffect, useState, useContext } from "react";
+import React, { useEffect, useState, useContext, useLayoutEffect } from "react";
 import Loader from "../components/loader";
 import { AuthContext } from "../context/authProvider";
 import color from "../constant/colorVariable";
 import Badge from "../components/badge";
 import { getColorStatus } from "../constant/status";
+import { Ionicons } from "@expo/vector-icons";
 
 const Revenue = ({ navigation }) => {
     const { useFetch } = useContext(AuthContext);
 
-
     const [isLoading, setIsLoading] = useState(false)
     const [orders, setOrders] = useState([])
     const [totalPrice, setTotalPrice] = useState(0)
+
+    useLayoutEffect(() => {
+        navigation.setOptions({
+            headerRight: () => (
+                <TouchableOpacity style={styles.btnIcon}>
+                    <Ionicons
+                        name='add-circle'
+                        size={30}
+                        color={color.primary}
+                        style={styles.addIcon}
+                    />
+                </TouchableOpacity>
+            )
+        })
+    },[])
 
     const getAllOrders = async () => {
         let result = await useFetch('admin/getAllOrders');
@@ -93,5 +108,15 @@ const styles = StyleSheet.create({
         color: color.primaryText,
         fontSize: 25,
         fontWeight: "bold"
-    }
+    },
+    btnIcon: {
+		padding: 10,
+		paddingTop: 0,
+		paddingBottom: 0,
+		borderRadius: 99,
+		backgroundColor: "transparent"
+	},
+    addIcon: {
+        marginVertical: 10,
+    },
 });
