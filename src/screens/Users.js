@@ -1,4 +1,4 @@
-import { TouchableOpacity, Text, View, Pressable, Modal, RefreshControl } from "react-native";
+import { TouchableOpacity, Text, RefreshControl } from "react-native";
 import React, { useState, useEffect, useContext } from "react";
 import { ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
@@ -7,14 +7,14 @@ import { AuthContext } from "../context/authProvider";
 import Loader from "../components/loader";
 import color from "../constant/colorVariable";
 import ModalAddUsers from "../components/modal/addUsers";
-import useAlert from "../hook/useAlert";
+import { StyleSheet } from "react-native";
 const Users = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [listUsers, setListUsers] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [isRefesh, setIsRefesh] = useState(false);
 
-  const { useFetch } = useContext(AuthContext);
+  const { user, useFetch } = useContext(AuthContext);
 
   useEffect(() => {
     navigation.setOptions({
@@ -28,6 +28,20 @@ const Users = ({ navigation }) => {
                     size={30}
                     color={color.primary}
                 />
+            </TouchableOpacity>
+        ),
+        headerLeft: () => (
+          <TouchableOpacity onPress={() => navigation.navigate({
+            name: 'ViewProfile',
+            params: { info: user, adminUpdate: true }
+          })}
+            style={style.btnLeft}>
+                <Ionicons
+                    name="sync-circle-outline"
+                    size={20}
+                    color={color.primary}
+                />
+                <Text style={style.btnLeftText}>Change profile</Text>
             </TouchableOpacity>
         )
     })
@@ -62,14 +76,14 @@ const Users = ({ navigation }) => {
     <>
       {isLoading && <Loader />}
       <ScrollView refreshControl={<RefreshControl refreshing={isRefesh} onRefresh={onRefresh} />}>
-        {listUsers && listUsers.map(user => (
-          <TouchableOpacity key={user.ID} style={styles.boxTable}
+        {listUsers && listUsers.map(userInfo => (
+          <TouchableOpacity key={userInfo.ID} style={styles.boxTable}
             onPress={() => navigation.navigate({
               name: 'ViewProfile',
-              params: { info: user }
+              params: { info: userInfo }
             })}
           >
-            <Text style={styles.textTable}>{user.name}</Text>
+            <Text style={styles.textTable}>{userInfo.name}</Text>
           </TouchableOpacity>
         ))}
       </ScrollView>
@@ -77,6 +91,18 @@ const Users = ({ navigation }) => {
     </>
   );
 };
+
+const style = StyleSheet.create({
+  btnLeft: {
+      marginLeft: 20,
+      alignItems: 'center',
+      justifyContent: 'center',
+  },
+  btnLeftText: {
+    color: color.primary,
+    fontSize: 12
+  }
+})
 
 
 export default Users;

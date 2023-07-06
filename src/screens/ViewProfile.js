@@ -8,12 +8,17 @@ import InputCustom from "../components/inputCustom";
 import BouncyCheckbox from "react-native-bouncy-checkbox";
 import color from "../constant/colorVariable";
 import { Ionicons } from "@expo/vector-icons";
+import SelectDropdown from "../components/selectDropdown";
+import roles from "../constant/listRole";
 
 const ViewProfile = ({ navigation, route }) => {
-    const { user, useFetch } = useContext(AuthContext);
+    const { user, useFetch, setUser } = useContext(AuthContext);
     const [isLoading, setIsloading] = useState(false);
     const [changePWD, setChangePWD] = useState(false);
     const [profile, setProfile] = useState();
+    const [enableSubmit, setEnableSubmit] = useState(false);
+    const [isAdmin, setIsAdmin] = useState(false);
+
     const [formValue,setFormValue] = useState({
         name: '',
         currentPWD: '',
@@ -61,8 +66,9 @@ const ViewProfile = ({ navigation, route }) => {
     useEffect(() => {
         try {
             if (route?.params) {
-                let { info } = route.params;
+                let { info, adminUpdate = false } = route.params;
                 setProfile(info);
+                setIsAdmin(adminUpdate);
             }
         } catch (e) {
             console.log(e);
@@ -77,7 +83,7 @@ const ViewProfile = ({ navigation, route }) => {
             }
             setFormValue(defaultValue);
         }
-        if (user && user.role !== 'employee' && profile) {
+        if (user && user.role !== 'employee' && profile && !isAdmin) {
             navigation.setOptions({
                 headerRight: () => (
                     <TouchableOpacity onPress={() => handleLockOrUnlock(profile)}>
@@ -89,8 +95,12 @@ const ViewProfile = ({ navigation, route }) => {
                     </TouchableOpacity>
                 )
             })
+        } else {
+            navigation.setOptions({
+                headerRight: () => ''
+            })
         }
-    }, [profile])
+    }, [profile, isAdmin])
 
     const handleChangeValueForm = (field,value) => {
         let newForm = {...formValue};
@@ -100,11 +110,23 @@ const ViewProfile = ({ navigation, route }) => {
             name: '',
             password: '',
             currentPWD: ''
-        })
+        });
+        let { info } = route.params || {};
+
+        if (info && (info.name !== newForm.name)) {
+            setEnableSubmit(false);
+        } else if (newForm.password) {
+            setEnableSubmit(false);
+        } else {
+            setEnableSubmit(true);
+        }
     }
 
     const handleResetPassword = async () => {
         if (!profile || !profile.ID) return;
+        let confirm = await useAlert.alertSync('Reset Password', 'Are you sure you want to reset your password!');
+        if (!confirm) return;
+
         setIsloading(true);
         const result = await useFetch('admin/resetPassword/' + profile.ID);
 
@@ -131,10 +153,18 @@ const ViewProfile = ({ navigation, route }) => {
                     name: 'Name is required!'
                 })
             }else {
+                let confirm = await useAlert.alertSync('Update Profile', "Are you sure you want to update profile!");
+                if (!confirm) return;
                 setIsloading(true);
-                let result = await useFetch('users/updateProfile', { ID: user.ID, name, password, currentPWD }, 'POST')
+                let result = await useFetch('users/updateProfile', { ID: profile.ID, name, password, currentPWD }, 'POST')
                 if (result.errCode === 200) {
                     setChangePWD(false);
+                    if (isAdmin) {
+                        setUser(prev => {
+                            prev.name = name;
+                            return prev;
+                        })
+                    }
                     useAlert.alert('Update user', 'User updated successfully!');
                 } else if (result.errCode === 401) {
                     setErrForm({
@@ -162,28 +192,62 @@ const ViewProfile = ({ navigation, route }) => {
         }
     },[changePWD])
 
+    const handleChangeRole = async (role) => {
+        try {
+            if (role !== profile?.role) {
+                let confirm = await useAlert.alertSync('Update Role', `Are you sure you want to update the role to an ${role}!`);
+                if (!confirm) return;
+                setIsloading(true);
+                let result = await useFetch('admin/updateUserRole', { ID: profile.ID, role }, 'POST')
+                
+                if (result.errCode === 200) {
+                    setProfile(prev => {
+                        prev.role = role;
+                        return prev;
+                    })
+                }
+                useAlert.alert('Update role', result.errMsg);
+            }
+        } catch (err) {
+            console.log(err);
+        } finally {
+            setIsloading(false);
+        }
+    }
+
     return (
         <SafeAreaView style={loginStyles.root}>
             {isLoading && <Loader />}
             <View style={loginStyles.container}>
                 <View style={loginStyles.form}>
-                    <InputCustom name='email' label='Email' required errMsg={errForm.email}
-                        value={formValue.email} onChange={(value) => handleChangeValueForm('email',value)}
-                        disabled={user.role === 'employee'}
+                    <InputCustom name='email' label='Email'
+                        value={profile?.email} disabled
                     />
                     <InputCustom name='name' label='Name' required errMsg={errForm.name}
                         value={formValue.name} onChange={(value) => handleChangeValueForm('name',value)}
                         disabled={user.role === 'employee'}
                     />
-                    {user.role !== 'employee' ? (
-                        <TouchableOpacity style={profileStyle.btn} onPress={handleResetPassword}>
-                            <Ionicons 
-                                size={25}
-                                color={color.primary}
-                                name="sync-circle-outline"
-                            />
-                            <Text>Reset Password</Text>
-                        </TouchableOpacity>
+                    {!isAdmin && user.role !== 'employee' ? (
+                        <View style={{flexDirection: 'row', zIndex: 10}}>
+                            <SelectDropdown options={roles.map(r => ({label: r, value: r}))} 
+                            onChange={handleChangeRole}
+                            placement="center" value={profile?.role}>
+                                <Ionicons 
+                                    size={25}
+                                    color={color.primary}
+                                    name="sync-circle-outline"
+                                />
+                                <Text style={{textTransform: 'capitalize'}}>{profile?.role}</Text>
+                            </SelectDropdown>
+                            <TouchableOpacity style={profileStyle.btn} onPress={handleResetPassword}>
+                                <Ionicons 
+                                    size={25}
+                                    color={color.primary}
+                                    name="sync-circle-outline"
+                                />
+                                <Text>Reset Password</Text>
+                            </TouchableOpacity>
+                        </View>
                     ) : (
                         <BouncyCheckbox 
                             size={25}
@@ -214,6 +278,7 @@ const ViewProfile = ({ navigation, route }) => {
                     )}
                     
                     <TouchableOpacity
+                        disabled={enableSubmit}
                         style={{...loginStyles.button, ...loginStyles.alignCenter}} 
                         onPress={handleSubmitForm}>
                         <Text style={{ color: 'white' }}>
@@ -236,6 +301,10 @@ const profileStyle = StyleSheet.create({
         padding: 10,
         alignItems : 'center',
         gap: 10,
+    },
+    grBtn: {
+        flexDirection: 'row',
+        alignItems: 'center'
     }
 })
 

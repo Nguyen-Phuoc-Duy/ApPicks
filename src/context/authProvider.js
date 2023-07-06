@@ -89,7 +89,7 @@ function AuthProvider({ children }) {
             setUser(null);
             setToken(null);
             navigate('Login');
-        }finally {
+        } finally {
             setIsLoading(false);
         }
     }

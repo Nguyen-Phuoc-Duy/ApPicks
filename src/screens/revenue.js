@@ -6,34 +6,44 @@ import color from "../constant/colorVariable";
 import Badge from "../components/badge";
 import { getColorStatus } from "../constant/status";
 import { Ionicons } from "@expo/vector-icons";
+import SelectDropdown from "../components/selectDropdown";
 
 const Revenue = ({ navigation }) => {
     const { useFetch } = useContext(AuthContext);
 
+    const [isRefesh, setIsRefesh] = useState(false)
     const [isLoading, setIsLoading] = useState(false)
     const [orders, setOrders] = useState([])
     const [totalPrice, setTotalPrice] = useState(0)
+    const [filter, setFilter] = useState('');
 
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => (
-                <TouchableOpacity style={styles.btnIcon}>
+                <SelectDropdown options={filterStatus} onChange={setFilter}>
                     <Ionicons
-                        name='add-circle'
+                        name="filter-outline"
                         size={30}
                         color={color.primary}
                         style={styles.addIcon}
                     />
-                </TouchableOpacity>
+                </SelectDropdown>
             )
         })
     },[])
 
-    const getAllOrders = async () => {
-        let result = await useFetch('admin/getAllOrders');
-        if (result.errCode === 200) {
-            setOrders(result?.data || [])
-            setTotalPrice(result.totalRevenue)
+    const getAllOrders = async (status = '') => {
+        try {
+            setIsLoading(true);
+            let result = await useFetch('admin/getAllOrders', { status }, 'POST');
+            if (result.errCode === 200) {
+                setOrders(result?.data || [])
+                setTotalPrice(result.totalRevenue)
+            }
+        } catch (err) {
+            console.log(err)
+        } finally {
+            setIsLoading(false);
         }
     }
 
@@ -42,20 +52,20 @@ const Revenue = ({ navigation }) => {
     };
 
     useEffect(() => {
-        getAllOrders();
-    }, [])
+        getAllOrders(filter);
+    }, [filter])
 
     const onRefresh = async () => {
-        setIsLoading(true)
+        setIsRefesh(true)
         await getAllOrders();
-        setIsLoading(false)
+        setIsRefesh(false)
     }
 
     return (
         <>
             {isLoading && <Loader />}
             <SafeAreaView style={styles.container}>
-                <ScrollView refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} />}>
+                <ScrollView refreshControl={<RefreshControl refreshing={isRefesh} onRefresh={onRefresh} />}>
                     {orders && orders.map(order =>  order && (
                         <TouchableOpacity key={order.ID} style={styles.boxTable} onPress={() => handleRedirect(order.ID)}>
                             <Text style={styles.orderName}>{order.name}</Text>
@@ -72,6 +82,14 @@ const Revenue = ({ navigation }) => {
 };
 
 export default Revenue;
+
+const filterStatus = [
+    { label: 'All', value: '' },
+    { label: 'Started', value: 'started' },
+    { label: 'InProgress', value: 'inProgress' },
+    { label: 'Finished', value: 'finished' },
+    { label: 'Canceled', value: 'canceled' },
+]
 
 const styles = StyleSheet.create({
     container: {
