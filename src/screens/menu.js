@@ -10,7 +10,7 @@ import Loader from "../components/loader";
 import useAlert from "../hook/useAlert";
 import color from "../constant/colorVariable";
 
-const Menu = ({ navigation, navigationParent }) => {
+const Menu = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [products, setProducts] = useState([]);
   const [productEdit, setProductEdit] = useState({});
@@ -102,11 +102,8 @@ const Menu = ({ navigation, navigationParent }) => {
       {isLoading && <Loader />}
       {products &&
         products.map((product) => (
-          <TouchableOpacity
+          <View
             key={product.ID}
-            // onPress={() =>
-            //   navigation.navigate("Detail Table", { ID: product.ID })
-            // }
             style={styles.boxTable}
           >
             <View key={product.ID} style={styles.containerRow}>
@@ -144,7 +141,7 @@ const Menu = ({ navigation, navigationParent }) => {
                 )}
               </View>
             </View>
-          </TouchableOpacity>
+          </View>
         ))}
       {modalVisible && (
         <ModalAddProduct

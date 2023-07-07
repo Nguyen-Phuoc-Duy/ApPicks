@@ -1,11 +1,13 @@
 import { Ionicons } from "@expo/vector-icons";
 import { useContext, useState } from "react";
-import { TouchableOpacity, Text, TextInput, View } from "react-native";
+import { TouchableOpacity, Text, View } from "react-native";
 import styles from "../../css/style";
 import useAlert from "../../hook/useAlert";
 import { Modal } from "react-native";
 import { AuthContext } from "../../context/authProvider";
 import Loader from "../loader";
+import InputCustom from "../inputCustom";
+import color from "../../constant/colorVariable";
 
 const ModalAddProduct = ({ setModalVisible, onChange, productEdit = {} }) => {
   const [isLoading, setIsLoading] = useState(false);
@@ -89,23 +91,27 @@ const ModalAddProduct = ({ setModalVisible, onChange, productEdit = {} }) => {
       }}
     >
       {isLoading && <Loader />}
+      <Text style={styles.text1}>Thêm sản phẩm</Text>
       <View style={styles.viewAddTable}>
         <Text style={styles.text1}>Tên: </Text>
-        <TextInput
+        <InputCustom
+          name='name'
           placeholder="Name"
           style={styles.textInput}
-          onChangeText={setnameProduct}
+          onChange={setnameProduct}
           value={nameProduct}
         />
         <Text style={styles.text1}>Giá: </Text>
-        <TextInput
+        <InputCustom
+          name='price'
           placeholder="Price"
           style={styles.textInput}
           onChangeText={setpriceProduct}
           value={priceProduct.toString()}
         />
         <Text style={styles.text1}>Đơn vị: </Text>
-        <TextInput
+        <InputCustom
+          name='unit'
           placeholder="Unit"
           style={styles.textInput}
           onChangeText={setunitProduct}
@@ -116,7 +122,7 @@ const ModalAddProduct = ({ setModalVisible, onChange, productEdit = {} }) => {
             <Ionicons
               name="checkmark-done-circle-outline"
               size={30}
-              color={"#644AB5"}
+              color={color.primary}
               style={styles.addIcon}
             />
           </TouchableOpacity>
@@ -127,7 +133,7 @@ const ModalAddProduct = ({ setModalVisible, onChange, productEdit = {} }) => {
             <Ionicons
               name="close-circle-outline"
               size={30}
-              color={"#644AB5"}
+              color={color.primary}
               style={styles.addIcon}
             />
           </TouchableOpacity>
