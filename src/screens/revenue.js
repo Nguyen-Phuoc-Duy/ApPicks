@@ -65,7 +65,7 @@ const Revenue = ({ navigation }) => {
         <>
             {isLoading && <Loader />}
             <SafeAreaView style={styles.container}>
-                <ScrollView refreshControl={<RefreshControl refreshing={isRefesh} onRefresh={onRefresh} />}>
+                <ScrollView style={styles.body} refreshControl={<RefreshControl refreshing={isRefesh} onRefresh={onRefresh} />}>
                     {orders && orders.map(order =>  order && (
                         <TouchableOpacity key={order.ID} style={styles.boxTable} onPress={() => handleRedirect(order.ID)}>
                             <Text style={styles.orderName}>{order.name}</Text>
@@ -95,6 +95,9 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
     },
+    body: {
+        marginBottom: 70
+    },
     totalRevenueRegion: {
         position: 'absolute',
         bottom: 0,
@@ -115,7 +118,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         flexDirection: "row",
         alignItems: "center",
-        borderRadius: 10
     },
     orderName: {
         color: "white",

@@ -217,8 +217,7 @@ const styles = StyleSheet.create({
     // marginRight: 20
   },
   boxTable: {
-    marginTop: 20,
-    marginHorizontal: 20,
+    margin: 20,
     backgroundColor: color.primary,
     height: 80,
     display: "flex",
