@@ -1,5 +1,5 @@
 import { StyleSheet, Text, View, Pressable, Modal } from "react-native";
-import React, { useState } from "react";
+import React, { useContext, useState } from "react";
 import { ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { AntDesign } from "@expo/vector-icons";
@@ -12,12 +12,15 @@ import {
   Button,
   Keyboard,
 } from "react-native";
+import { AuthContext } from "../context/authProvider";
 const AddTable = ({ navigation }) => {
+  const { user } = useContext(AuthContext);
+
   return (
     <>
       <Pressable style={styles.viewAddTable}>
         <Text style={styles.text1}>Bàn: </Text>
-        <TextInput placeholder="Số" style={styles.textInput} />
+        <TextInput placeholder="Name" style={styles.textInput} />
         <Pressable
           style={styles.addIconContainer}
           onPress={() => navigation.navigate("Tables", { name: "12" })}

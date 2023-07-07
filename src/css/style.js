@@ -1,5 +1,11 @@
 import { StyleSheet } from "react-native";
+import color from "../constant/colorVariable";
 const styles = StyleSheet.create({
+  defaultLayout: {
+    display: "flex",
+    padding: 10,
+    paddingTop: 40,
+  },
   textDel: {
     fontSize: 20,
     fontWeight: 600,
@@ -14,14 +20,16 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 20,
     flexDirection: "row",
+    borderRadius: 10,
   },
   text1: {
-    color: "#644AB5",
+    color: color.primary,
     fontSize: 25,
     fontWeight: 700,
+    padding: 10,
   },
   text2: {
-    color: "#644AB5",
+    color: color.primary,
     fontSize: 20,
   },
   boxRight: {
@@ -65,6 +73,13 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 4,
     elevation: 5,
+  },
+  modalView1: {
+    backgroundColor: "#fff",
+    height: "100%",
+    paddingVertical: 30,
+    paddingHorizontal: 30,
+    // alignItems: "center",
   },
   modalView2: {
     marginVertical: 100,
@@ -125,13 +140,15 @@ const styles = StyleSheet.create({
     marginBottom: 48,
   },
   textInput: {
-    height: 40,
-    borderColor: "#000000",
-    borderBottomWidth: 1,
-    marginBottom: 36,
+    borderColor: "gray",
+    borderWidth: 1,
+    borderRadius: 25,
+    padding: 10,
+    height: 50,
   },
   btnContainer: {
-    backgroundColor: "white",
+    backgroundColor: "black",
+    color: "red",
     marginTop: 12,
   },
   title_exit: {
@@ -143,21 +160,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     marginVertical: 20,
-  },
-  modalView: {
-    marginVertical: 100,
-    backgroundColor: "white",
-    borderRadius: 20,
-    padding: 35,
-    alignItems: "center",
-    shadowColor: "#000",
-    shadowOffset: {
-      width: 0,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 4,
-    elevation: 5,
   },
   button: {
     borderRadius: 20,
@@ -194,12 +196,6 @@ const styles = StyleSheet.create({
     fontSize: 36,
     marginBottom: 48,
   },
-  textInput: {
-    height: 40,
-    borderColor: "#000000",
-    borderBottomWidth: 1,
-    marginBottom: 36,
-  },
   btnContainer: {
     backgroundColor: "white",
     marginTop: 12,
@@ -214,14 +210,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     display: "flex",
     flexDirection: "row",
+    width: "100%",
   },
   addIcon: {
     marginVertical: 10,
+    // marginRight: 20
   },
   boxTable: {
     marginTop: 20,
     marginHorizontal: 20,
-    backgroundColor: "#c3c3c3",
+    backgroundColor: color.primary,
     height: 80,
     display: "flex",
     justifyContent: "space-between",
@@ -230,7 +228,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   textTable: {
-    color: "#644AB5",
+    color: color.primaryText,
     fontSize: 25,
     fontWeight: 700,
   },
@@ -238,5 +236,56 @@ const styles = StyleSheet.create({
     marginHorizontal: 20,
     marginVertical: 30,
   },
+  menu: {
+    height: "82%",
+  },
+  btnGrMenu: {
+    marginVertical: 20,
+    marginBottom: 30,
+    display: "flex",
+    flexDirection: "row",
+    width: "100%",
+    justifyContent: "space-evenly",
+  },
+  btnMenu: {
+    paddingHorizontal: 10,
+    paddingVertical: 10,
+    flex: 1,
+  },
+  menuContainer: {
+    display: "flex",
+    flexDirection: "column",
+    justifyContent: "space-around",
+    alignContent: "space-around",
+    alignItems: "stretch",
+    // backgroundColor: "green",
+    flex: 1,
+  },
+  menuContainerContent: {
+    flex: 2,
+    marginVertical: 20,
+  },
+  btnIcon: {
+    padding: 10,
+    paddingTop: 0,
+    paddingBottom: 0,
+    borderRadius: 99,
+    backgroundColor: "transparent",
+  },
+  btnLogout: {
+    color: "red",
+  },
+  containerRow: {
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  boxIcon: {
+    flexDirection: "row",
+    gap: 10,
+    alignItems: "center",
+  },
 });
+
 export default styles;
