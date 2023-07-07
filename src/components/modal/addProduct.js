@@ -106,7 +106,7 @@ const ModalAddProduct = ({ setModalVisible, onChange, productEdit = {} }) => {
           name='price'
           placeholder="Price"
           style={styles.textInput}
-          onChangeText={setpriceProduct}
+          onChange={setpriceProduct}
           value={priceProduct.toString()}
         />
         <Text style={styles.text1}>Đơn vị: </Text>
@@ -114,7 +114,7 @@ const ModalAddProduct = ({ setModalVisible, onChange, productEdit = {} }) => {
           name='unit'
           placeholder="Unit"
           style={styles.textInput}
-          onChangeText={setunitProduct}
+          onChange={setunitProduct}
           value={unitProduct}
         />
         <View style={styles.btnGrMenu}>
