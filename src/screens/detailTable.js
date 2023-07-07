@@ -89,7 +89,7 @@ const DetailTable = ({ navigation, route }) => {
   return (
     <>
       {isLoading && <Loader />}
-      <ScrollView refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} />}>
+      <ScrollView style={styles.body} refreshControl={<RefreshControl refreshing={isLoading} onRefresh={onRefresh} />}>
         {orders && orders.map(order => (
           <TouchableOpacity key={order.ID} style={styles.boxTable}
             onPress={() => navigation.navigate({

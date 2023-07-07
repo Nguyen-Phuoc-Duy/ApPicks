@@ -11,7 +11,6 @@ import color from '../constant/colorVariable';
 import Users from './Users';
 
 const HomeScreen = ({ navigation }) => {
-
     const Tab = createBottomTabNavigator();
 
     const { logOut, user } = useContext(AuthContext);
@@ -138,4 +137,3 @@ const HomeScreen = ({ navigation }) => {
 }
 
 export default HomeScreen;
-
