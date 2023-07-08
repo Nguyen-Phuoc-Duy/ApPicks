@@ -86,7 +86,6 @@ export default Revenue;
 const filterStatus = [
     { label: 'All', value: '' },
     { label: 'Started', value: 'started' },
-    { label: 'InProgress', value: 'inProgress' },
     { label: 'Finished', value: 'finished' },
     { label: 'Canceled', value: 'canceled' },
 ]
