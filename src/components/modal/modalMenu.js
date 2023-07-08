@@ -9,6 +9,7 @@ import {
 } from "react-native";
 import styles from "../../css/style";
 import { MultipleSelectList } from "react-native-dropdown-select-list";
+import color from "../../constant/colorVariable";
 
 const ModalMenu = ({
   setModalVisible,
@@ -82,7 +83,7 @@ export default ModalMenu;
 
 const styling = StyleSheet.create({
   button: {
-    backgroundColor: "#644AB5",
+    backgroundColor: color.primary,
     width: 155,
     height: 40,
     borderRadius: 5,
@@ -90,7 +91,7 @@ const styling = StyleSheet.create({
     alignItems: "center",
   },
   buttonText: {
-    color: "white",
+    color: color.primaryText,
     fontSize: 18,
   },
 });

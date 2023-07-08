@@ -34,8 +34,13 @@ const Revenue = ({ navigation }) => {
 
     const getAllOrders = async (status = '') => {
         try {
+            let orderBy = ''
+            if (['DESC', 'ASC'].includes(status)) {
+                orderBy = status
+                status = ''
+            }
             setIsLoading(true);
-            let result = await useFetch('admin/getAllOrders', { status }, 'POST');
+            let result = await useFetch('admin/getAllOrders', { status, orderBy }, 'POST');
             if (result.errCode === 200) {
                 setOrders(result?.data || [])
                 setTotalPrice(result.totalRevenue)
@@ -88,6 +93,8 @@ const filterStatus = [
     { label: 'Started', value: 'started' },
     { label: 'Finished', value: 'finished' },
     { label: 'Cancelled', value: 'cancelled' },
+    // { label: 'Mới nhất', value: 'DESC' },
+    // { label: 'Cũ nhất', value: 'ASC' }
 ]
 
 const styles = StyleSheet.create({
