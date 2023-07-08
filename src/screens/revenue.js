@@ -47,8 +47,8 @@ const Revenue = ({ navigation }) => {
         }
     }
 
-    const handleRedirect = (orderId) => {
-        navigation.navigate('ViewDetailOrder', { orderId });
+    const handleRedirect = (order) => {
+        navigation.navigate('ViewDetailOrder', { order });
     };
 
     useEffect(() => {
@@ -67,7 +67,7 @@ const Revenue = ({ navigation }) => {
             <SafeAreaView style={styles.container}>
                 <ScrollView style={styles.body} refreshControl={<RefreshControl refreshing={isRefesh} onRefresh={onRefresh} />}>
                     {orders && orders.map(order =>  order && (
-                        <TouchableOpacity key={order.ID} style={styles.boxTable} onPress={() => handleRedirect(order.ID)}>
+                        <TouchableOpacity key={order.ID} style={styles.boxTable} onPress={() => handleRedirect(order)}>
                             <Text style={styles.orderName}>{order.name}</Text>
                             <Badge label={order.status} color={getColorStatus[order.status]} />
                         </TouchableOpacity>

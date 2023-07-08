@@ -16,7 +16,7 @@ const ViewProfile = ({ navigation, route }) => {
     const [isLoading, setIsloading] = useState(false);
     const [changePWD, setChangePWD] = useState(false);
     const [profile, setProfile] = useState();
-    const [enableSubmit, setEnableSubmit] = useState(false);
+    const [disableSubmit, setDisableSubmit] = useState(false);
     const [isAdmin, setIsAdmin] = useState(false);
 
     const [formValue,setFormValue] = useState({
@@ -111,16 +111,18 @@ const ViewProfile = ({ navigation, route }) => {
             password: '',
             currentPWD: ''
         });
-        let { info } = route.params || {};
-
-        if (info && (info.name !== newForm.name)) {
-            setEnableSubmit(false);
-        } else if (newForm.password) {
-            setEnableSubmit(false);
-        } else {
-            setEnableSubmit(true);
-        }
     }
+
+    useEffect(() => {
+        let { info } = route.params || {};
+        if (info && (info.name !== formValue.name)) {
+            setDisableSubmit(false);
+        } else if (formValue.password && formValue.currentPWD) {
+            setDisableSubmit(false);
+        } else {
+            setDisableSubmit(true);
+        }
+    }, [formValue])
 
     const handleResetPassword = async () => {
         if (!profile || !profile.ID) return;
@@ -278,7 +280,7 @@ const ViewProfile = ({ navigation, route }) => {
                     )}
                     
                     <TouchableOpacity
-                        disabled={enableSubmit}
+                        disabled={disableSubmit}
                         style={{...loginStyles.button, ...loginStyles.alignCenter}} 
                         onPress={handleSubmitForm}>
                         <Text style={{ color: 'white' }}>

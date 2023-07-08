@@ -2,13 +2,13 @@ import { Text, View, TouchableOpacity } from "react-native";
 import React, { useContext, useEffect, useLayoutEffect, useState } from "react";
 import { ScrollView } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
-import styles from "../css/style";
 import { AuthContext } from "../context/authProvider";
 import ModalAddProduct from "../components/modal/addProduct";
 import { RefreshControl } from "react-native";
 import Loader from "../components/loader";
 import useAlert from "../hook/useAlert";
 import color from "../constant/colorVariable";
+import { StyleSheet } from "react-native";
 
 const Menu = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
@@ -98,36 +98,30 @@ const Menu = ({ navigation }) => {
       refreshControl={
         <RefreshControl refreshing={refesh} onRefresh={onRefresh} />
       }
+      style={styles.root}
     >
       {isLoading && <Loader />}
       {products &&
         products.map((product) => (
-          <View
+          <TouchableOpacity
+            onPress={() => {
+              setProductEdit(product);
+              setModalVisible(true);
+            }}
             key={product.ID}
             style={styles.boxTable}
           >
             <View key={product.ID} style={styles.containerRow}>
-              <Text style={styles.textTable}>{product.name}</Text>
-              <Text style={styles.textTable}>
-                {product.price}/{product.unit}
-              </Text>
-              <View style={{ flexDirection: "row", gap: 10 }}>
+              <View style={styles.wrapperName}>
+                <Text style={styles.title}>{product.name}</Text>
+                <Text style={styles.label}>
+                  {product.price?.toLocaleString('en-gb')}/{product.unit}
+                </Text>
+              </View>
+              <View style={styles.grBtnHorizontal}>
                 {user && ["admin", "manager"].includes(user.role) && (
-                  <>
                     <TouchableOpacity
-                      onPress={() => {
-                        setProductEdit(product);
-                        setModalVisible(true);
-                      }}
-                    >
-                      <Ionicons
-                        name="create-outline"
-                        size={30}
-                        color={color.primaryText}
-                        style={styles.addIcon}
-                      />
-                    </TouchableOpacity>
-                    <TouchableOpacity
+                      style={styles.btnIcon}
                       onPress={() => handleDeleteProduct(product)}
                     >
                       <Ionicons
@@ -137,11 +131,10 @@ const Menu = ({ navigation }) => {
                         style={styles.addIcon}
                       />
                     </TouchableOpacity>
-                  </>
                 )}
               </View>
             </View>
-          </View>
+          </TouchableOpacity>
         ))}
       {modalVisible && (
         <ModalAddProduct
@@ -153,5 +146,48 @@ const Menu = ({ navigation }) => {
     </ScrollView>
   );
 };
+
+const styles = StyleSheet.create({
+  root: {
+    marginBottom: 20,
+  },
+  boxTable: {
+    marginTop: 20,
+    marginHorizontal: 20,
+    backgroundColor: color.primary,
+    height: 80,
+    display: "flex",
+    justifyContent: "space-between",
+    paddingHorizontal: 20,
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  containerRow: {
+    width: '100%',
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
+  },
+  wrapperName: {
+    flexDirection: 'column',
+    alignItems: 'flex-start',
+  },
+  title: {
+    color: color.primaryText,
+    fontSize: 25,
+    fontWeight: 700,
+  },
+  label: {
+    color: color.primaryText,
+    fontSize: 15
+  },
+  btnIcon: {
+    padding: 10
+  },
+  grBtnHorizontal: {
+    flexDirection: "row", 
+    gap: 10
+  }
+})
 
 export default Menu;
