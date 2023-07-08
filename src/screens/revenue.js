@@ -87,7 +87,7 @@ const filterStatus = [
     { label: 'All', value: '' },
     { label: 'Started', value: 'started' },
     { label: 'Finished', value: 'finished' },
-    { label: 'Canceled', value: 'canceled' },
+    { label: 'Cancelled', value: 'cancelled' },
 ]
 
 const styles = StyleSheet.create({
