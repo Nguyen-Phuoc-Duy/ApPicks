@@ -16,18 +16,29 @@ const ModalAddProduct = ({ setModalVisible, onChange, productEdit = {} }) => {
   const [unitProduct, setunitProduct] = useState(productEdit.unit || "");
 
   const { useFetch } = useContext(AuthContext);
-
+  const checkValue = () => {
+    if (priceProduct && !isNaN(priceProduct)) {
+      return priceProduct;
+    } else {
+      useAlert.alert("Failed", "Price is a number");
+      return productEdit.price ? productEdit.price : 0;
+    }
+  };
   const handleAddProduct = async () => {
     try {
       setIsLoading(true);
-      if (productEdit?.name) {
-        if (nameProduct && nameProduct !== productEdit.name) {
+      if (productEdit?.name || productEdit?.price || productEdit?.unit) {
+        if (
+          (nameProduct && nameProduct !== productEdit.name) ||
+          (priceProduct && priceProduct !== productEdit.price) ||
+          (unitProduct && unitProduct !== productEdit.unit)
+        ) {
           let result = await useFetch(
             "admin/updateProduct",
             {
               ID: productEdit.ID,
               name: nameProduct,
-              price: parseFloat(priceProduct),
+              price: priceProduct,
               unit: unitProduct,
             },
             "POST"
@@ -39,7 +50,7 @@ const ModalAddProduct = ({ setModalVisible, onChange, productEdit = {} }) => {
                 prev.forEach((product) => {
                   if (product.ID === productEdit.ID) {
                     product.name = nameProduct;
-                    product.price = priceProduct.toString();
+                    product.price = checkValue();
                     product.unit = unitProduct;
                   }
                 });
@@ -52,12 +63,12 @@ const ModalAddProduct = ({ setModalVisible, onChange, productEdit = {} }) => {
           }
         }
       } else {
-        if (nameProduct) {
+        if (nameProduct || priceProduct || unitProduct) {
           let result = await useFetch(
             "admin/createProduct",
             {
               name: nameProduct,
-              price: parseFloat(priceProduct),
+              price: checkValue(),
               unit: unitProduct,
             },
             "POST"
