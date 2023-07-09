@@ -286,6 +286,9 @@ const styles = StyleSheet.create({
     gap: 10,
     alignItems: "center",
   },
+  body: {
+    marginBottom: 20,
+  },
 });
 
 export default styles;

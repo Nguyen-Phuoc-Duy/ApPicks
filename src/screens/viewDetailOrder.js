@@ -1,31 +1,18 @@
 import React, { useEffect, useState, useContext } from 'react';
 import { View, Text, ScrollView, StyleSheet, TextInput } from 'react-native';
-import { useRoute } from '@react-navigation/native';
 import { AuthContext } from "../context/authProvider";
 import Badge from '../components/badge';
 import { getColorStatus } from '../constant/status';
 import color from '../constant/colorVariable';
 
-const ViewDetailOrder = ({ navigation }) => {
-    const route = useRoute();
+const ViewDetailOrder = ({ navigation, route }) => {
     const { useFetch } = useContext(AuthContext);
-
-    const [orderName, setOrderName] = useState('NoName')
-    const [orderStatus, setOrderStatus] = useState('')
     const [orderTotalPrice, setOrderTotalPrice] = useState(0)
     const [orderDetails, setOrderDetails] = useState([])
-    const { orderId } = route.params;
-
-    const getOrderInfo = async () => {
-        let result = await useFetch('admin/getOrderByID/' + orderId);
-        if (result.errCode === 200) {
-            setOrderName(result?.data.name)
-            setOrderStatus(result?.data.status)
-        }
-    }
+    const { order } = route.params;
 
     const getOrderDetails = async () => {
-        let result = await useFetch('orders/getDetailOrder/' + orderId);
+        let result = await useFetch('orders/getDetailOrder/' + order.ID);
         if (result.errCode === 200) {
             let total = 0
             setOrderDetails(result?.data || [])
@@ -37,17 +24,42 @@ const ViewDetailOrder = ({ navigation }) => {
             navigationParent.navigate('Login');
         }
     }
-
+    
     useEffect(() => {
-        getOrderInfo(),
-            getOrderDetails()
-    }, [])
+        if (!order) return;
+        getOrderDetails();
+        navigation.setOptions({
+            headerRight: () => {
+                if (order.checkoutBy) {
+                    return <View style={styling.headerInfo}>
+                        <Text style={styling.label}>
+                            Checkout By:
+                        </Text>
+                        <Text style={styling.label}>
+                            {order.checkoutBy.name}
+                        </Text>
+                    </View>
+                } else if (order.createdBy) {
+                    return <View  style={styling.headerInfo}>
+                        <Text style={styling.label}>
+                            Order By:
+                        </Text>
+                        <Text style={styling.label}>
+                            {order.createdBy.name}
+                        </Text>
+                    </View>
+                } else {
+                    return ''
+                }
+            }
+        })
+    }, [order])
 
     return (
         <View style={styling.container}>
             <View style={styling.header}>
-                <Text style={styling.orderName}>{orderName}</Text>
-                <Text style={styling.statusBadge}><Badge label={orderStatus} color={getColorStatus[orderStatus]} /></Text>
+                <Text style={styling.orderName}>{order?.name || 'Order'}</Text>
+                <Text style={styling.statusBadge}><Badge label={order?.status || 'not found'} color={getColorStatus[order?.status || ''] || 'info'} /></Text>
             </View>
             <View style={styling.menuRegion}>
                 <ScrollView>
@@ -146,5 +158,13 @@ const styling = StyleSheet.create({
         borderTopWidth: 2,
         paddingRight: 5,
         paddingTop: 10
+    },
+    headerInfo: {
+        flexDirection: 'column',
+        alignItems: 'flex-end'
+    },
+    label: {
+        fontSize: 14,
+        color: color.danger
     }
 })

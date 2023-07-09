@@ -1,7 +1,7 @@
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 import { TouchableOpacity } from 'react-native';
 import Tables from './table';
-import { Ionicons } from '@expo/vector-icons';
+import { Ionicons, MaterialIcons } from '@expo/vector-icons';
 import styles from '../css/style';
 import { useContext } from 'react';
 import { AuthContext } from '../context/authProvider';
@@ -9,9 +9,9 @@ import useAlert from '../hook/useAlert';
 import Revenue from './revenue';
 import color from '../constant/colorVariable';
 import Users from './Users';
+import Menu from './menu';
 
 const HomeScreen = ({ navigation }) => {
-
     const Tab = createBottomTabNavigator();
 
     const { logOut, user } = useContext(AuthContext);
@@ -88,6 +88,25 @@ const HomeScreen = ({ navigation }) => {
                         }}
                     />
                     <Tab.Screen
+                        name="Menu"
+                        component={Menu}
+                        options={{
+                            headerTintColor: color.primary,
+                            headerShown: true,
+                            headerTitleAlign: 'center',
+                            tabBarLabelStyle: { display: 'none' },
+                            tabBarIcon: () => (
+                                <>
+                                    <MaterialIcons
+                name="restaurant-menu"
+                size={25}
+                color={color.primary}
+              />
+                                </>
+                            ),
+                        }}
+                    />
+                    <Tab.Screen
                         name="Users"
                         component={Users}
                         options={{
@@ -138,4 +157,3 @@ const HomeScreen = ({ navigation }) => {
 }
 
 export default HomeScreen;
-

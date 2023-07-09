@@ -222,7 +222,7 @@ const DetailOrder = ({ navigation, route }) => {
 			{isLoading && <Loader />}
 			<View style={styling.header}>
 				<Text style={styling.orderName}>{route?.params?.order?.name || 'Detail Order'}</Text>
-				{['started', 'inProgess'].includes(order.status) && (
+				{['started', 'inProgess'].includes(order.status) ? (
 					<View style={{ flexDirection: 'row' }}>
 						{changeQuantity && (
 							<TouchableOpacity style={styles.btnIcon}
@@ -244,9 +244,11 @@ const DetailOrder = ({ navigation, route }) => {
 								style={styles.addIcon}
 							/>
 						</TouchableOpacity>
-
-
 					</View>
+				) : (
+					<Text style={styling.statusBadge}>
+						<Badge label={order.status} color={getColorStatus[order.status]} />
+					</Text>
 				)}
 			</View>
 			<ScrollView style={styling.menuRegion}>
@@ -335,7 +337,8 @@ const styling = StyleSheet.create({
 		borderBottomColor: color.primary,
 		borderBottomWidth: 2,
 		flexDirection: 'row',
-		justifyContent: 'space-between'
+		justifyContent: 'space-between',
+		alignItems: 'center',
 	},
 	orderName: {
 		fontSize: 30,

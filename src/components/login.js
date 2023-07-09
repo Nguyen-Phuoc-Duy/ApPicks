@@ -23,9 +23,9 @@ const Login = ({ navigation }) => {
         }
     }, [user])
 
-    useEffect(() => {
-        setNavigationApp(navigation)
-    },[])
+  useEffect(() => {
+    setNavigationApp(navigation);
+  }, []);
 
     const handleChangeValueForm = (field, value) => {
         if (!field) return;
@@ -69,7 +69,7 @@ const Login = ({ navigation }) => {
                 navigation.navigate('HomeScreen');
             }else {
                 setErrMsg({
-                    email: '',
+                  email: '',
                     password: '',
                     form: result.errMsg || "Submit Failed!",
                 })
@@ -79,7 +79,7 @@ const Login = ({ navigation }) => {
         } finally {
             setIsLoading(false);
         }
-    }
+      }
 
     return (
         <View style={loginStyles.root}>
@@ -110,15 +110,14 @@ const Login = ({ navigation }) => {
                 </View>
             </View>
         </View>
-    )
-}
-
+  );
+};
 
 let labelErr = {
-    textTransform: 'capitalize',
-    fontSize: 12,
-    marginVertical: 5,
-    color: color.danger
-}
+  textTransform: "capitalize",
+  fontSize: 12,
+  marginVertical: 5,
+  color: color.danger,
+};
 
 export default Login;

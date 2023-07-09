@@ -14,6 +14,7 @@ const InputCustom = ({ formValue = {}, name, value, type = 'input', placeholder,
     },[value])
 
     const handleChangeText = (text) => {
+        if (type === 'number' && isNaN(text)) return;
         setStateValue(text);
         onChange?.(text);
     }
@@ -42,11 +43,12 @@ const InputCustom = ({ formValue = {}, name, value, type = 'input', placeholder,
             )}
             <View style={styleWrapperInput}>
                 <TextInput key={name} style={style.input} editable={!disabled} placeholder={placeholder || name} autoCompleteType={type}
+                keyboardType={type === 'number' ? 'number-pad' : 'default'}
                     secureTextEntry={secureText} autoCorrect={!secureText}
                     onChangeText={(_value) => handleChangeText(_value)}
                     onBlur={() => setFocus(false)}
                     onFocus={() => setFocus(true)}
-                    value={stateValue}
+                    value={type === 'number' ? stateValue?.toString() : stateValue}
                 />
                 {!disabled && ['password', 'Re-password'].includes(type) && (
                     <TouchableOpacity style={style.icon} onPress={() => setSecureText(!secureText)}>

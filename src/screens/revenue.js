@@ -34,8 +34,13 @@ const Revenue = ({ navigation }) => {
 
     const getAllOrders = async (status = '') => {
         try {
+            let orderBy = ''
+            if (['DESC', 'ASC'].includes(status)) {
+                orderBy = status
+                status = ''
+            }
             setIsLoading(true);
-            let result = await useFetch('admin/getAllOrders', { status }, 'POST');
+            let result = await useFetch('admin/getAllOrders', { status, orderBy }, 'POST');
             if (result.errCode === 200) {
                 setOrders(result?.data || [])
                 setTotalPrice(result.totalRevenue)
@@ -47,8 +52,8 @@ const Revenue = ({ navigation }) => {
         }
     }
 
-    const handleRedirect = (orderId) => {
-        navigation.navigate('ViewDetailOrder', { orderId });
+    const handleRedirect = (order) => {
+        navigation.navigate('ViewDetailOrder', { order });
     };
 
     useEffect(() => {
@@ -65,9 +70,9 @@ const Revenue = ({ navigation }) => {
         <>
             {isLoading && <Loader />}
             <SafeAreaView style={styles.container}>
-                <ScrollView refreshControl={<RefreshControl refreshing={isRefesh} onRefresh={onRefresh} />}>
+                <ScrollView style={styles.body} refreshControl={<RefreshControl refreshing={isRefesh} onRefresh={onRefresh} />}>
                     {orders && orders.map(order =>  order && (
-                        <TouchableOpacity key={order.ID} style={styles.boxTable} onPress={() => handleRedirect(order.ID)}>
+                        <TouchableOpacity key={order.ID} style={styles.boxTable} onPress={() => handleRedirect(order)}>
                             <Text style={styles.orderName}>{order.name}</Text>
                             <Badge label={order.status} color={getColorStatus[order.status]} />
                         </TouchableOpacity>
@@ -86,14 +91,18 @@ export default Revenue;
 const filterStatus = [
     { label: 'All', value: '' },
     { label: 'Started', value: 'started' },
-    { label: 'InProgress', value: 'inProgress' },
     { label: 'Finished', value: 'finished' },
-    { label: 'Canceled', value: 'canceled' },
+    { label: 'Cancelled', value: 'cancelled' },
+    // { label: 'Mới nhất', value: 'DESC' },
+    // { label: 'Cũ nhất', value: 'ASC' }
 ]
 
 const styles = StyleSheet.create({
     container: {
         flex: 1,
+    },
+    body: {
+        marginBottom: 70
     },
     totalRevenueRegion: {
         position: 'absolute',
@@ -115,7 +124,6 @@ const styles = StyleSheet.create({
         paddingHorizontal: 20,
         flexDirection: "row",
         alignItems: "center",
-        borderRadius: 10
     },
     orderName: {
         color: "white",
