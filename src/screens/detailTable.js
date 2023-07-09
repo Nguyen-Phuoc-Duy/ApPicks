@@ -14,6 +14,7 @@ import Badge from "../components/badge";
 import { getColorStatus } from "../constant/status";
 import color from "../constant/colorVariable";
 const DetailTable = ({ navigation, route }) => {
+  const [tableId, setTableId] = useState('');
   const [modalVisible, setModalVisible] = useState(false);
   const [orders, setOrders] = useState([]);
   const [menuProducts, setMenuProducts] = useState([]);
@@ -25,6 +26,7 @@ const DetailTable = ({ navigation, route }) => {
     if(route.params){
       let { ID } = route.params;
       if(ID) {
+        setTableId(ID);
         getOrders(ID);
         getAllProduct();
         navigation.setOptions({
@@ -45,6 +47,7 @@ const DetailTable = ({ navigation, route }) => {
       }
     }
   },[route.params])
+
 
   const getOrders = async (ID) => {
     try {
@@ -77,12 +80,9 @@ const DetailTable = ({ navigation, route }) => {
   }
 
   const onRefresh = () => {
-    if(route.params){
-      let { ID } = route.params;
-      if(ID) {
-        getOrders(ID);
-        getAllProduct();
-      }
+    if(tableId) {
+      getOrders(tableId);
+      getAllProduct();
     }
   }
 
@@ -102,7 +102,7 @@ const DetailTable = ({ navigation, route }) => {
           </TouchableOpacity>
         ))}
       </ScrollView>
-      {modalVisible && <ModalAddOrder setModalVisible={setModalVisible} menus={menuProducts} tableId={route.params?.ID} addOrder={addOrder} />}
+      {modalVisible && <ModalAddOrder setModalVisible={setModalVisible} menus={menuProducts} tableId={tableId} addOrder={addOrder} />}
     </>
   );
 };
