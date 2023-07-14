@@ -16,15 +16,18 @@ const ViewDetailOrder = ({ navigation, route }) => {
         if (result.errCode === 200) {
             let total = 0
             setOrderDetails(result?.data || [])
+            //console.log(result.data)
             result.data.map((item) => {
-                total += item.price
+                total += item.price * item.quantity
             });
             setOrderTotalPrice(total);
         } else if ([400, 401].includes(result?.errCode)) {
             navigationParent.navigate('Login');
         }
     }
-    
+
+    useEffect(() => { getOrderDetails() }, [])
+
     useEffect(() => {
         if (!order) return;
         getOrderDetails();
@@ -40,7 +43,7 @@ const ViewDetailOrder = ({ navigation, route }) => {
                         </Text>
                     </View>
                 } else if (order.createdBy) {
-                    return <View  style={styling.headerInfo}>
+                    return <View style={styling.headerInfo}>
                         <Text style={styling.label}>
                             Order By:
                         </Text>

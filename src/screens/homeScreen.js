@@ -10,6 +10,8 @@ import Revenue from './revenue';
 import color from '../constant/colorVariable';
 import Users from './Users';
 import Menu from './menu';
+import React, { useEffect } from 'react';
+import { useIsFocused } from '@react-navigation/native';
 
 const HomeScreen = ({ navigation }) => {
     const Tab = createBottomTabNavigator();
@@ -98,10 +100,10 @@ const HomeScreen = ({ navigation }) => {
                             tabBarIcon: () => (
                                 <>
                                     <MaterialIcons
-                name="restaurant-menu"
-                size={25}
-                color={color.primary}
-              />
+                                        name="restaurant-menu"
+                                        size={25}
+                                        color={color.primary}
+                                    />
                                 </>
                             ),
                         }}
@@ -140,7 +142,7 @@ const HomeScreen = ({ navigation }) => {
                                 onPress={() => navigation.navigate({
                                     name: 'ViewProfile',
                                     params: { info: user }
-                                  })}
+                                })}
                             >
                                 <Ionicons
                                     name="person-circle-outline"

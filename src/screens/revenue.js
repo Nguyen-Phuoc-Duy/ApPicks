@@ -28,9 +28,19 @@ const Revenue = ({ navigation }) => {
                         style={styles.addIcon}
                     />
                 </SelectDropdown>
+            ),
+            headerLeft: () => (
+                <TouchableOpacity onPress={() => onRefresh()}>
+                    <Ionicons
+                        name="refresh-outline"
+                        size={30}
+                        color={color.primary}
+                        style={styles.refreshIcon}
+                    />
+                </TouchableOpacity>
             )
         })
-    },[])
+    }, [])
 
     const getAllOrders = async (status = '') => {
         try {
@@ -71,7 +81,7 @@ const Revenue = ({ navigation }) => {
             {isLoading && <Loader />}
             <SafeAreaView style={styles.container}>
                 <ScrollView style={styles.body} refreshControl={<RefreshControl refreshing={isRefesh} onRefresh={onRefresh} />}>
-                    {orders && orders.map(order =>  order && (
+                    {orders && orders.map(order => order && (
                         <TouchableOpacity key={order.ID} style={styles.boxTable} onPress={() => handleRedirect(order)}>
                             <Text style={styles.orderName}>{order.name}</Text>
                             <Badge label={order.status} color={getColorStatus[order.status]} />
@@ -136,13 +146,16 @@ const styles = StyleSheet.create({
         fontWeight: "bold"
     },
     btnIcon: {
-		padding: 10,
-		paddingTop: 0,
-		paddingBottom: 0,
-		borderRadius: 99,
-		backgroundColor: "transparent"
-	},
+        padding: 10,
+        paddingTop: 0,
+        paddingBottom: 0,
+        borderRadius: 99,
+        backgroundColor: "transparent"
+    },
     addIcon: {
         marginVertical: 10,
     },
+    refreshIcon: {
+        marginLeft: 20
+    }
 });
