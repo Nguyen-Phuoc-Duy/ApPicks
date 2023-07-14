@@ -115,22 +115,22 @@ const Menu = ({ navigation }) => {
               <View style={styles.wrapperName}>
                 <Text style={styles.title}>{product.name}</Text>
                 <Text style={styles.label}>
-                  {product.price?.toLocaleString('en-gb')}/{product.unit}
+                  {product.price?.toLocaleString("en-gb")}/{product.unit}
                 </Text>
               </View>
               <View style={styles.grBtnHorizontal}>
                 {user && ["admin", "manager"].includes(user.role) && (
-                    <TouchableOpacity
-                      style={styles.btnIcon}
-                      onPress={() => handleDeleteProduct(product)}
-                    >
-                      <Ionicons
-                        name="trash-outline"
-                        size={30}
-                        color={color.primaryText}
-                        style={styles.addIcon}
-                      />
-                    </TouchableOpacity>
+                  <TouchableOpacity
+                    style={styles.btnIcon}
+                    onPress={() => handleDeleteProduct(product)}
+                  >
+                    <Ionicons
+                      name="trash-outline"
+                      size={30}
+                      color={color.primaryText}
+                      style={styles.addIcon}
+                    />
+                  </TouchableOpacity>
                 )}
               </View>
             </View>
@@ -163,14 +163,14 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   containerRow: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   wrapperName: {
-    flexDirection: 'column',
-    alignItems: 'flex-start',
+    flexDirection: "column",
+    alignItems: "flex-start",
   },
   title: {
     color: color.primaryText,
@@ -179,15 +179,15 @@ const styles = StyleSheet.create({
   },
   label: {
     color: color.primaryText,
-    fontSize: 15
+    fontSize: 15,
   },
   btnIcon: {
-    padding: 10
+    padding: 10,
   },
   grBtnHorizontal: {
-    flexDirection: "row", 
-    gap: 10
-  }
-})
+    flexDirection: "row",
+    gap: 10,
+  },
+});
 
 export default Menu;

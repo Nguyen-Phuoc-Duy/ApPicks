@@ -14,7 +14,6 @@ import {
 } from "react-native";
 import { AuthContext } from "../context/authProvider";
 const AddTable = ({ navigation }) => {
-
   const { user } = useContext(AuthContext);
 
   return (
