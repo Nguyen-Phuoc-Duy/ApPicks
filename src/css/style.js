@@ -2,9 +2,9 @@ import { StyleSheet } from "react-native";
 import color from "../constant/colorVariable";
 const styles = StyleSheet.create({
   defaultLayout: {
-    display: 'flex',
+    display: "flex",
     padding: 10,
-    paddingTop: 40
+    paddingTop: 40,
   },
   textDel: {
     fontSize: 20,
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingHorizontal: 20,
     flexDirection: "row",
-    borderRadius: 10
+    borderRadius: 10,
   },
   text1: {
     color: color.primary,
@@ -140,15 +140,15 @@ const styles = StyleSheet.create({
     marginBottom: 48,
   },
   textInput: {
-    borderColor: 'gray',
+    borderColor: "gray",
     borderWidth: 1,
     borderRadius: 25,
     padding: 10,
     height: 50,
-},
+  },
   btnContainer: {
     backgroundColor: "black",
-    color: 'red',
+    color: "red",
     marginTop: 12,
   },
   title_exit: {
@@ -266,29 +266,29 @@ const styles = StyleSheet.create({
     marginVertical: 20,
   },
   btnIcon: {
-		padding: 10,
-		paddingTop: 0,
-		paddingBottom: 0,
-		borderRadius: 99,
-		backgroundColor: "transparent"
-	},
+    padding: 10,
+    paddingTop: 0,
+    paddingBottom: 0,
+    borderRadius: 99,
+    backgroundColor: "transparent",
+  },
   btnLogout: {
-    color: 'red',
+    color: "red",
   },
   containerRow: {
-    width: '100%',
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
   },
   boxIcon: {
-    flexDirection: 'row',
+    flexDirection: "row",
     gap: 10,
-    alignItems: 'center',
+    alignItems: "center",
   },
   body: {
-    marginBottom: 20
-  }
+    marginBottom: 20,
+  },
 });
 
 export default styles;
