@@ -196,27 +196,6 @@ const DetailOrder = ({ navigation, route }) => {
 		setModalVisible(false);
 	}
 
-
-	const setQuantityProduct = async (ID, value) => {
-		let newProducts = listProduct;
-		if (value <= 0) {
-			let title = 'Are you sure?';
-			let message = `Are you sure you want to remove this product?'`;
-			if ((await useAlert.alertSync(title, message, true))) {
-				newProducts = newProducts.filter(product => product.ID !== ID);
-				return setListProducts(newProducts);
-			}
-		} else {
-			newProducts = newProducts.map(product => {
-				if (product.ID === ID) {
-					product.quantity = value;
-				}
-				return product;
-			})
-			return setListProducts(newProducts);
-		}
-	}
-
 	return (
 		<View style={styling.container}>
 			{isLoading && <Loader />}
@@ -266,12 +245,12 @@ const DetailOrder = ({ navigation, route }) => {
 										<Text>-</Text>
 									</TouchableOpacity>
 									<TextInput
+										editable={false}
 										keyboardType='numeric'
 										style={styling.input}
 										maxLength={100}
 										value={(product?.quantity || 1) + ""}
 										caretHidden={true}
-										onChangeText={(value) => setQuantityProduct(product.ID, value)}
 									/>
 									<TouchableOpacity style={styling.counterContent}
 										onPress={() => onCounterQuantity(product.ID, '+')}>

@@ -2,7 +2,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useEffect, useMemo, useState } from 'react';
 import { StyleSheet, SafeAreaView, Text, TouchableOpacity, TextInput, View } from 'react-native';
 
-const InputCustom = ({ formValue = {}, name, value, type = 'input', placeholder, onChange, color = "black", label, iconPrefix, rule, errMsg, required, disabled }) => {
+const InputCustom = ({ formValue = {}, name, value, type = 'input', placeholder, onChange, color = "black", label, iconPrefix, rule, errMsg, required, disabled, onEndEditing = () => {} }) => {
     const [stateValue, setStateValue] = useState(value);
     const [secureText, setSecureText] = useState(() => ['password', 'Re-password'].includes(type) ? true : false);
     const [focus, setFocus] = useState(false);
@@ -49,6 +49,7 @@ const InputCustom = ({ formValue = {}, name, value, type = 'input', placeholder,
                     onBlur={() => setFocus(false)}
                     onFocus={() => setFocus(true)}
                     value={type === 'number' ? stateValue?.toString() : stateValue}
+                    onEndEditing={(e) => onEndEditing(e.nativeEvent.text)}
                 />
                 {!disabled && ['password', 'Re-password'].includes(type) && (
                     <TouchableOpacity style={style.icon} onPress={() => setSecureText(!secureText)}>
@@ -82,6 +83,8 @@ const borderColor = '#999999';
 
 const style = StyleSheet.create({
     root: {
+        width: 'auto',
+        height: 'auto',
     },
     wrapperInput: {
         borderColor: 'transparent',

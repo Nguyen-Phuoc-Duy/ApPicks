@@ -7,6 +7,7 @@ import Badge from "../components/badge";
 import { getColorStatus } from "../constant/status";
 import { Ionicons } from "@expo/vector-icons";
 import SelectDropdown from "../components/selectDropdown";
+import InputCustom from "../components/inputCustom";
 
 const Revenue = ({ navigation }) => {
     const { useFetch } = useContext(AuthContext);
@@ -16,6 +17,7 @@ const Revenue = ({ navigation }) => {
     const [orders, setOrders] = useState([])
     const [totalPrice, setTotalPrice] = useState(0)
     const [filter, setFilter] = useState('');
+    const [search, setSearch] = useState('');
 
     useLayoutEffect(() => {
         navigation.setOptions({
@@ -32,7 +34,7 @@ const Revenue = ({ navigation }) => {
         })
     },[])
 
-    const getAllOrders = async (status = '') => {
+    const getAllOrders = async (status = '', filterName = '') => {
         try {
             let orderBy = ''
             if (['DESC', 'ASC'].includes(status)) {
@@ -40,7 +42,7 @@ const Revenue = ({ navigation }) => {
                 status = ''
             }
             setIsLoading(true);
-            let result = await useFetch('admin/getAllOrders', { status, orderBy }, 'POST');
+            let result = await useFetch('admin/getAllOrders', { status, orderBy, filterName }, 'POST');
             if (result.errCode === 200) {
                 setOrders(result?.data || [])
                 setTotalPrice(result.totalRevenue)
@@ -57,8 +59,8 @@ const Revenue = ({ navigation }) => {
     };
 
     useEffect(() => {
-        getAllOrders(filter);
-    }, [filter])
+        getAllOrders(filter, search);
+    }, [filter, search])
 
     const onRefresh = async () => {
         setIsRefesh(true)
@@ -71,6 +73,9 @@ const Revenue = ({ navigation }) => {
             {isLoading && <Loader />}
             <SafeAreaView style={styles.container}>
                 <ScrollView style={styles.body} refreshControl={<RefreshControl refreshing={isRefesh} onRefresh={onRefresh} />}>
+                    <View style={styles.inputSearch}>
+                        <InputCustom name='searchName' placeholder='Search name' onEndEditing={setSearch} />
+                    </View>
                     {orders && orders.map(order =>  order && (
                         <TouchableOpacity key={order.ID} style={styles.boxTable} onPress={() => handleRedirect(order)}>
                             <Text style={styles.orderName}>{order.name}</Text>
@@ -93,8 +98,8 @@ const filterStatus = [
     { label: 'Started', value: 'started' },
     { label: 'Finished', value: 'finished' },
     { label: 'Cancelled', value: 'cancelled' },
-    // { label: 'Mới nhất', value: 'DESC' },
-    // { label: 'Cũ nhất', value: 'ASC' }
+    { label: 'Mới nhất', value: 'DESC' },
+    { label: 'Cũ nhất', value: 'ASC' }
 ]
 
 const styles = StyleSheet.create({
@@ -102,7 +107,11 @@ const styles = StyleSheet.create({
         flex: 1,
     },
     body: {
-        marginBottom: 70
+        marginBottom: 70,
+    },
+    inputSearch: {
+        marginTop: 20,
+        marginHorizontal: 20
     },
     totalRevenueRegion: {
         position: 'absolute',
