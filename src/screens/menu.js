@@ -9,14 +9,15 @@ import Loader from "../components/loader";
 import useAlert from "../hook/useAlert";
 import color from "../constant/colorVariable";
 import { StyleSheet } from "react-native";
-
+import SelectDropdown from "../components/selectDropdown";
 const Menu = ({ navigation }) => {
   const [modalVisible, setModalVisible] = useState(false);
   const [products, setProducts] = useState([]);
   const [productEdit, setProductEdit] = useState({});
   const [isLoading, setIsLoading] = useState(false);
   const [refesh, setRefesh] = useState(false);
-
+  const [filter, setFilter] = useState("");
+  // const [search, setSearch] = useState("");
   const { useFetch, user } = useContext(AuthContext);
 
   useLayoutEffect(() => {
@@ -24,17 +25,27 @@ const Menu = ({ navigation }) => {
       headerTitle: "Menu",
       headerRight: () =>
         user && ["admin", "manager"].includes(user.role) ? (
-          <TouchableOpacity
-            style={styles.btnIcon}
-            onPress={() => setModalVisible(true)}
-          >
-            <Ionicons
-              name="ios-add-circle-outline"
-              size={30}
-              color={color.primary}
-              style={styles.addIcon}
-            />
-          </TouchableOpacity>
+          <>
+            {/* <TouchableOpacity
+              style={styles.btnIcon}
+              onPress={() => setModalVisible(true)}
+            >
+              <Ionicons
+                name="ios-add-circle-outline"
+                size={30}
+                color={color.primary}
+                style={styles.addIcon}
+              />
+            </TouchableOpacity> */}
+            <SelectDropdown options={filterStatus} onChange={setFilter}>
+              <Ionicons
+                name="filter-outline"
+                size={30}
+                color={color.primary}
+                style={styles.addIcon}
+              />
+            </SelectDropdown>
+          </>
         ) : (
           ""
         ),
@@ -47,17 +58,41 @@ const Menu = ({ navigation }) => {
     }
   }, [modalVisible]);
 
-  useEffect(() => {
-    getProducts();
-  }, []);
-
-  const getProducts = async () => {
-    let result = await useFetch("products/getAll");
-    if (result.errCode === 200) {
-      setProducts(result.data);
+  const getProducts = async (status = "", filterName = "") => {
+    try {
+      let orderBy = "";
+      if (["DESC", "ASC"].includes(status)) {
+        orderBy = status;
+        status = "";
+      }
+      setIsLoading(true);
+      // let result = await useFetch('admin/getAllOrders', { status, orderBy, filterName }, 'POST');
+      // if (result.errCode === 200) {
+      //     setOrders(result?.data || [])
+      //     setTotalPrice(result.totalRevenue)
+      // }
+      let result = await useFetch(
+        "products/getAll",
+        { status, orderBy, filterName },
+        "POST"
+      );
+      if (result.errCode === 200) {
+        setProducts(result.data);
+      }
+    } catch (err) {
+      console.log(err);
+    } finally {
+      setIsLoading(false);
     }
-  };
 
+    // let result = await useFetch("products/getAll");
+    // if (result.errCode === 200) {
+    //   setProducts(result.data);
+    // }
+  };
+  useEffect(() => {
+    getProducts(filter);
+  }, [filter]);
   const handleDeleteProduct = async (product) => {
     try {
       let { ID, name } = product;
@@ -146,7 +181,10 @@ const Menu = ({ navigation }) => {
     </ScrollView>
   );
 };
-
+const filterStatus = [
+  { label: "Mới nhất", value: "DESC" },
+  { label: "Cũ nhất", value: "ASC" },
+];
 const styles = StyleSheet.create({
   root: {
     marginBottom: 20,
